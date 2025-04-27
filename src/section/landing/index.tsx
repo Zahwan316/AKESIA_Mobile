@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
 import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BUTTON_COLOR, MAIN_COLOR, SECONDARY_COLOR, TEXT_HEADER_COLOR, TEXT_HEADER_COLOR_2 } from '../../utils/color';
+import { BUTTON_COLOR, MAIN_COLOR, SECONDARY_COLOR, TEXT_HEADER_COLOR, TEXT_HEADER_COLOR_2 } from '../../constants/color';
 import ButtonComponent from '../../component/button';
+import { useNavigation } from '@react-navigation/native';
 
-const LoginSection = (): React.JSX.Element => {
+const LandingSection = (): React.JSX.Element => {
   const[selected, setSelected] = useState('orangtua');
+  const navigation = useNavigation();
 
   const handleSelected = (select: string) => {
     setSelected(select);
-  }
+  };
+
+  const handleNextPage = () => {
+    if(selected === "") return;
+    navigation.navigate("Login", {
+      selectedUser: selected,
+    });
+  };
 
   return(
     <SafeAreaView>
@@ -62,7 +71,7 @@ const LoginSection = (): React.JSX.Element => {
                 <Text style={{color: selected === 'bidan' ? TEXT_HEADER_COLOR_2 : "#000"}}>Bidan</Text>
               </TouchableOpacity>
             </View>
-            <ButtonComponent title='Selanjutnya' color={BUTTON_COLOR} onPress={() => {}} />
+            <ButtonComponent title='Selanjutnya' color={BUTTON_COLOR} onPress={handleNextPage} />
           </View>
         </View>
       </View>
@@ -76,6 +85,7 @@ const style = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    fontFamily: 'Poppins-Regular'
   },
   imgContainer: {
     width: '100%',
@@ -164,4 +174,4 @@ const style = StyleSheet.create({
   },
 });
 
-export default LoginSection;
+export default LandingSection;

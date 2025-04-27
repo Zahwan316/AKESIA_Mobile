@@ -1,6 +1,7 @@
-import LoginSection from "../section/landing";
+import { JSX } from "react";
+import LoginSection from "../section/login";
 
-const LoginScreen = (): React.JSX.Element => {
+const LoginScreen = (): JSX.Element => {
   return(
     <LoginSection />
   );

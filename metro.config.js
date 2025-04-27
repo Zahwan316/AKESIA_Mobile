@@ -9,15 +9,15 @@ const path = require("path")
  * @type {import('@react-native/metro-config').MetroConfig}
  */
 const config = {
-  projectRoot: path.resolve(__dirname),
-  watchFolders: [
-    path.resolve(__dirname, 'src'),
-    // tambahkan folder lainnya yang diperlukan
-  ],
-  resolver: {
-    blockList: /.*\/node_modules\/.*/,
-  },
+  // projectRoot: path.resolve(__dirname),
+  // watchFolders: [
+  //   path.resolve(__dirname, 'src'),
+  //   // tambahkan folder lainnya yang diperlukan
+  // ],
+  // resolver: {
+  //   blockList: /.*\/node_modules\/.*/,
+  // },
 };
 
-module.exports = withNativeWind(config, { input: "./global.css" });
-//module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+//module.exports = withNativeWind(config);
+module.exports = mergeConfig(getDefaultConfig(__dirname), config);
