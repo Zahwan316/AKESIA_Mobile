@@ -1,4 +1,4 @@
-✅ Persiapan Awal: Instalasi yang Dibutuhkan
+# ✅ Persiapan Awal: Instalasi yang Dibutuhkan
 Sebelum menjalankan project ini, pastikan kamu sudah menginstall:
 
 Node.js (minimal versi 20 ke atas) 
@@ -30,15 +30,18 @@ Metro adalah server yang membantu membangun dan menjalankan aplikasi.
 Buka terminal di folder project kamu, lalu jalankan:
 
 Pakai npm
+
 **npm start**
 
 atau pakai Yarn
+
 **yarn start**
 
 # 🚀 Langkah 3: Jalankan Aplikasi
 Setelah Metro berjalan, buka terminal baru, lalu jalankan aplikasi ke perangkat:
 
 Untuk Android
+
 Pakai npm
 
 **npm run android**
@@ -53,13 +56,16 @@ Untuk iOS (hanya untuk Mac)
 Pertama kali setelah clone project:
 
 **bundle install**
+
 Lalu setiap kali update library native:
 
 **bundle exec pod install**
+
 Setelah itu, jalankan aplikasi iOS:
 
 
 Pakai npm
+
 **npm run ios**
 
 atau pakai Yarn
