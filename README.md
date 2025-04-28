@@ -19,30 +19,30 @@ Bundler (jika mau pakai iOS) → gem install bundler
 
 Kalau masih bingung install satu-satu, ikuti dulu Panduan Resmi Set Up Environment.
 
-🚀 Langkah 1: Install semua depedensi kode yang diperlukan
+#🚀 Langkah 1: Install semua depedensi kode yang diperlukan
 Setelah kode ini di clone atau di download, buka terminal, ketik:
 
 1.npm install (pastikan nodejs dan npm sudah diinstall di perangkat anda) 
 
-🚀 Langkah 2: Jalankan Metro Server
+#🚀 Langkah 2: Jalankan Metro Server
 Metro adalah server yang membantu membangun dan menjalankan aplikasi.
 
 Buka terminal di folder project kamu, lalu jalankan:
 
-# Pakai npm
+Pakai npm
 npm start
 
-# atau pakai Yarn
+atau pakai Yarn
 yarn start
 
-🚀 Langkah 3: Jalankan Aplikasi
+#🚀 Langkah 3: Jalankan Aplikasi
 Setelah Metro berjalan, buka terminal baru, lalu jalankan aplikasi ke perangkat:
 
 Untuk Android
-# Pakai npm
+Pakai npm
 npm run android
 
-# atau pakai Yarn
+atau pakai Yarn
 yarn android
 Pastikan emulator Android Studio sudah menyala atau HP sudah terhubung.
 
@@ -56,10 +56,10 @@ bundle exec pod install
 Setelah itu, jalankan aplikasi iOS:
 
 
-# Pakai npm
+Pakai npm
 npm run ios
 
-# atau pakai Yarn
+atau pakai Yarn
 yarn ios
 Catatan: Pastikan emulator iOS sudah dibuka.
 
@@ -74,6 +74,6 @@ Android: Tekan tombol <kbd>R</kbd> dua kali, atau buka Dev Menu dengan <kbd>Ctrl
 
 iOS: Tekan <kbd>R</kbd> di Simulator.
 
-🎉 Selamat!
+🎉# Selamat!
 Kalau sudah muncul di emulator atau HP, berarti kamu berhasil menjalankan aplikasi React Native ini! 🎉
 
