@@ -19,51 +19,54 @@ Bundler (jika mau pakai iOS) → gem install bundler
 
 Kalau masih bingung install satu-satu, ikuti dulu Panduan Resmi Set Up Environment.
 
-#🚀 Langkah 1: Install semua depedensi kode yang diperlukan
+# 🚀 Langkah 1: Install semua depedensi kode yang diperlukan
 Setelah kode ini di clone atau di download, buka terminal, ketik:
 
-1.npm install (pastikan nodejs dan npm sudah diinstall di perangkat anda) 
+**npm install (pastikan nodejs dan npm sudah diinstall di perangkat anda)**
 
-#🚀 Langkah 2: Jalankan Metro Server
+# 🚀 Langkah 2: Jalankan Metro Server
 Metro adalah server yang membantu membangun dan menjalankan aplikasi.
 
 Buka terminal di folder project kamu, lalu jalankan:
 
 Pakai npm
-npm start
+**npm start**
 
 atau pakai Yarn
-yarn start
+**yarn start**
 
-#🚀 Langkah 3: Jalankan Aplikasi
+# 🚀 Langkah 3: Jalankan Aplikasi
 Setelah Metro berjalan, buka terminal baru, lalu jalankan aplikasi ke perangkat:
 
 Untuk Android
 Pakai npm
-npm run android
+
+**npm run android**
 
 atau pakai Yarn
-yarn android
+
+**yarn android**
+
 Pastikan emulator Android Studio sudah menyala atau HP sudah terhubung.
 
 Untuk iOS (hanya untuk Mac)
 Pertama kali setelah clone project:
 
-bundle install
+**bundle install**
 Lalu setiap kali update library native:
 
-bundle exec pod install
+**bundle exec pod install**
 Setelah itu, jalankan aplikasi iOS:
 
 
 Pakai npm
-npm run ios
+**npm run ios**
 
 atau pakai Yarn
-yarn ios
+**yarn ios**
 Catatan: Pastikan emulator iOS sudah dibuka.
 
-✍️ Langkah 3: Mulai Ubah Aplikasi
+# ✍️ Langkah 4: Mulai Ubah Aplikasi
 Sekarang, buka file App.tsx di editor favorit kamu (seperti VSCode).
 
 Kalau kamu menyimpan perubahan, aplikasi akan otomatis reload berkat fitur Fast Refresh.
