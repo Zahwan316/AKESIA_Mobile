@@ -1,97 +1,79 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+✅ Persiapan Awal: Instalasi yang Dibutuhkan
+Sebelum menjalankan project ini, pastikan kamu sudah menginstall:
 
-# Getting Started
+Node.js (minimal versi 20 ke atas) 
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+NPM (Biasanya menyatu dengan Node.js)
 
-## Step 1: Start Metro
+Yarn (opsional, alternatif selain npm) 
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+Android Studio (untuk emulator Android) 
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+JDK (Java Development Kit) dan SDK → Biasanya terinstall otomatis lewat Android Studio.
 
-```sh
-# Using npm
+Watchman (khusus pengguna Mac) → brew install watchman
+
+CocoaPods (untuk iOS, hanya di Mac) → sudo gem install cocoapods
+
+Bundler (jika mau pakai iOS) → gem install bundler
+
+Kalau masih bingung install satu-satu, ikuti dulu Panduan Resmi Set Up Environment.
+
+🚀 Langkah 1: Install semua depedensi kode yang diperlukan
+Setelah kode ini di clone atau di download, buka terminal, ketik:
+
+1.npm install (pastikan nodejs dan npm sudah diinstall di perangkat anda) 
+
+🚀 Langkah 2: Jalankan Metro Server
+Metro adalah server yang membantu membangun dan menjalankan aplikasi.
+
+Buka terminal di folder project kamu, lalu jalankan:
+
+# Pakai npm
 npm start
 
-# OR using Yarn
+# atau pakai Yarn
 yarn start
-```
 
-## Step 2: Build and run your app
+🚀 Langkah 3: Jalankan Aplikasi
+Setelah Metro berjalan, buka terminal baru, lalu jalankan aplikasi ke perangkat:
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
+Untuk Android
+# Pakai npm
 npm run android
 
-# OR using Yarn
+# atau pakai Yarn
 yarn android
-```
+Pastikan emulator Android Studio sudah menyala atau HP sudah terhubung.
 
-### iOS
+Untuk iOS (hanya untuk Mac)
+Pertama kali setelah clone project:
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
 bundle install
-```
+Lalu setiap kali update library native:
 
-Then, and every time you update your native dependencies, run:
-
-```sh
 bundle exec pod install
-```
+Setelah itu, jalankan aplikasi iOS:
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
 
-```sh
-# Using npm
+# Pakai npm
 npm run ios
 
-# OR using Yarn
+# atau pakai Yarn
 yarn ios
-```
+Catatan: Pastikan emulator iOS sudah dibuka.
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+✍️ Langkah 3: Mulai Ubah Aplikasi
+Sekarang, buka file App.tsx di editor favorit kamu (seperti VSCode).
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+Kalau kamu menyimpan perubahan, aplikasi akan otomatis reload berkat fitur Fast Refresh.
 
-## Step 3: Modify your app
+Kalau mau paksa reload:
 
-Now that you have successfully run the app, let's make changes!
+Android: Tekan tombol <kbd>R</kbd> dua kali, atau buka Dev Menu dengan <kbd>Ctrl + M</kbd> (Windows/Linux) atau <kbd>Cmd + M</kbd> (Mac).
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+iOS: Tekan <kbd>R</kbd> di Simulator.
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+🎉 Selamat!
+Kalau sudah muncul di emulator atau HP, berarti kamu berhasil menjalankan aplikasi React Native ini! 🎉
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
