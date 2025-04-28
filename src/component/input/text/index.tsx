@@ -6,7 +6,7 @@ type props = {
   width: DimensionValue,
   height: DimensionValue,
   label: string,
-  backgroundColor: ColorValue,
+  backgroundColor?: ColorValue,
   onChange: () => void,
   value?: string,
   name: string,
@@ -27,8 +27,10 @@ const InputComponent = ({ width, height, backgroundColor, label, name, message, 
           <TextInput
             style={[style.input, {
                 backgroundColor: backgroundColor,
-                color: backgroundColor === '' ? '#fff' : '#000',
+                color: backgroundColor === '' ? '#000' : '#fff',
                 borderWidth: backgroundColor === '' ? 1 : 0,
+                display: 'flex',
+                justifyContent: 'center'
               },
             ]}
             onChangeText={onChange}

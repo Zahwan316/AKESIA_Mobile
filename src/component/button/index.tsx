@@ -12,7 +12,7 @@ const ButtonComponent = ({ title, color, onPress, customstyle }: props): React.J
   return(
     <TouchableOpacity
       style={
-        [style.main, customstyle ]
+        [style.main, customstyle, {backgroundColor: color} ]
       }
       onPress={onPress}
     >
@@ -35,8 +35,9 @@ const style = StyleSheet.create({
   text: {
     textAlign: 'center',
     color: "#fff",
-    fontSize: 18,
-  }
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
 
 export default ButtonComponent;

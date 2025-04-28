@@ -13,6 +13,7 @@ import {
 } from 'react-native-responsive-screen';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
+  BUTTON_COLOR,
   BUTTON_COLOR_2,
   MAIN_COLOR,
   TEXT_HEADER_COLOR,
@@ -20,6 +21,7 @@ import {
 import InputComponent from '../../component/input/text';
 import RadioInputComponent from '../../component/input/radio';
 import ButtonComponent from '../../component/button';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 type registerProps = {
   onChange: () => void;
@@ -96,10 +98,23 @@ const LoginLayout = (props: registerProps) => {
 
 const LoginSection = (): JSX.Element => {
   const [currSelect, setcurrSelect] = useState('login');
+  const navigation = useNavigation();
+  const route = useRoute();
+  const {selectedUser} = route.params as {selectedUser: string};
 
   const handleSelected = (select: string) => {
     setcurrSelect(select);
   };
+
+  const handleLogin = () => {
+    if(selectedUser === 'orangtua') {
+      navigation.navigate("ProfileOrangTua");
+    }
+    else{
+      navigation.navigate("ProfileBidan");
+    }
+
+  }
 
   return (
     <SafeAreaView>
@@ -163,7 +178,7 @@ const LoginSection = (): JSX.Element => {
               <RegisterLayout onChange={() => {}} />
             )}
           </View>
-          <View style={style.agreeTermContainer}>
+          <View style={[style.agreeTermContainer, {position: 'relative', top: currSelect === "register" ? 64 : 0, zIndex: 4}]}>
             <RadioInputComponent
               customstyle={{borderColor: '#606060', marginRight: 8}}
               innerstyle={{backgroundColor: MAIN_COLOR}}
@@ -172,13 +187,26 @@ const LoginSection = (): JSX.Element => {
               l agree with the Terms of Service & Privacy Policy
             </Text>
           </View>
-          <View style={style.agreeTermContainer}>
+          <View style={[style.agreeTermContainer, {position: 'relative', top: 60, zIndex: 4, display: 'flex', justifyContent: 'center'}]}>
             <ButtonComponent
               title={currSelect === 'login' ? 'Sign In' : 'Sign Up'}
-              color=""
-              onPress={() => {}}
+              color={BUTTON_COLOR}
+              onPress={handleLogin}
               customstyle={{width: '100%'}}
             />
+          </View>
+          <View style={style.bottomContainer}>
+            <View style={{marginBottom: 8}}>
+              <TouchableOpacity>
+                <Image 
+                  source={require('../../assets/icon/google.png')}
+                  style={{width: 44, height: 44}}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{width: '90%'}}>
+              <Text style={{ textAlign: 'center', color:'#20202095', fontSize: 12 }}>By continuing, you agree to our Terms of Service and Privacy Policy.</Text>
+            </View>
           </View>
         </View>
       </View>
@@ -241,6 +269,7 @@ const style = StyleSheet.create({
     borderWidth: 0,
     borderRadius: 8,
     marginBottom: 12,
+    position: 'relative'
   },
   buttonRadio: {
     backgroundColor: '#fff',
@@ -257,6 +286,7 @@ const style = StyleSheet.create({
     height: '30%',
     borderWidth: 0,
     marginBottom: 2,
+    position: 'relative'
   },
   agreeTermContainer: {
     width: '90%',
@@ -265,6 +295,19 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 12,
+    position: 'relative'
+  },
+  bottomContainer: {
+    width: '100%',
+    height: '30%',
+    backgroundColor: MAIN_COLOR,
+    borderWidth: 0,
+    display: 'flex',
+    //position: 'absolute',
+    bottom: 0,
+    top: 26,
+    alignItems: 'center',
+    padding: 36
   },
 });
 
