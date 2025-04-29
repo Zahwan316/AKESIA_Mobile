@@ -4,10 +4,12 @@ import { SafeAreaView, View } from 'react-native';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 import { BUTTON_COLOR, BUTTON_COLOR_2, SECONDARY_COLOR, THIRD_COLOR } from '../../constants/color';
 import ICON from '../../component/icon';
+import { useNavigation } from '@react-navigation/native';
 
 type menu = {
   name: string,
   icon: ImageSourcePropType,
+  screen: string,
   onChange?: () => void
 }
 
@@ -15,14 +17,22 @@ const menuList: menu[] = [
   {
     name: 'Buat Janji',
     icon: require('../../assets/icon/buat_janji.png'),
+    screen: 'BuatJanji',
   },
   {
     name: 'Pemeriksaan',
     icon: require('../../assets/icon/pemeriksaan.png'),
+    screen: 'Pemeriksaan',
   },
 ];
 
 const HomeSection = (): JSX.Element => {
+  const navigation = useNavigation();
+
+  const handlePressButton = (screen: string) => {
+    navigation.navigate(screen);
+  }
+
   return(
     <SafeAreaView>
       <ScrollView>
@@ -60,7 +70,7 @@ const HomeSection = (): JSX.Element => {
           <View style={Style.menuContainer}>
             {
               menuList.map((item, index) => (
-                <TouchableOpacity style={Style.menuItemContainer} key={index}>
+                <TouchableOpacity style={Style.menuItemContainer} key={index} onPress={() => handlePressButton(item.screen)}>
                   <View style={{width: "100%", height: "50%", display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 4}}>
                     <Image
                       source={item.icon}

@@ -39,7 +39,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
           <View style={style.formGroupContainer}>
             <View>
               <InputComponent
-                height={40}
+                height={"auto"}
                 label="Pilih Status si Mama atau si Dedek... "
                 message="Mohon diisi"
                 name="status"
@@ -48,9 +48,10 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                 type="text"
                 width={'100%'}
                 backgroundColor=""
+                border={1}
               />
               <InputComponent
-                height={40}
+                height={"auto"}
                 label="Nama ibu"
                 message="Mohon diisi"
                 name="nama_ibu"
@@ -59,9 +60,10 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                 type="text"
                 width={'100%'}
                 backgroundColor=""
+                border={1}
               />
               <InputComponent
-                height={40}
+                height={"auto"}
                 label="NIK"
                 message="NIK"
                 name="status"
@@ -70,6 +72,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                 type="number"
                 width={'100%'}
                 backgroundColor=""
+                border={1}
               />
               <View
                 style={{
@@ -79,7 +82,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                   justifyContent: 'space-between',
                 }}>
                 <InputComponent
-                  height={40}
+                  height={"auto"}
                   label="Tempat Lahir"
                   message="Tempat Lahir"
                   name="status"
@@ -88,9 +91,10 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                   type="text"
                   width={'45%'}
                   backgroundColor=""
+                  border={1}
                 />
                 <InputComponent
-                  height={40}
+                  height={"auto"}
                   label="Tanggal Lahir"
                   message="Tanggal Lahir"
                   name="status"
@@ -99,10 +103,11 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                   type="text"
                   width={'45%'}
                   backgroundColor=""
+                  border={1}
                 />
               </View>
               <InputComponent
-                height={40}
+                height={"auto"}
                 label="Golongan Darah"
                 message="Golongan Darah"
                 name="status"
@@ -111,9 +116,10 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                 type="text"
                 width={'100%'}
                 backgroundColor=""
+                border={1}
               />
               <InputComponent
-                height={40}
+                height={"auto"}
                 label="Alamat Domisili"
                 message="Alamat Domisili"
                 name="status"
@@ -122,6 +128,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                 type="text"
                 width={'100%'}
                 backgroundColor=""
+                border={1}
               />
               <View
                 style={{
@@ -131,18 +138,19 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                   justifyContent: 'space-between',
                 }}>
                 <InputComponent
-                  height={40}
+                  height={"auto"}
                   label="Nomor handphone"
                   message="Nomor handphone"
                   name="status"
                   onChange={() => {}}
                   placeholder="+62"
                   type="number"
-                  width={'35%'}
+                  width={'38%'}
                   backgroundColor=""
+                  border={1}
                 />
                 <InputComponent
-                  height={40}
+                  height={"auto"}
                   label=""
                   message="Nomor handphone"
                   name="status"
@@ -151,10 +159,11 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                   type="number"
                   width={'60%'}
                   backgroundColor=""
+                  border={1}
                 />
               </View>
               <InputComponent
-                  height={40}
+                  height={"auto"}
                   label="Pendidikan"
                   message="Pendidikan"
                   name="status"
@@ -163,9 +172,10 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                   type="text"
                   width={'100%'}
                   backgroundColor=""
+                  border={1}
                 />
                 <InputComponent
-                  height={40}
+                  height={"auto"}
                   label="Pekerjaan"
                   message="Pekerjaan"
                   name="status"
@@ -174,6 +184,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                   type="text"
                   width={'100%'}
                   backgroundColor=""
+                  border={1}
                 />
               {/* <View 
                 style={{
@@ -203,7 +214,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
 const style = StyleSheet.create({
   mainContainer: {
     width: widthPercentageToDP(100),
-    height: heightPercentageToDP(115),
+    height: heightPercentageToDP(125),
     padding: 12,
   },
   headerContainer: {
@@ -214,7 +225,7 @@ const style = StyleSheet.create({
   },
   formGroupContainer: {
     width: '100%',
-    height: '84%',
+    height: 'auto',
     borderWidth: 0,
   },
   buttonGroupContainer: {

@@ -6,111 +6,106 @@ import InputComponent from '../../../component/input/text';
 import ButtonComponent from '../../../component/button';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { useNavigation } from '@react-navigation/native';
+import textInputProps from '../../../type/input/text';
 
-type formProperties = {
-  width: DimensionValue,
-  height: DimensionValue,
-  label: string,
-  message: string,
-  name: string,
-  onChange: () => void,
-  placeholder: string,
-  type: string,
-  backgroundColor: string
-}
-
-const formBidan: formProperties[] = [
+const formBidan: textInputProps[] = [
   {
     width:'100%',
-    height:38,
+    height:'auto',
     label:'Provinsi Domisili',
     message:'Wajib Diisi',
     name:'provinsi_domisili',
     onChange:() => {},
     placeholder:'Jawa Barat...',
-    type:'',
+    type:'text',
     backgroundColor:'',
+    border:1,
   },
   {
     width:'100%',
-    height:38,
+    height:'auto',
     label:'Kota Domisili',
     message:'Wajib Diisi',
     name:'kota_domisili',
     onChange:() => {},
     placeholder:'Bandung...',
-    type:'',
+    type:'text',
     backgroundColor:'',
+    border:1,
   },
   {
     width:'100%',
-    height:38,
+    height:'auto',
     label:'Jenis Praktik',
     message:'Wajib Diisi',
     name:'jenis_praktik',
     onChange:() => {},
     placeholder:'Jawa Barat...',
-    type:'',
+    type:'text',
     backgroundColor:'',
+    border:1,
   },
   {
     width:'100%',
-    height:38,
+    height:'auto',
     label:'Tempat Bekerja',
     message:'Wajib Diisi',
     name:'tempat_bekerja',
     onChange:() => {},
     placeholder:'...',
-    type:'',
+    type:'text',
     backgroundColor:'',
+    border:1,
   },
   {
     width:'100%',
-    height:38,
+    height:'auto',
     label:'Nama Jenis Praktik',
     message:'Wajib Diisi',
     name:'nama_tempat_praktik',
     onChange:() => {},
     placeholder:'...',
-    type:'',
+    type:'text',
     backgroundColor:'',
+    border:1,
   },
   {
     width:'100%',
-    height:38,
+    height:'auto',
     label:'Status Keanggotaan IBI',
     message:'Wajib Diisi',
     name:'status_keanggotaan_ibi',
     onChange:() => {},
     placeholder:'...',
-    type:'',
+    type:'text',
     backgroundColor:'',
+    border:1,
   },
   {
     width:'100%',
-    height:38,
+    height:'auto',
     label:'No STR',
     message:'Wajib Diisi',
     name:'no_str',
     onChange:() => {},
     placeholder:'...',
-    type:'',
+    type:'text',
     backgroundColor:'',
+    border:1,
   },
   {
     width: '100%',
-    height: 156,
+    height: 'auto',
     label: 'Unggah Selfie',
     message: '',
     name: '',
     onChange: () => {},
     placeholder: '',
-    type: '',
+    type: 'textarea',
     backgroundColor: '',
+    border:1,
   },
 ];
-
-
 
 const CompleteProfileBidanSection = (): JSX.Element => {
   const navigation = useNavigation();
@@ -140,6 +135,7 @@ const CompleteProfileBidanSection = (): JSX.Element => {
                   type={item.type}
                   backgroundColor={item.backgroundColor}
                   key={index}
+                  border={item.border}
                 />
               ))
             }
@@ -150,7 +146,7 @@ const CompleteProfileBidanSection = (): JSX.Element => {
               <Text>Saya setuju data yang saya isikan benar</Text>
             </View>
           </View>
-          <ButtonComponent 
+          <ButtonComponent
             color={MAIN_COLOR}
             onPress={handleButton}
             title="Daftar"
@@ -164,7 +160,7 @@ const CompleteProfileBidanSection = (): JSX.Element => {
 const style = StyleSheet.create({
   mainContainer: {
     width: widthPercentageToDP(100),
-    height: heightPercentageToDP(115),
+    height: heightPercentageToDP(125),
     padding: 12,
   },
   headerContainer: {
@@ -176,14 +172,14 @@ const style = StyleSheet.create({
     width: '100%',
     height: '90%',
     borderWidth: 0,
-    marginBottom: 8
+    marginBottom: 8,
   },
   checkboxContainer: {
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
     marginTop: 8,
-  }
+  },
 });
 
-export default CompleteProfileBidanSection
+export default CompleteProfileBidanSection;

@@ -1,48 +1,38 @@
-import { JSX } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { ColorValue, DimensionValue, StyleSheet, Text, TextInput, View } from "react-native";
+import { JSX } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { ColorValue, DimensionValue, StyleSheet, Text, TextInput, View } from 'react-native';
+import textInputProps from '../../../type/input/text';
 
-type props = {
-  width: DimensionValue,
-  height: DimensionValue,
-  label: string,
-  backgroundColor?: ColorValue,
-  onChange: () => void,
-  value?: string,
-  name: string,
-  placeholder: string,
-  message: string,
-  type: string,
-}
-
-const InputComponent = ({ width, height, backgroundColor, label, name, message, placeholder, type }: props): JSX.Element => {
+const InputComponent = ({ width, height, backgroundColor, label, name, message, placeholder, type, textColor, labelColor, border }: textInputProps): JSX.Element => {
   const {control, handleSubmit, formState: { errors }} = useForm()
 
   return (
     <View style={[style.container, {width: width, height: height }]}>
-      <Text style={style.label}>{label}</Text>
+      <Text style={[style.label, {color: labelColor, fontWeight: 'bold'}]}>{label}</Text>
       <Controller
         control={control}
         render={({field : {onChange, value}}) => (
           <TextInput
             style={[style.input, {
                 backgroundColor: backgroundColor,
-                color: backgroundColor === '' ? '#000' : '#fff',
-                borderWidth: backgroundColor === '' ? 1 : 0,
-                display: 'flex',
-                justifyContent: 'center'
+                color: textColor,
+                borderWidth: border,
+                textAlignVertical: type === 'textarea' ? 'top' : 'center',
+                height: type === 'textarea' ? 150 : 'auto',
               },
             ]}
             onChangeText={onChange}
             value={value}
             placeholder={placeholder}
             secureTextEntry={type === 'password' ? true : false}
+            multiline={type === 'textarea'}
+            numberOfLines={type === 'textarea' ? 4 : 1}
+            keyboardType={type === 'number' ? 'numeric' : 'default'}
           />
         )}
         name={name}
         rules={{ required: message }}
         defaultValue={''}
-        
       />
       {errors.name && <Text style={{ color: 'red' }}>{errors.name.message}</Text>}
     </View>
@@ -51,17 +41,19 @@ const InputComponent = ({ width, height, backgroundColor, label, name, message, 
 
 const style = StyleSheet.create({
   container: {
-    marginBottom: 36,
+    marginBottom: 12,
   },
   input: {
     borderWidth: 1,
     borderRadius: 8,
     width: '100%',
-    height: '100%',
+    height: 'auto',
+    backgroundColor: '#fff',
   },
   label: {
     marginBottom: 8,
-  }
+    fontSize: 16,
+  },
 });
 
 export default InputComponent;

@@ -32,7 +32,7 @@ const RegisterLayout = (props: registerProps) => {
     <>
       <InputComponent
         width="100%"
-        height={42}
+        height="auto"
         backgroundColor={MAIN_COLOR}
         label={'Username'}
         onChange={props.onChange}
@@ -43,7 +43,7 @@ const RegisterLayout = (props: registerProps) => {
       />
       <InputComponent
         width="100%"
-        height={42}
+        height="auto"
         backgroundColor={MAIN_COLOR}
         label={'Password'}
         onChange={props.onChange}
@@ -54,7 +54,7 @@ const RegisterLayout = (props: registerProps) => {
       />
       <InputComponent
         width="100%"
-        height={42}
+        height="auto"
         backgroundColor={MAIN_COLOR}
         label={'Konfirmasi Password'}
         onChange={props.onChange}
@@ -72,7 +72,7 @@ const LoginLayout = (props: registerProps) => {
     <>
       <InputComponent
         width="100%"
-        height={42}
+        height="auto"
         backgroundColor={MAIN_COLOR}
         label={'Username'}
         onChange={props.onChange}
@@ -83,7 +83,7 @@ const LoginLayout = (props: registerProps) => {
       />
       <InputComponent
         width="100%"
-        height={42}
+        height="auto"
         backgroundColor={MAIN_COLOR}
         label={'Password'}
         onChange={props.onChange}
@@ -114,7 +114,7 @@ const LoginSection = (): JSX.Element => {
       navigation.navigate("ProfileBidan");
     }
 
-  }
+  };
 
   return (
     <SafeAreaView>
