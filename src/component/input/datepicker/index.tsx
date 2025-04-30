@@ -7,6 +7,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 type props = {
   label: string,
   onChange: () => void,
+  customStyle?: StyleSheet.NamedStyles<any>,
+  labelColor?: string
 }
 
 const InputDatePickerComponent = (props: props): React.JSX.Element => {
@@ -14,8 +16,8 @@ const InputDatePickerComponent = (props: props): React.JSX.Element => {
   const [open, setOpen] = useState(false);
 
   return(
-    <View>
-      <Text style={[style.label, {color: '#fff'}]}>{props.label}</Text>
+    <View style={props.customStyle}>
+      <Text style={[style.label, {color: props.labelColor != null ? props.labelColor : '#fff'}]}>{props.label}</Text>
       <View style={style.inputContainer}>
         <TextInput
           onPress={() => setOpen(true)}

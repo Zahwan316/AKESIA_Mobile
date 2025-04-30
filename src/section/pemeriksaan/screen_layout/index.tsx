@@ -14,9 +14,10 @@ type props = {
   page?: number,
   handlePage?: (op: "next" | "prev") => void,
   children: React.ReactNode,
+  title?: string
 }
 
-const FormScreenLayout = ({page, handlePage, children}: props): React.JSX.Element => {
+const FormScreenLayout = ({page, handlePage, children, title}: props): React.JSX.Element => {
   return (
     <SafeAreaView>
       <View style={style.mainContainer}>
@@ -31,7 +32,12 @@ const FormScreenLayout = ({page, handlePage, children}: props): React.JSX.Elemen
             />
           )}
           <Text style={{fontSize: 24, color: '#fff'}}>
-            Mohon isi formulir ini dengan lengkap dan akurat!
+            {
+              title ?
+              title
+              :
+              'Mohon isi formulir ini dengan lengkap dan akurat!  '
+            }
           </Text>
         </View>
         <View style={style.formContainer}>

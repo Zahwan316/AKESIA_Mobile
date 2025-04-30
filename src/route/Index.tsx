@@ -8,7 +8,7 @@ const tab = createBottomTabNavigator();
 const RouteNavigation = (): React.JSX.Element => {
   return (
     <NavigationContainer>
-      <tab.Navigator initialRouteName="BayiSaatLahir">
+      <tab.Navigator initialRouteName="JanjiKita">
         {
           routes.map((item, index) => (
             <tab.Screen

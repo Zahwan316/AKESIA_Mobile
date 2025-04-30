@@ -48,7 +48,7 @@ const dropdownItem: dropdownItem[] = [
     child: [
       {
         name: 'Pelayanan Ibu Nifas',
-        screen: 'PemeriksaanIbuBersalin',
+        screen: 'PemeriksaanIbuNifas',
       },
       {
         name: 'Kesimpulan Akhir Nifas',

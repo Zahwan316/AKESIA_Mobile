@@ -5,6 +5,7 @@ import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsi
 import { BUTTON_COLOR, BUTTON_COLOR_2, SECONDARY_COLOR, THIRD_COLOR } from '../../constants/color';
 import ICON from '../../component/icon';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 type menu = {
   name: string,
@@ -17,7 +18,7 @@ const menuList: menu[] = [
   {
     name: 'Buat Janji',
     icon: require('../../assets/icon/buat_janji.png'),
-    screen: 'BuatJanji',
+    screen: 'JanjiKita',
   },
   {
     name: 'Pemeriksaan',
@@ -31,7 +32,7 @@ const HomeSection = (): JSX.Element => {
 
   const handlePressButton = (screen: string) => {
     navigation.navigate(screen);
-  }
+  };
 
   return(
     <SafeAreaView>
@@ -58,7 +59,8 @@ const HomeSection = (): JSX.Element => {
                 <Text style={{fontSize: 12, color: '#fff', fontWeight: 'bold'}}>7 Minggu</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={[Style.boxContainer, {justifyContent: 'center', alignItems: 'center'}]}>
+            <TouchableOpacity style={[Style.boxContainer, {justifyContent: 'center', alignItems: 'center', gap: 4, backgroundColor: BUTTON_COLOR}]}>
+              <Icon name='plus-circle' size={26} color='#fff' />
               <Text style={{fontSize: 14, color: '#fff', fontWeight: 'bold',}}>Tambah Anak</Text>
             </TouchableOpacity>
           </View>
