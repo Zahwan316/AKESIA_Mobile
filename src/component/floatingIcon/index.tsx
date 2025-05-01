@@ -3,10 +3,15 @@ import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { MAIN_COLOR } from '../../constants/color';
+import { useNavigation } from '@react-navigation/native';
 
-const FloatingIcon = (): JSX.Element => {
+type props = {
+  handlePress: () => void
+}
+
+const FloatingIcon = ({ handlePress }: props): JSX.Element => {
   return(
-    <TouchableOpacity style={style.mainButton}>
+    <TouchableOpacity style={style.mainButton} onPress={handlePress}>
       <Icon name="plus" size={18} color="#fff"/>
     </TouchableOpacity>
   );

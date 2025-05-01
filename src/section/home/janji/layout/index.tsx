@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { JSX } from 'react';
 import { View } from 'react-native';
 import { StyleSheet, Text } from 'react-native';
@@ -12,12 +13,13 @@ type props = {
 }
 
 const JanjiScreenLayout = (props: props): JSX.Element => {
+  const navigation = useNavigation();
   return(
     <SafeAreaProvider>
       <SafeAreaView>
         <View style={style.mainContainer}>
           <View style={style.headerContainer}>
-            <Icon name="angle-left" size={42} />
+            <Icon name="angle-left" size={42} onPress={() => navigation.goBack()}/>
             <Text style={{fontWeight: 'bold', fontSize: 24}}>{props.title}</Text>
             <View />
           </View>

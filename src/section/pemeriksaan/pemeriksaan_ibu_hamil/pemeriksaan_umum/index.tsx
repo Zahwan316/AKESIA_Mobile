@@ -34,7 +34,7 @@ const page1 = (formHandle: () => void, data: any[]) => {
         label={'Kesadaran'}
       />
       <InputComponent
-        height={'6%'}
+        height={'auto'}
         width={'100%'}
         label="Mata"
         message="Harap diisi"
@@ -47,7 +47,7 @@ const page1 = (formHandle: () => void, data: any[]) => {
         border={1}
       />
       <InputComponent
-        height={'6%'}
+        height={'auto'}
         width={'100%'}
         label="Leher"
         message="Harap diisi"
@@ -60,7 +60,7 @@ const page1 = (formHandle: () => void, data: any[]) => {
         border={1}
       />
       <InputComponent
-        height={'6%'}
+        height={'auto'}
         width={'100%'}
         label="Payudara"
         message="Harap diisi"
@@ -73,7 +73,7 @@ const page1 = (formHandle: () => void, data: any[]) => {
         border={1}
       />
       <InputComponent
-        height={'6%'}
+        height={'auto'}
         width={'100%'}
         label="Paru"
         message="Harap diisi"
@@ -93,7 +93,7 @@ const page2 = (formHandle: () => void, data: any[]) => {
   return (
     <>
       <InputComponent
-        height={'6%'}
+        height={'auto'}
         width={'100%'}
         label="Jantung"
         message="Harap diisi"
@@ -106,7 +106,7 @@ const page2 = (formHandle: () => void, data: any[]) => {
         border={1}
       />
       <InputComponent
-        height={'6%'}
+        height={'auto'}
         width={'100%'}
         label="Hati"
         message="Harap diisi"
@@ -119,7 +119,7 @@ const page2 = (formHandle: () => void, data: any[]) => {
         border={1}
       />
       <InputComponent
-        height={'6%'}
+        height={'auto'}
         width={'100%'}
         label="Suhu Badan"
         message="Harap diisi"
@@ -132,7 +132,7 @@ const page2 = (formHandle: () => void, data: any[]) => {
         border={1}
       />
       <InputComponent
-        height={'6%'}
+        height={'auto'}
         width={'100%'}
         label="Genetalia/Luar/Dalam"
         message="Harap diisi"
@@ -161,7 +161,7 @@ const page2 = (formHandle: () => void, data: any[]) => {
           height: '100%',
         }}>
         <InputComponent
-          height={'6%'}
+          height={'auto'}
           width={'45%'}
           label="Tinggi Badan"
           message="Harap diisi"
@@ -174,7 +174,7 @@ const page2 = (formHandle: () => void, data: any[]) => {
           border={1}
         />
         <InputComponent
-          height={'6%'}
+          height={'auto'}
           width={'45%'}
           label="Berat badan"
           message="Harap diisi"

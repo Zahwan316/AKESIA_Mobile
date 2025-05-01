@@ -6,6 +6,7 @@ import { BUTTON_COLOR, BUTTON_COLOR_2, SECONDARY_COLOR, THIRD_COLOR } from '../.
 import ICON from '../../component/icon';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import CarouselComponent from '../../component/carousel';
 
 type menu = {
   name: string,
@@ -54,12 +55,12 @@ const HomeSection = (): JSX.Element => {
                   style={{width: "80%", height: "80%"}}
                 />
               </View>
-              <View> 
+              <View>
                 <Text style={{fontSize: 14, color: '#fff', fontWeight: 'bold', marginBottom: 4}}>Babyku</Text>
                 <Text style={{fontSize: 12, color: '#fff', fontWeight: 'bold'}}>7 Minggu</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={[Style.boxContainer, {justifyContent: 'center', alignItems: 'center', gap: 4, backgroundColor: BUTTON_COLOR}]}>
+            <TouchableOpacity onPress={() => handlePressButton('TambahAnak')} style={[Style.boxContainer, {justifyContent: 'center', alignItems: 'center', gap: 4, backgroundColor: BUTTON_COLOR}]}>
               <Icon name='plus-circle' size={26} color='#fff' />
               <Text style={{fontSize: 14, color: '#fff', fontWeight: 'bold',}}>Tambah Anak</Text>
             </TouchableOpacity>
@@ -151,10 +152,10 @@ const Style = StyleSheet.create({
   },
   bannerContainer: {
     width: widthPercentageToDP(100),
-    height: heightPercentageToDP(30),
+    height: heightPercentageToDP(40),
     borderWidth: 0,
     padding: 15,
-    marginBottom: 16,
+    marginBottom: 18,
   },
   nameContainer: {
     width: '100%',

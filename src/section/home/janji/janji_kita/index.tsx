@@ -7,6 +7,7 @@ import ButtonComponent from "../../../../component/button";
 import QueueItemComponent from "../component/queue-item";
 import { ScrollView } from "react-native";
 import FloatingIcon from "../../../../component/floatingIcon";
+import { useNavigation } from "@react-navigation/native";
 
 type queueItem = {
   img: ImageSourcePropType,
@@ -15,48 +16,63 @@ type queueItem = {
   time: string,
   handleClick: () => void,
   handleDelete: () => void,
+  status: 'Menunggu' | 'Selesai' | 'Dibatalkan'
 };
 
 const itemQueue: queueItem[] = [
   {
-    description: 'Baby spa for 2 hours',
+    description: 'Pijat Bayi untuk 1 jam',
     img: require('../../../../assets/icon/baby.png'),
-    title: 'Baby Spa',
+    title: 'Pijat Bayi Ceria',
     handleClick: () => {},
     handleDelete: () => {},
-    time: '10.00 AM',
+    time: '09.30 AM',
+    status: 'Menunggu',
   },
   {
-    description: 'Baby spa for 2 hours',
+    description: 'Spa Bayi untuk 2 jam',
     img: require('../../../../assets/icon/baby.png'),
-    title: 'Baby Spa',
+    title: 'Spa Bayi Sehat',
     handleClick: () => {},
     handleDelete: () => {},
-    time: '10.00 AM',
+    time: '11.00 AM',
+    status: 'Selesai',
   },
   {
-    description: 'Baby spa for 2 hours',
+    description: 'Konsultasi Dokter Anak',
     img: require('../../../../assets/icon/baby.png'),
-    title: 'Baby Spa',
+    title: 'Konsultasi Dokter Anak',
     handleClick: () => {},
     handleDelete: () => {},
-    time: '10.00 AM',
+    time: '12.00 PM',
+    status: 'Menunggu',
   },
   {
-    description: 'Baby spa for 2 hours',
+    description: 'Pemeriksaan Kesehatan Bayi',
     img: require('../../../../assets/icon/baby.png'),
-    title: 'Baby Spa',
+    title: 'Pemeriksaan Kesehatan Bayi',
     handleClick: () => {},
     handleDelete: () => {},
-    time: '10.00 AM',
+    time: '02.00 PM',
+    status: 'Dibatalkan',
   },
   {
-    description: 'Baby spa for 2 hours',
+    description: 'Pemeriksaan Kesehatan Bayi',
     img: require('../../../../assets/icon/baby.png'),
-    title: 'Baby Spa',
+    title: 'Pemeriksaan Kesehatan Bayi',
     handleClick: () => {},
     handleDelete: () => {},
-    time: '10.00 AM',
+    time: '02.00 PM',
+    status: 'Dibatalkan',
+  },
+  {
+    description: 'Terapi Okupasi untuk Bayi',
+    img: require('../../../../assets/icon/baby.png'),
+    title: 'Terapi Okupasi untuk Bayi',
+    handleClick: () => {},
+    handleDelete: () => {},
+    time: '03.30 PM',
+    status: 'Menunggu',
   },
 ];
 
@@ -86,9 +102,14 @@ const ButtonMenu: button[] = [
 
 const JanjiKitaSection = (): JSX.Element => {
   const [currMenu, setCurrMenu] = useState<string>('Menunggu');
+  const navigation = useNavigation();
 
   const handleCurrMenu = (title: string) => {
     setCurrMenu(title);
+  };
+
+  const handleScreen = (screen: string) => {
+    navigation.navigate(screen);
   };
 
   return (
@@ -110,9 +131,10 @@ const JanjiKitaSection = (): JSX.Element => {
       <ScrollView style={{position: 'relative', height: '50%'}}>
         {
           itemQueue.map((item, index) => (
+            currMenu === item.status &&
             <QueueItemComponent
               description={item.description}
-              handleClick={item.handleClick}
+              handleClick={() => handleScreen('PemesananJanji')}
               handleDelete={item.handleDelete}
               img={item.img}
               time={item.time}
@@ -123,7 +145,9 @@ const JanjiKitaSection = (): JSX.Element => {
           ))
         }
       </ScrollView>
-      <FloatingIcon />
+      <FloatingIcon
+        handlePress={() => handleScreen('BuatJanji')}
+      />
     </JanjiScreenLayout>
   );
 };

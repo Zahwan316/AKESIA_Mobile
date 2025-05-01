@@ -2,6 +2,9 @@ import { JSX } from 'react';
 import { Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableOpacity } from 'react-native';
+import {  Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 type props = {
   img: ImageSourcePropType,
@@ -11,6 +14,7 @@ type props = {
   handleClick: () => void,
   handleDelete: () => void,
 }
+
 
 const QueueItemComponent = (props: props): JSX.Element => {
   return(
@@ -28,7 +32,7 @@ const QueueItemComponent = (props: props): JSX.Element => {
           <Text style={{fontSize: 14}}>{props.description}</Text>
         </View>
         <View>
-          <TouchableOpacity style={style.buttonMainContent}>
+          <TouchableOpacity style={style.buttonMainContent} onPress={props.handleClick}>
             <Text style={style.textButtonContent}>Lihat</Text>
           </TouchableOpacity>
         </View>
@@ -50,10 +54,13 @@ const QueueItemComponent = (props: props): JSX.Element => {
   );
 };
 
+
+
 const style = StyleSheet.create({
   mainContentContainer: {
     width: '100%',
-    height: 128,
+    minHeight: height * 0.14,
+    maxHeight: height * 0.20,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -65,7 +72,7 @@ const style = StyleSheet.create({
     gap: 8,
   },
   buttonMainContent: {
-    width: '50%',
+    width: width * 0.40,
     height: 'auto',
     backgroundColor: '#000',
     padding: 8,
@@ -75,20 +82,20 @@ const style = StyleSheet.create({
     alignItems: 'center',
   },
   imgContainer: {
-    width: '20%',
+    width: width * 0.15,
     height: '100%',
     borderWidth: 0,
   },
   textContainer: {
+    width: width * 0.40,
     height: '100%',
-    width: '50%',
     borderWidth: 0,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
   actionContainer: {
-    width: '20%',
+    width: width * 0.15,
     height: '100%',
     borderWidth: 0,
     display: 'flex',

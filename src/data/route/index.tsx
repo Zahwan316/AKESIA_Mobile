@@ -17,6 +17,9 @@ import RiwayatKehamilanSekarangScreen from '../../screen/pemeriksaan/formulir_pe
 import PelayananBayiScreen from '../../screen/pemeriksaan/pelayanan_bayi';
 import TambahAnakScreen from '../../screen/Tambah_Anak';
 import JanjiKitaScreen from '../../screen/JanjiKita';
+import BuatJanjiScreen from '../../screen/BuatJanji';
+import BuatJanjiDetailScreen from '../../screen/BuatJanjiDetail';
+import PemesananJanjiScreen from '../../screen/PemesananJanji';
 
 type routesType = {
   name: string,
@@ -60,11 +63,6 @@ const routes: routesType[] = [
       tabBarButton: () => null,
       tabBarStyle: { display: 'none' },
     },
-  },
-  {
-    name: 'Home',
-    component: HomeScreen,
-    options: { headerShown: false },
   },
   {
     name: 'Pemeriksaan',
@@ -182,6 +180,41 @@ const routes: routesType[] = [
       tabBarStyle: { display: 'none' },
       tabBarButton: () => null,
     },
+  },
+  {
+    name: 'BuatJanji',
+    component: BuatJanjiScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
+  {
+    name: 'BuatJanjiDetail',
+    component: BuatJanjiDetailScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
+  {
+    name: 'PemesananJanji',
+    component: PemesananJanjiScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
+];
+
+export const routesBottom: routesType[] = [
+  {
+    name: 'Home',
+    component: HomeScreen,
+    options: { headerShown: false },
   },
 ];
 

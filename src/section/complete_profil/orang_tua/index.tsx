@@ -16,7 +16,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
   const navigation = useNavigation();
 
   const handleButton = () => {
-    navigation.navigate('Home');
+    navigation.navigate('BottomTabs');
   };
 
   return (
