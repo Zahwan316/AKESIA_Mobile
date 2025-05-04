@@ -1,5 +1,5 @@
-import {JSX} from 'react';
-import {Form} from 'react-hook-form';
+import {JSX, useEffect, useState} from 'react';
+import {Form, useForm} from 'react-hook-form';
 import {Image, ScrollView, StyleSheet, Text} from 'react-native';
 import {View} from 'react-native';
 import {
@@ -11,13 +11,79 @@ import InputComponent from '../../../component/input/text';
 import ButtonComponent from '../../../component/button';
 import { BUTTON_COLOR} from '../../../constants/color';
 import { useNavigation } from '@react-navigation/native';
+import handleFormStore from '../../../state/form';
+import DropdownInputComponent from '../../../component/input/dropdown';
+import InputDatePickerComponent from '../../../component/input/datepicker';
+import { useQuery } from '@tanstack/react-query';
+import { getPendidikan } from '../../../api/data/ref/pendidikan';
+import { getPekerjaan } from '../../../api/data/ref/pekerjaan';
+import ModalComponent from '../../../component/modal';
+import axios from '../../../api/axios';
+import handleContentModal from '../../../component/modal/function';
+
+type modalInfo = {
+  message: string;
+  text: string;
+}
 
 const CompleteProfileOrangTuaSection = (): JSX.Element => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
+  const { control, handleSubmit, formState: { errors } } = useForm();
+  const [modal, setModal] = useState<boolean>(false);
+  const [isSuccess, setSuccess] = useState<boolean>(false);
+  const [modalInfo, setModalInfo] = useState<modalInfo>({ message: '', text: '' });
+  const setForm = handleFormStore((state) => state.setForm);
+  const { data: pendidikanData} = useQuery({
+    queryKey: ['pendidikan'],
+    queryFn: getPendidikan,
+  });
+  const { data: pekerjaanData } = useQuery({
+    queryKey: ['pekerjaan'],
+    queryFn: getPekerjaan,
+  });
 
   const handleButton = () => {
     navigation.navigate('BottomTabs');
   };
+
+  const handleSimpan = async(data: any) => {
+    console.log('Data : ', data);
+    handleSend(data);
+  };
+
+  const handleSend = async(data: any) => {
+    try{
+      const response = await axios.post('ibu/lengkapidata', data);
+      setSuccess(true);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: response.data.message,
+        text: 'Tutup',
+      });
+    }
+    catch(e){
+      console.log(e.response);
+      setSuccess(false);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: 'Terjadi kesalahan saat menyimpan data. Coba lagi nanti.',
+        text: 'Tutup',
+      });
+    }
+  };
+
+  const handleButtonModal = () => {
+    if(isSuccess){
+      navigation.navigate('BottomTabs');
+    }
+    setModal(false);
+  };
+
+  useEffect(() => {
+    console.log(pendidikanData);
+  },[pendidikanData]);
 
   return (
     <SafeAreaView>
@@ -38,41 +104,46 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
           </View>
           <View style={style.formGroupContainer}>
             <View>
-              <InputComponent
+              {/* <InputComponent
                 height={"auto"}
                 label="Pilih Status si Mama atau si Dedek... "
                 message="Mohon diisi"
                 name="status"
-                onChange={() => {}}
+                onChange={setForm}
                 placeholder="Status"
                 type="text"
                 width={'100%'}
                 backgroundColor=""
                 border={1}
-              />
+                control={control}
+              /> */}
               <InputComponent
                 height={"auto"}
                 label="Nama ibu"
                 message="Mohon diisi"
-                name="nama_ibu"
-                onChange={() => {}}
+                name="nama_lengkap"
+                onChange={setForm}
                 placeholder="Nama Ibu"
                 type="text"
                 width={'100%'}
                 backgroundColor=""
                 border={1}
+                control={control}
+                errors={errors}
               />
               <InputComponent
                 height={"auto"}
                 label="NIK"
                 message="NIK"
-                name="status"
-                onChange={() => {}}
+                name="nik"
+                onChange={setForm}
                 placeholder="Status"
                 type="number"
                 width={'100%'}
                 backgroundColor=""
                 border={1}
+                control={control}
+                errors={errors}
               />
               <View
                 style={{
@@ -85,50 +156,54 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                   height={"auto"}
                   label="Tempat Lahir"
                   message="Tempat Lahir"
-                  name="status"
-                  onChange={() => {}}
+                  name="tempat_lahir"
+                  onChange={setForm}
                   placeholder="Tempat Lahir"
                   type="text"
                   width={'45%'}
                   backgroundColor=""
                   border={1}
+                  control={control}
+                  errors={errors}
                 />
-                <InputComponent
-                  height={"auto"}
+
+                 <InputDatePickerComponent
+                  control={control}
                   label="Tanggal Lahir"
-                  message="Tanggal Lahir"
-                  name="status"
-                  onChange={() => {}}
-                  placeholder="Tanggal Lahir"
-                  type="text"
-                  width={'45%'}
-                  backgroundColor=""
-                  border={1}
-                />
+                  message="Wajib Diisi"
+                  name="tanggal_lahir"
+                  onChange={setForm}
+                  customStyle={{width: "45%"}}
+                  labelColor="#000"
+                /> 
               </View>
               <InputComponent
                 height={"auto"}
                 label="Golongan Darah"
                 message="Golongan Darah"
-                name="status"
-                onChange={() => {}}
+                name="golongan_darah"
+                onChange={setForm}
                 placeholder="Golongan Darah"
                 type="text"
                 width={'100%'}
                 backgroundColor=""
                 border={1}
+                control={control}
+                errors={errors}
               />
               <InputComponent
                 height={"auto"}
                 label="Alamat Domisili"
                 message="Alamat Domisili"
-                name="status"
-                onChange={() => {}}
+                name="alamat_domisili"
+                onChange={setForm}
                 placeholder="Alamat Domisili"
                 type="text"
                 width={'100%'}
                 backgroundColor=""
                 border={1}
+                control={control}
+                errors={errors}
               />
               <View
                 style={{
@@ -137,74 +212,75 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                   gap: 8,
                   justifyContent: 'space-between',
                 }}>
-                <InputComponent
-                  height={"auto"}
+                {/* <InputComponent
+                  height={'auto'}
                   label="Nomor handphone"
                   message="Nomor handphone"
-                  name="status"
+                  name="kode_telepon"
                   onChange={() => {}}
                   placeholder="+62"
                   type="number"
                   width={'38%'}
                   backgroundColor=""
                   border={1}
-                />
+                  control={control}
+                  value='+62'
+                /> */}
                 <InputComponent
-                  height={"auto"}
-                  label=""
+                  height={'auto'}
+                  label="Nomor handphone"
                   message="Nomor handphone"
-                  name="status"
-                  onChange={() => {}}
+                  name="telepon"
+                  onChange={setForm}
                   placeholder="Nomor handphone"
                   type="number"
-                  width={'60%'}
+                  width={'100%'}
                   backgroundColor=""
                   border={1}
+                  control={control}
+                  errors={errors}
                 />
               </View>
-              <InputComponent
-                  height={"auto"}
-                  label="Pendidikan"
-                  message="Pendidikan"
-                  name="status"
-                  onChange={() => {}}
-                  placeholder="Pendidikan"
-                  type="text"
-                  width={'100%'}
-                  backgroundColor=""
-                  border={1}
-                />
-                <InputComponent
-                  height={"auto"}
-                  label="Pekerjaan"
-                  message="Pekerjaan"
-                  name="status"
-                  onChange={() => {}}
-                  placeholder="Pekerjaan"
-                  type="text"
-                  width={'100%'}
-                  backgroundColor=""
-                  border={1}
-                />
-              {/* <View 
-                style={{
-                  flexDirection: 'row',
-                  display: 'flex',
-                  gap: 8,
-                  justifyContent: 'space-between',
-                }}>
-                  
-              </View>    */}     
+
+              <DropdownInputComponent
+                backgroundColor={''}
+                control={control}
+                data={pendidikanData?.data || []}
+                height={'auto'}
+                label="Pendidikan"
+                message="Mohon untuk diisi"
+                name="pendidikan"
+                onSelect={setForm}
+                placeholder=""
+              />
+              <DropdownInputComponent
+                backgroundColor={'#ffff4440'}
+                control={control}
+                data={pekerjaanData?.data || []}
+                height={'auto'}
+                label="Pekerjaan"
+                message="Mohon untuk diisi"
+                name="pekerjaan"
+                onSelect={setForm}
+                placeholder=""
+              /> 
             </View>
           </View>
           <View style={style.buttonGroupContainer}>
-            <ButtonComponent 
+            <ButtonComponent
               title='Simpan'
-              onPress={handleButton}
+              onPress={handleSubmit(handleSimpan)}
               color={BUTTON_COLOR}
               customstyle={{fontSize: 14}}
             />
           </View>
+          <ModalComponent
+            message={modalInfo.message}
+            text={modalInfo.text}
+            modalVisible={modal}
+            isSuccess={isSuccess}
+            handleModal={handleButtonModal}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>

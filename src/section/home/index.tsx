@@ -1,4 +1,4 @@
-import { JSX } from 'react';
+import { JSX, useEffect, use } from 'react';
 import { Image, ImageSourcePropType, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView, View } from 'react-native';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
@@ -7,11 +7,14 @@ import ICON from '../../component/icon';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CarouselComponent from '../../component/carousel';
+import { useQuery } from '@tanstack/react-query';
+import { getUserLogin } from '../../api/data/user';
 
 type menu = {
   name: string,
   icon: ImageSourcePropType,
   screen: string,
+  role: string,
   onChange?: () => void
 }
 
@@ -20,27 +23,37 @@ const menuList: menu[] = [
     name: 'Buat Janji',
     icon: require('../../assets/icon/buat_janji.png'),
     screen: 'JanjiKita',
+    role: 'user',
   },
   {
     name: 'Pemeriksaan',
     icon: require('../../assets/icon/pemeriksaan.png'),
     screen: 'Pemeriksaan',
+    role: 'bidan',
   },
 ];
 
 const HomeSection = (): JSX.Element => {
   const navigation = useNavigation();
+  const { data: userData} = useQuery({
+    queryKey: ['user'],
+    queryFn: getUserLogin,
+  });
 
   const handlePressButton = (screen: string) => {
     navigation.navigate(screen);
   };
+
+  useEffect(() => {
+    console.log(userData);
+  });
 
   return(
     <SafeAreaView>
       <ScrollView>
         <View style={Style.profileContainer}>
           <View style={Style.nameContainer}>
-            <Text style={{fontSize: 18, color: "#fff"}}>Hi, Lorem ipsum dolor</Text>
+            <Text style={{fontSize: 18, color: "#fff"}}>Hi, {userData?.user?.nama_lengkap}</Text>
             <Image
               source={require('../../assets/icon/bell.png')}
               style={{width: 28, height: 28}}
@@ -73,6 +86,7 @@ const HomeSection = (): JSX.Element => {
           <View style={Style.menuContainer}>
             {
               menuList.map((item, index) => (
+                item.role === userData?.user?.role &&
                 <TouchableOpacity style={Style.menuItemContainer} key={index} onPress={() => handlePressButton(item.screen)}>
                   <View style={{width: "100%", height: "50%", display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 4}}>
                     <Image

@@ -10,8 +10,14 @@ import InputDatePickerComponent from '../../../component/input/datepicker';
 import ButtonComponent from '../../../component/button';
 import {BUTTON_COLOR, MAIN_COLOR} from '../../../constants/color';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useForm } from 'react-hook-form';
+import handleFormStore from '../../../state/form';
+import ModalComponent from '../../../component/modal';
+import axios from '../../../api/axios';
+import handleContentModal from '../../../component/modal/function';
+import { useNavigation } from '@react-navigation/native';
 
-const Page1 = (OnChange: () => void, data: Array<Object>): JSX.Element => {
+const Page1 = ({ onChange, control, errors }: { onChange: () => void, control: any, errors: any }) => {
   return (
     <>
       <InputComponent
@@ -19,14 +25,32 @@ const Page1 = (OnChange: () => void, data: Array<Object>): JSX.Element => {
         width={'100%'}
         label="Nama Anak"
         message="Harap diisi"
-        name="nama_anak"
-        onChange={OnChange}
+        name="nama_lengkap"
+        onChange={onChange}
         placeholder=""
         type="text"
         backgroundColor={'#fff'}
         border={1}
         labelColor={'#000'}
         textColor={''}
+        control={control}
+        errors={errors}
+      />
+      <InputComponent
+        height={'auto'}
+        width={'100%'}
+        label="Jenis Kelamin"
+        message="Harap diisi"
+        name="jenis_kelamin"
+        onChange={onChange}
+        placeholder=""
+        type="text"
+        backgroundColor={'#fff'}
+        border={1}
+        labelColor={'#000'}
+        textColor={''}
+        control={control}
+        errors={errors}
       />
       <View
         style={{
@@ -40,13 +64,15 @@ const Page1 = (OnChange: () => void, data: Array<Object>): JSX.Element => {
           label="Anak Ke"
           message="Harap diisi"
           name="anak_ke"
-          onChange={OnChange}
+          onChange={onChange}
           placeholder=""
           type="text"
           backgroundColor={'#fff'}
           border={1}
           labelColor={'#000'}
           textColor={''}
+          control={control}
+          errors={errors}
         />
         <InputComponent
           height={'auto'}
@@ -54,13 +80,15 @@ const Page1 = (OnChange: () => void, data: Array<Object>): JSX.Element => {
           label="Golongan Darah"
           message="Harap diisi"
           name="golongan_darah"
-          onChange={OnChange}
+          onChange={onChange}
           placeholder=""
           type="text"
           backgroundColor={'#fff'}
           border={1}
           labelColor={'#000'}
           textColor={''}
+          control={control}
+          errors={errors}
         />
       </View>
       <InputComponent
@@ -69,27 +97,31 @@ const Page1 = (OnChange: () => void, data: Array<Object>): JSX.Element => {
         label="Nomor Akta Kelahiran"
         message="Harap diisi"
         name="no_akta_kelahiran"
-        onChange={OnChange}
+        onChange={onChange}
         placeholder=""
         type="text"
         backgroundColor={'#fff'}
         border={1}
         labelColor={'#000'}
         textColor={''}
+        control={control}
+        errors={errors}
       />
       <InputComponent
         height={'auto'}
         width={'100%'}
         label="Nomor Induk Kependudukan"
-        message="Harap diisi"
-        name="no_induk_kependudukan"
-        onChange={OnChange}
+        
+        name="nik"
+        onChange={onChange}
         placeholder=""
         type="text"
         backgroundColor={'#fff'}
         border={1}
         labelColor={'#000'}
         textColor={''}
+        control={control}
+        errors={errors}
       />
       <View
         style={{
@@ -110,19 +142,23 @@ const Page1 = (OnChange: () => void, data: Array<Object>): JSX.Element => {
           border={1}
           labelColor={'#000'}
           textColor={''}
+          control={control}
+          errors={errors}
         />
         <InputDatePickerComponent
           label="Tanggal Lahir"
           onChange={() => {}}
           customStyle={{width: '45%', height: 'auto'}}
-          labelColor='#000'
+          labelColor="#000"
+          control={control}
+          name="tanggal_lahir"
         />
       </View>
     </>
   );
 };
 
-const Page2 = (OnChange: () => void, data: Array<Object>): JSX.Element => {
+const Page2 = ({ onChange, control, errors }: { onChange: () => void, control: any, errors: any }) => {
   return (
     <>
       <View>
@@ -131,29 +167,33 @@ const Page2 = (OnChange: () => void, data: Array<Object>): JSX.Element => {
           height={'auto'}
           width={'100%'}
           label="Nomor Registrasi Kohort Bayi"
-          message="Harap diisi"
+          
           name="nomor_registrasi_kohort"
-          onChange={OnChange}
+          onChange={onChange}
           placeholder=""
           type="text"
           backgroundColor={'#fff'}
           border={1}
           labelColor={'#000'}
           textColor={''}
+          control={control}
+          errors={errors}
         />
         <InputComponent
           height={'auto'}
           width={'100%'}
           label="Nomor Registrasi Kohort Balita & Anak Pra-Sekolah"
-          message="Harap diisi"
+          
           name="nomor_registrasi_kohort_balita"
-          onChange={OnChange}
+          onChange={onChange}
           placeholder=""
           type="text"
           backgroundColor={'#fff'}
           border={1}
           labelColor={'#000'}
           textColor={''}
+          control={control}
+          errors={errors}
         />
       </View>
       <View>
@@ -162,23 +202,36 @@ const Page2 = (OnChange: () => void, data: Array<Object>): JSX.Element => {
           height={'auto'}
           width={'100%'}
           label="Nomor Registrasi Kohort Ibu"
-          message="Harap diisi"
+          
           name="nomor_registrasi_kohort_ibu"
-          onChange={OnChange}
+          onChange={onChange}
           placeholder=""
           type="text"
           backgroundColor={'#fff'}
           border={1}
           labelColor={'#000'}
           textColor={''}
+          control={control}
+          errors={errors}
         />
       </View>
     </>
   );
 };
 
+type modalInfo = {
+  message: string;
+  text: string;
+}
+
 const TambahAnakSection = (): JSX.Element => {
   const [page, setpage] = useState<number>(1);
+  const { control, handleSubmit, formState: { errors } } = useForm();
+  const [modal, setModal] = useState<boolean>(false);
+  const [isSuccess, setSuccess] = useState<boolean>(false);
+  const [modalInfo, setModalInfo] = useState<modalInfo>({ message: '', text: '' });
+  const setForm = handleFormStore((state) => state.setForm);
+  const navigation = useNavigation<any>();
 
   useEffect(() => {
     if (page <= 1) {
@@ -190,11 +243,49 @@ const TambahAnakSection = (): JSX.Element => {
 
   const handlePage = (operator: string) => {
     if (operator === 'next') {
-      setpage(prev => prev + 1);
+      if (page === 1) {
+        setpage(2); // Pindah ke page 2
+      } else if (page === 2) {
+        handleSubmit(handleSubmitForm)(); // Submit form saat di page 2
+      }
     } else {
-      setpage(prev => prev - 1);
+      setpage(prev => Math.max(prev - 1, 1));
     }
   };
+
+  const handleSubmitForm = async(data: any) => {
+    console.log('data = ', data);
+
+    try{
+      const response = await axios.post('bayi', data);
+      setSuccess(true);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: response.data.message,
+        text: 'Tutup',
+      });
+    }
+    catch(e){
+      console.log(e.response);
+      setSuccess(false);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: 'Terjadi kesalahan saat menyimpan data. Coba lagi nanti.',
+        text: 'Tutup',
+      });
+    }
+
+  };
+
+  const handleBackToHome = () => {
+    if(isSuccess){
+      navigation.navigate('BottomTabs');
+    }
+    setModal(!modal);
+  };
+
   return (
     <SafeAreaProvider>
       <SafeAreaView>
@@ -216,7 +307,22 @@ const TambahAnakSection = (): JSX.Element => {
             </View>
           </View>
           <View style={style.formContainer}>
-            {page === 1 ? Page1(() => {}, []) : Page2(() => {}, [])}
+            {
+            page === 1 ?
+              <Page1 
+                onChange={() => {}}
+                data={[]}
+                control={control}
+                errors={errors}
+              /> 
+              :
+              <Page2 
+                onChange={() => {}}
+                data={[]}
+                control={control}
+                errors={errors}
+              />
+            }
           </View>
           <View style={style.buttonContainer}>
             <ButtonComponent
@@ -225,6 +331,13 @@ const TambahAnakSection = (): JSX.Element => {
               onPress={handlePage.bind(null, 'next')}
             />
           </View>
+          <ModalComponent
+            isSuccess={isSuccess}
+            modalVisible={modal}
+            message={modalInfo.message}
+            text={modalInfo.text}
+            handleModal={handleBackToHome}
+          />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>

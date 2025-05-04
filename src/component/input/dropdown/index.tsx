@@ -1,48 +1,62 @@
-import { JSX } from "react";
-import { useForm } from "react-hook-form";
-import { ColorValue, DimensionValue, StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
-import SelectDropdown from "react-native-select-dropdown";
+import { JSX } from 'react';
+import { Controller } from 'react-hook-form';
+import { ColorValue, DimensionValue, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 type props = {
   data: any[],
-  onSelect: () => void,
-  backgroundColor: ColorValue,
-  textColor: ColorValue,
+  onSelect: (name: string, value: any) => void,
+  backgroundColor?: ColorValue,
+  textColor?: ColorValue,
   width: DimensionValue,
   height: DimensionValue,
-  label: string
+  label: string,
+  control: any,
+  placeholder: string,
+  name: string,
+  message: string,
+  isSearchable?: boolean
 }
 
 const DropdownInputComponent = (props: props): JSX.Element => {
-  const {control, handleSubmit, formState: { errors }} = useForm();
-
   return (
     <View style={{width: props.width, height: props.height, marginBottom: 12}}>
       <Text style={[style.label, {color: props.textColor }]}>{props.label}</Text>
-      <SelectDropdown
-        data={props.data}
-        onSelect={(selectedItem, index) => {
-          console.log(selectedItem, index);
-        }}
-        renderButton={(selectedItem, isOpened) => {
-          return (
-            <View style={style.dropdownButtonStyle}>
-              <Text style={style.dropdownButtonTxtStyle}>
-                {(selectedItem && selectedItem.title) || 'Silahkan Pilih'}
-              </Text>
-              <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={style.dropdownButtonArrowStyle} />
-            </View>
-          );
-        }}
-        renderItem={(item, index, isSelected) => {
-          return (
-            <TouchableOpacity style={{...style.dropdownItemStyle, ...(isSelected && {backgroundColor: '#D2D9DF'})}}>
-              <Text style={style.dropdownItemTxtStyle} key={index}>{item.title}</Text>
-            </TouchableOpacity>
-          );
-        }}
-        showsVerticalScrollIndicator={true}
+      <Controller
+        control={props.control}
+        render={({field : {onChange, value}}) => (
+          <SelectDropdown
+            data={props.data}
+            onSelect={(selectedItem) => {
+              onChange(selectedItem.id); // atau selectedItem.value, tergantung datanya
+             // props.onSelect(props.name, selectedItem); // jika diperlukan
+            }}
+            defaultValueByIndex={value}
+            renderButton={(selectedItem, isOpened) => {
+              return (
+                <View style={style.dropdownButtonStyle}>
+                  <Text style={style.dropdownButtonTxtStyle}>
+                    {(selectedItem && selectedItem.name) || 'Silahkan Pilih'}
+                  </Text>
+                  <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={style.dropdownButtonArrowStyle} />
+                </View>
+              );
+            }}
+            renderItem={(item, index, isSelected) => {
+              return (
+                <TouchableOpacity style={{...style.dropdownItemStyle, ...(isSelected && {backgroundColor: '#D2D9DF'})}}>
+                  <Text style={style.dropdownItemTxtStyle} key={index}>{item.name}</Text>
+                </TouchableOpacity>
+              );
+            }}
+            searchPlaceHolder={'Cari disini'}
+            showsVerticalScrollIndicator={true}
+            search={props.isSearchable}
+          />
+            )}
+        name={props.name}
+        rules={{required: props.message}}
       />
     </View>
   );
@@ -67,6 +81,7 @@ const style = StyleSheet.create({
   dropdownItemStyle: {
     width: '100%',
     height: 'auto',
+    padding: 8,
   },
   dropdownItemTxtStyle: {
     color: '#000',

@@ -1,19 +1,21 @@
-import { ColorValue, DimensionValue } from "react-native";
+import { ColorValue, DimensionValue, View } from 'react-native';
 
 type textInputProps = {
   width: DimensionValue,
   height: DimensionValue,
   label: string,
   backgroundColor?: ColorValue,
-  onChange: () => void,
+  onChange: (name:string, value: any) => void,
   value?: string,
   name: string,
   placeholder: string,
-  message: string,
+  message?: string,
   type: string,
   textColor?: ColorValue,
   labelColor?: ColorValue,
-  border?: number
+  border?: number,
+  control: any,
+  errors?: any,
 }
 
 export default textInputProps;
