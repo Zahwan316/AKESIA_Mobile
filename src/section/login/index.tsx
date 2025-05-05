@@ -35,6 +35,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 type registerProps = {
   onChange: (name: string, value: any) => void;
   control: any,
+  errors: any,
 };
 
 const RegisterLayout = (props: registerProps) => {
@@ -51,6 +52,7 @@ const RegisterLayout = (props: registerProps) => {
         placeholder="Nama Anda"
         type="email"
         control={props.control}
+        errors={props.errors}
       />
       <InputComponent
         width="100%"
@@ -63,6 +65,7 @@ const RegisterLayout = (props: registerProps) => {
         placeholder="Password Anda"
         type="password"
         control={props.control}
+        errors={props.errors}
       />
       <InputComponent
         width="100%"
@@ -75,6 +78,7 @@ const RegisterLayout = (props: registerProps) => {
         placeholder="Password Anda"
         type="password"
         control={props.control}
+        errors={props.errors}
       />
     </>
   );
@@ -113,7 +117,7 @@ const LoginLayout = (props: registerProps) => {
 
 type modalInfo = {
   message: string;
-  text: string; 
+  text: string;
 }
 
 const LoginSection = (): JSX.Element => {
@@ -134,12 +138,44 @@ const LoginSection = (): JSX.Element => {
 
   const onSubmit = async(data: any) => {
     console.log('Data Form:', data);
+    if(currSelect === 'login'){
+      handleLogin(data);
+    }
+    else{
+      handleRegister(data);
+    }
     //handleLogin(data);
   };
 
   const handleLogin = async(data: []) => {
     try{
       const response = await Axios.post('login', data);
+      console.log(response.data);
+      EncryptedStorage.setItem('token', response.data.token);
+      setSuccessLogin(true);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: response.data.message,
+        text: 'Lanjutkan',
+      });
+    }
+    catch(e){
+      console.log('Login Error:', e);
+      const errorMessage = e?.response?.data?.message || 'Terjadi kesalahan saat login. Coba lagi nanti.';
+      setSuccessLogin(false);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: errorMessage,
+        text: 'Tutup',
+      });
+    }
+  };
+
+  const handleRegister = async(data: []) => {
+    try{
+      const response = await Axios.post('register', data);
       console.log(response.data);
       EncryptedStorage.setItem('token', response.data.token);
       setSuccessLogin(true);

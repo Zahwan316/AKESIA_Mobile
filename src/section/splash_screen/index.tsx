@@ -41,16 +41,20 @@ const SplashScreenSection = (): JSX.Element => {
           }
         }
         else{
-          if(responseToken?.data?.isValid){
+          if(responseToken?.data?.message === 'Unauthenticated'){
+            navigation.navigate('Landing');
+          }
+          /* if(responseToken?.data?.isValid){
             navigation.navigate('BottomTabs');
           }
           else{
             navigation.navigate('Landing');
-          }
+          } */
         }
       }
       catch(e){
-        console.log(e);
+        console.log(e.response);
+        navigation.navigate('Landing');
       }
     };
 

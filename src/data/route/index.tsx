@@ -21,6 +21,7 @@ import BuatJanjiScreen from '../../screen/BuatJanji';
 import BuatJanjiDetailScreen from '../../screen/BuatJanjiDetail';
 import PemesananJanjiScreen from '../../screen/PemesananJanji';
 import SplashScreen from '../../screen/SplashScreen';
+import ProfileScreen from '../../screen/Profile';
 
 type routesType = {
   name: string,
@@ -224,6 +225,11 @@ export const routesBottom: routesType[] = [
   {
     name: 'Home',
     component: HomeScreen,
+    options: { headerShown: false },
+  },
+  {
+    name: 'Profile',
+    component: ProfileScreen,
     options: { headerShown: false },
   },
 ];

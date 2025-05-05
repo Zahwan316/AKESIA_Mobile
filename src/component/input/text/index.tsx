@@ -1,8 +1,6 @@
-import {JSX} from 'react';
+import {JSX, memo} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {
-  ColorValue,
-  DimensionValue,
   StyleSheet,
   Text,
   TextInput,
@@ -78,4 +76,4 @@ const style = StyleSheet.create({
   },
 });
 
-export default InputComponent;
+export default memo(InputComponent);

@@ -7,8 +7,10 @@ import InputDatePickerComponent from "../../../../component/input/datepicker";
 import InputComponent from "../../../../component/input/text";
 import ButtonComponent from "../../../../component/button";
 import { MAIN_COLOR } from "../../../../constants/color";
+import { useForm } from "react-hook-form";
 
 const PemesananJanjiSection = (): JSX.Element => {
+  const {control, handleSubmit, formState: {errors}} = useForm();
   return (
     <JanjiScreenLayout
       title="Pemesanan"
@@ -26,7 +28,9 @@ const PemesananJanjiSection = (): JSX.Element => {
           label="Pilih Tanggal"
           onChange={() => {}}
           labelColor="#000"
-
+          control={control}
+          name="tanggal"
+          message="Tanggal harus diisi"
         />
       </View>
       <View style={style.formContainer}>
@@ -44,6 +48,8 @@ const PemesananJanjiSection = (): JSX.Element => {
               onChange={() => {}}
               placeholder=""
               type="text"
+              control={control}
+              errors={errors}
               backgroundColor={'#6B779A20'}
             />
             <InputComponent
@@ -55,6 +61,8 @@ const PemesananJanjiSection = (): JSX.Element => {
               onChange={() => {}}
               placeholder=""
               type="number"
+              control={control}
+              errors={errors}
               backgroundColor={'#6B779A20'}
             />
           </View>
@@ -69,6 +77,8 @@ const PemesananJanjiSection = (): JSX.Element => {
               placeholder=""
               type="text"
               backgroundColor={'#6B779A20'}
+              control={control}
+              errors={errors}
             />
             <InputComponent
               height={'auto'}
@@ -80,6 +90,8 @@ const PemesananJanjiSection = (): JSX.Element => {
               placeholder=""
               type="number"
               backgroundColor={'#6B779A20'}
+              control={control}
+              errors={errors}
             />
           </View>
           <InputComponent
@@ -92,6 +104,8 @@ const PemesananJanjiSection = (): JSX.Element => {
               placeholder=""
               type="textarea"
               backgroundColor={'#6B779A20'}
+              control={control}
+              errors={errors}
             />
         </View>
 

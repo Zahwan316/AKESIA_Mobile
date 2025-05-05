@@ -140,6 +140,7 @@ const JanjiKitaSection = (): JSX.Element => {
               time={item.time}
               title={item.title}
               key={index}
+              status={item.status}
             />
 
           ))

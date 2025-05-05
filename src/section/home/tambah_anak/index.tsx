@@ -1,5 +1,13 @@
-import {JSX, useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {JSX, memo, useEffect, useMemo, useState} from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TextInputBase,
+  TextInputComponent,
+  View,
+} from 'react-native';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -10,14 +18,27 @@ import InputDatePickerComponent from '../../../component/input/datepicker';
 import ButtonComponent from '../../../component/button';
 import {BUTTON_COLOR, MAIN_COLOR} from '../../../constants/color';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useForm } from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import handleFormStore from '../../../state/form';
 import ModalComponent from '../../../component/modal';
 import axios from '../../../api/axios';
 import handleContentModal from '../../../component/modal/function';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
-const Page1 = ({ onChange, control, errors }: { onChange: () => void, control: any, errors: any }) => {
+type modalInfo = {
+  message: string;
+  text: string;
+};
+
+const Page1 = ({
+  onChange,
+  control,
+  errors,
+}: {
+  onChange?: () => void;
+  control: any;
+  errors: any;
+}) => {
   return (
     <>
       <InputComponent
@@ -111,7 +132,6 @@ const Page1 = ({ onChange, control, errors }: { onChange: () => void, control: a
         height={'auto'}
         width={'100%'}
         label="Nomor Induk Kependudukan"
-        
         name="nik"
         onChange={onChange}
         placeholder=""
@@ -158,7 +178,15 @@ const Page1 = ({ onChange, control, errors }: { onChange: () => void, control: a
   );
 };
 
-const Page2 = ({ onChange, control, errors }: { onChange: () => void, control: any, errors: any }) => {
+const Page2 = ({
+  onChange,
+  control,
+  errors,
+}: {
+  onChange?: () => void;
+  control: any;
+  errors: any;
+}) => {
   return (
     <>
       <View>
@@ -167,7 +195,6 @@ const Page2 = ({ onChange, control, errors }: { onChange: () => void, control: a
           height={'auto'}
           width={'100%'}
           label="Nomor Registrasi Kohort Bayi"
-          
           name="nomor_registrasi_kohort"
           onChange={onChange}
           placeholder=""
@@ -183,7 +210,6 @@ const Page2 = ({ onChange, control, errors }: { onChange: () => void, control: a
           height={'auto'}
           width={'100%'}
           label="Nomor Registrasi Kohort Balita & Anak Pra-Sekolah"
-          
           name="nomor_registrasi_kohort_balita"
           onChange={onChange}
           placeholder=""
@@ -202,7 +228,6 @@ const Page2 = ({ onChange, control, errors }: { onChange: () => void, control: a
           height={'auto'}
           width={'100%'}
           label="Nomor Registrasi Kohort Ibu"
-          
           name="nomor_registrasi_kohort_ibu"
           onChange={onChange}
           placeholder=""
@@ -219,18 +244,20 @@ const Page2 = ({ onChange, control, errors }: { onChange: () => void, control: a
   );
 };
 
-type modalInfo = {
-  message: string;
-  text: string;
-}
-
 const TambahAnakSection = (): JSX.Element => {
   const [page, setpage] = useState<number>(1);
-  const { control, handleSubmit, formState: { errors } } = useForm();
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm();
   const [modal, setModal] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
-  const [modalInfo, setModalInfo] = useState<modalInfo>({ message: '', text: '' });
-  const setForm = handleFormStore((state) => state.setForm);
+  const [modalInfo, setModalInfo] = useState<modalInfo>({
+    message: '',
+    text: '',
+  });
+  const setForm = handleFormStore(state => state.setForm);
   const navigation = useNavigation<any>();
 
   useEffect(() => {
@@ -253,10 +280,9 @@ const TambahAnakSection = (): JSX.Element => {
     }
   };
 
-  const handleSubmitForm = async(data: any) => {
-    console.log('data = ', data);
-
-    try{
+  const handleSubmitForm = async (data: any) => {
+    //console.log('data = ', data);
+    try {
       const response = await axios.post('bayi', data);
       setSuccess(true);
       handleContentModal({
@@ -265,8 +291,7 @@ const TambahAnakSection = (): JSX.Element => {
         message: response.data.message,
         text: 'Tutup',
       });
-    }
-    catch(e){
+    } catch (e) {
       console.log(e.response);
       setSuccess(false);
       handleContentModal({
@@ -276,11 +301,10 @@ const TambahAnakSection = (): JSX.Element => {
         text: 'Tutup',
       });
     }
-
   };
 
   const handleBackToHome = () => {
-    if(isSuccess){
+    if (isSuccess) {
       navigation.navigate('BottomTabs');
     }
     setModal(!modal);
@@ -291,12 +315,14 @@ const TambahAnakSection = (): JSX.Element => {
       <SafeAreaView>
         <View style={style.mainContainer}>
           <View style={style.headerContainer}>
-            {
-              page === 2 ? (
-                <Icon name='angle-left' size={32} color='#000' onPress={handlePage.bind(null, 'prev')}/>
-              ) :
-              null
-            }
+            {page === 2 ? (
+              <Icon
+                name="angle-left"
+                size={32}
+                color="#000"
+                onPress={handlePage.bind(null, 'prev')}
+              />
+            ) : null}
             <View style={{width: '100%', paddingHorizontal: 8}}>
               <Text style={{fontSize: 20, fontWeight: 'bold'}}>
                 Hai, Bunda dan Dedek!
@@ -306,24 +332,16 @@ const TambahAnakSection = (): JSX.Element => {
               </Text>
             </View>
           </View>
-          <View style={style.formContainer}>
-            {
-            page === 1 ?
-              <Page1 
-                onChange={() => {}}
-                data={[]}
-                control={control}
-                errors={errors}
-              /> 
-              :
-              <Page2 
-                onChange={() => {}}
-                data={[]}
-                control={control}
-                errors={errors}
-              />
-            }
-          </View>
+          <ScrollView
+            showsVerticalScrollIndicator={true}
+            style={style.formContainer}>
+            {page === 1 && (
+              <Page1 data={[]} control={control} errors={errors} />
+            )}
+            {page === 2 && (
+              <Page2 data={[]} control={control} errors={errors} />
+            )}
+          </ScrollView>
           <View style={style.buttonContainer}>
             <ButtonComponent
               color={MAIN_COLOR}
