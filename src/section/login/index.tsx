@@ -48,7 +48,7 @@ const RegisterLayout = (props: registerProps) => {
         label={'Email'}
         onChange={props.onChange}
         name="email"
-        message="Email harus diisi"
+        message="Wajib diisi"
         placeholder="Nama Anda"
         type="email"
         control={props.control}
@@ -61,7 +61,7 @@ const RegisterLayout = (props: registerProps) => {
         label={'Password'}
         onChange={props.onChange}
         name="password"
-        message="Password harus diisi"
+        message="Wajib diisi"
         placeholder="Password Anda"
         type="password"
         control={props.control}
@@ -98,6 +98,7 @@ const LoginLayout = (props: registerProps) => {
         placeholder="Email Anda"
         type="text"
         control={props.control}
+        errors={props.errors}
       />
       <InputComponent
         width="100%"
@@ -110,6 +111,7 @@ const LoginLayout = (props: registerProps) => {
         placeholder="Password Anda"
         type="password"
         control={props.control}
+        errors={props.errors}
       />
     </>
   );
@@ -276,9 +278,9 @@ const LoginSection = (): JSX.Element => {
           </View>
           <View style={style.formGroup}>
             {currSelect === 'login' ? (
-              <LoginLayout onChange={setForm} control={control} />
+              <LoginLayout onChange={setForm} control={control} errors={errors}/>
             ) : (
-              <RegisterLayout onChange={setForm} control={control}/>
+              <RegisterLayout onChange={setForm} control={control} errors={errors}/>
             )}
           </View>
           <View style={[style.agreeTermContainer, {position: 'relative', top: currSelect === "register" ? 64 : 0, zIndex: 4}]}>
@@ -398,7 +400,6 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 12,
-    position: 'relative'
   },
   bottomContainer: {
     width: '100%',

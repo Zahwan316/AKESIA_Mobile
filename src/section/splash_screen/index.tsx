@@ -1,10 +1,10 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { JSX, useEffect } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
-import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
-import { SafeAreaFrameContext, SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { JSX, useEffect } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+import { SafeAreaFrameContext, SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Axios from '../../api/axios';
-import EncryptedStorage from "react-native-encrypted-storage";
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const SplashScreenSection = (): JSX.Element => {
   const navigation = useNavigation<any>();

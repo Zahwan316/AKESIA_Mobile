@@ -21,7 +21,9 @@ const InputComponent = ({
   labelColor,
   border,
   control,
-  errors
+  errors,
+  disabled,
+  initialValue,
 }: textInputProps): JSX.Element => {
   return (
     <View style={[style.container, {width: width, height: height}]}>
@@ -40,6 +42,7 @@ const InputComponent = ({
                 borderWidth: border,
                 textAlignVertical: type === 'textarea' ? 'top' : 'center',
                 height: type === 'textarea' ? 150 : 'auto',
+                opacity: disabled ? 0.45 : 1,
               }]}
             onChangeText={onChange}
             value={value}
@@ -48,13 +51,16 @@ const InputComponent = ({
             multiline={type === 'textarea'}
             numberOfLines={type === 'textarea' ? 4 : 1}
             keyboardType={type === 'number' ? 'numeric' : 'default'}
+            editable={!disabled}
           />
         )}
         name={name}
         rules={message ? { required: message } : {}}
-        defaultValue={''}
+        defaultValue={initialValue || ''}
       />
-      {errors?.name && <Text style={{ color: 'red' }}>{errors?.name.message}</Text>}
+      {errors && errors[name] && (
+        <Text style={{ color: 'red' }}>{errors[name]?.message}</Text>
+      )}
     </View>
   );
 };

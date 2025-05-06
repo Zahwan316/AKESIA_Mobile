@@ -16,7 +16,8 @@ type props = {
   placeholder: string,
   name: string,
   message: string,
-  isSearchable?: boolean
+  isSearchable?: boolean,
+  errors: any,
 }
 
 const DropdownInputComponent = (props: props): JSX.Element => {
@@ -56,8 +57,11 @@ const DropdownInputComponent = (props: props): JSX.Element => {
           />
             )}
         name={props.name}
-        rules={{required: props.message}}
+        rules={props.message ? { required: props.message } : {}}
       />
+      {props.errors && props.errors[props.name] && (
+        <Text style={{ color: 'red' }}>{props.errors[props.name]?.message}</Text>
+      )}
     </View>
   );
 };

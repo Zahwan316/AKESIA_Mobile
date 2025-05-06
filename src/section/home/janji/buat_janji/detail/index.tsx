@@ -1,4 +1,4 @@
-import { JSX } from 'react';
+import { JSX, useEffect } from 'react';
 import JanjiKitaScreen from '../../../../../screen/JanjiKita';
 import JanjiScreenLayout from '../../layout';
 import { Image, ImageSourcePropType, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -6,93 +6,35 @@ import { MAIN_COLOR } from '../../../../../constants/color';
 import HeaderDropdownComponent from './component/headerDropdown';
 import ChildDropdownComponent from './component/childDropdown';
 import useDimension from '../../../../../hooks/useDimensions';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { formattedDate } from '../../../../../utils/date';
+import { getPelayanan } from '../../../../../api/data/pelayanan';
+import { useQuery } from '@tanstack/react-query';
 
-const width = useDimension();
-
-type dataChild = {
-  id: number,
-  title: string;
-  code: string;
-  harga: number | string;
-  handlePress: () => void;
+type apiResponse = {
+  'id': number,
+  'jenis_layanan_id': number,
+  'nama': string,
+  'harga': number,
+  'kuantitas': number,
+  'keterangan': string,
 }
-
-type dataMain = {
-  id: number,
-  header?: string,
-  child: dataChild[]
-}
-
-const dataMain: dataMain[] = [
-  {
-    id: 1,
-    header: 'Paket Baby Spa',
-    child: [
-      {
-        id: 1,
-        title: 'Ceria Babyspa',
-        code: '123456',
-        harga: 12000,
-        handlePress: () => {},
-      },
-      {
-        id: 2,
-        title: 'Premium Babyspa',
-        code: '123456',
-        harga: 32000,
-        handlePress: () => {},
-      },
-    ],
-  },
-  {
-    id: 2,
-    header: 'Paket Baby Message',
-    child: [
-      {
-        id: 1,
-        title: 'Healty Message',
-        code: '123456',
-        harga: 12000,
-        handlePress: () => {},
-      },
-      {
-        id: 2,
-        title: 'Premium Message',
-        code: '123456',
-        harga: 32000,
-        handlePress: () => {},
-      },
-    ],
-  },
-];
-
-const pageBidanBunda: dataMain[] = [
-  {
-    id: 1,
-    child: [
-      {
-        id: 1,
-        title: 'Ceria Babyspa',
-        code: '123456',
-        harga: 12000,
-        handlePress: () => {},
-      },
-      {
-        id: 2,
-        title: 'Premium Babyspa',
-        code: '123456',
-        harga: 32000,
-        handlePress: () => {},
-      },
-    ],
-  },
-];
 
 const BuatJanjiDetailSection = (): JSX.Element => {
   const route = useRoute();
-  const {subItem} = route.params as {subItem: string};
+  const {subItem, jenisPelayananId} = route.params as {subItem: string, jenisPelayananId: number};
+  const { data: pelayananData} = useQuery({
+    queryKey: ['getPelayanan'],
+    queryFn: () => getPelayanan('layanan/pelayanan'),
+  });
+  const navigation = useNavigation<any>();
+  const filteredPelayananData = pelayananData?.data.filter((item) => item.jenis_layanan_id === jenisPelayananId) || [];
+
+  const handleToPemesanan = (pelayananId: number) => {
+    navigation.navigate('PemesananJanji', {
+      pelayananId: pelayananId,
+    });
+  };
 
   return(
     <JanjiScreenLayout
@@ -114,9 +56,9 @@ const BuatJanjiDetailSection = (): JSX.Element => {
         </View>
         <View>
           {
-            dataMain.map((item, index) => (
+            filteredPelayananData?.map((item: apiResponse, index: number) => (
               <>
-              {
+              {/* {
                 item.header != null ?
                 <HeaderDropdownComponent
                   key={item.id + index}
@@ -124,19 +66,17 @@ const BuatJanjiDetailSection = (): JSX.Element => {
                 />
                 :
                 null
-              }
+              } */}
                 {
-                  item?.child.map((items, indexs) => (
-                    <View style={{marginLeft: item.header != null ? 16 : 0}}>
+                    <View>
                       <ChildDropdownComponent
-                        key={items.id + indexs}
-                        title={items.title}
-                        code={items.code}
-                        harga={items.harga}
-                        handlePress={items.handlePress}
+                        key={item.id + index}
+                        title={item.nama}
+                        code={item.keterangan}
+                        harga={item.harga}
+                        handlePress={() => handleToPemesanan(item.id)}
                       />
                     </View>
-                  ))
                 }
               </>
             ))

@@ -22,7 +22,7 @@ const ProfileSection = (): JSX.Element => {
     navigation.navigate('Landing');
   };
 
-  const item: item[] = [
+  const itemFeature: item[] = [
     {
       id: 1,
       name: 'Logout',
@@ -40,8 +40,8 @@ const ProfileSection = (): JSX.Element => {
           </View>
           <View style={style.menuContainer}>
             {
-              item.map((item, index) => 
-                <TouchableOpacity style={style.mainItemContainer} onPress={item.onPress}>
+              itemFeature.map((item, index) =>
+                <TouchableOpacity style={style.mainItemContainer} onPress={item.onPress} key={index}>
                   <View style={style.imgContainer}>
                     <Image
                       source={item.icon}

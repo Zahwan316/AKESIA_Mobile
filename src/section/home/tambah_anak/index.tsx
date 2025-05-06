@@ -45,7 +45,7 @@ const Page1 = ({
         height={'auto'}
         width={'100%'}
         label="Nama Anak"
-        message="Harap diisi"
+        message="Mohon diisi"
         name="nama_lengkap"
         onChange={onChange}
         placeholder=""
@@ -61,7 +61,7 @@ const Page1 = ({
         height={'auto'}
         width={'100%'}
         label="Jenis Kelamin"
-        message="Harap diisi"
+        message="Mohon diisi"
         name="jenis_kelamin"
         onChange={onChange}
         placeholder=""
@@ -83,7 +83,7 @@ const Page1 = ({
           height={'auto'}
           width={'45%'}
           label="Anak Ke"
-          message="Harap diisi"
+          message="Mohon diisi"
           name="anak_ke"
           onChange={onChange}
           placeholder=""
@@ -99,7 +99,7 @@ const Page1 = ({
           height={'auto'}
           width={'45%'}
           label="Golongan Darah"
-          message="Harap diisi"
+          message="Mohon diisi"
           name="golongan_darah"
           onChange={onChange}
           placeholder=""
@@ -116,7 +116,7 @@ const Page1 = ({
         height={'auto'}
         width={'100%'}
         label="Nomor Akta Kelahiran"
-        message="Harap diisi"
+        message="Mohon diisi"
         name="no_akta_kelahiran"
         onChange={onChange}
         placeholder=""
@@ -153,7 +153,7 @@ const Page1 = ({
           height={'auto'}
           width={'45%'}
           label="Tempat Lahir"
-          message="Harap diisi"
+          message="Mohon diisi"
           name="tempat_lahir"
           onChange={() => {}}
           placeholder=""
@@ -172,6 +172,8 @@ const Page1 = ({
           labelColor="#000"
           control={control}
           name="tanggal_lahir"
+          errors={errors}
+          message='Mohon diisi'
         />
       </View>
     </>
@@ -271,13 +273,17 @@ const TambahAnakSection = (): JSX.Element => {
   const handlePage = (operator: string) => {
     if (operator === 'next') {
       if (page === 1) {
-        setpage(2); // Pindah ke page 2
+        handleSubmit(() => setpage(2))(); // Pindah ke page 2
       } else if (page === 2) {
         handleSubmit(handleSubmitForm)(); // Submit form saat di page 2
       }
     } else {
       setpage(prev => Math.max(prev - 1, 1));
     }
+  };
+
+  const handleNextPage = (page) => {
+
   };
 
   const handleSubmitForm = async (data: any) => {
@@ -318,7 +324,7 @@ const TambahAnakSection = (): JSX.Element => {
             {page === 2 ? (
               <Icon
                 name="angle-left"
-                size={32}
+                size={38}
                 color="#000"
                 onPress={handlePage.bind(null, 'prev')}
               />

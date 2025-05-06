@@ -6,7 +6,7 @@ type textInputProps = {
   label: string,
   backgroundColor?: ColorValue,
   onChange: (name:string, value: any) => void,
-  value?: string,
+  initialValue?: string,
   name: string,
   placeholder: string,
   message?: string,
@@ -16,6 +16,7 @@ type textInputProps = {
   border?: number,
   control: any,
   errors?: any,
+  disabled?: boolean
 }
 
 export default textInputProps;

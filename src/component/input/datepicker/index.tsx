@@ -14,6 +14,9 @@ type props = {
   control: any,
   name: string,
   message: string,
+  errors?: any,
+  initialValue?: string,
+  disabled: boolean,
 }
 
 const InputDatePickerComponent = (props: props): React.JSX.Element => {
@@ -23,15 +26,19 @@ const InputDatePickerComponent = (props: props): React.JSX.Element => {
   return(
     <View style={props.customStyle}>
       <Text style={[style.label, {color: props.labelColor != null ? props.labelColor : '#fff'}]}>{props.label}</Text>
-      <View style={style.inputContainer}>
+      <View style={style.inputContainer, {opacity: props.disabled ? 0.5 : 1}}>
         <Controller
           name={props.name}
-          rules={{required: props.message}}
+          rules={props.message ? { required: props.message } : {}}
           control={props.control}
           render={({field: {onChange, value}}) => (
             <>
               <TouchableOpacity onPress={() => setOpen(true)} style={style.formInput}>
-                <Text>{value ? new Date(value).toLocaleDateString('id-ID') : 'Pilih tanggal'}</Text>
+                <Text>{value ?
+                      new Date(value).toLocaleDateString('id-ID')
+                        :
+                      props.initialValue || 'Pilih tanggal'}
+                </Text>
               </TouchableOpacity>
               {/* <TextInput
                 onPress={() => setOpen(true)}
@@ -42,7 +49,7 @@ const InputDatePickerComponent = (props: props): React.JSX.Element => {
               /> */}
               <DatePicker
                 modal
-                open={open}
+                open={!props.disabled && open}
                 mode={'date'}
                 date={value ? new Date(value) : new Date()}
                 onConfirm={(dates) => {
@@ -61,6 +68,9 @@ const InputDatePickerComponent = (props: props): React.JSX.Element => {
         />
         <Icon name="calendar" size={20} style={{position: 'absolute', right: 12, top: 10}} />
       </View>
+      {props.errors && props.errors[props.name] && (
+        <Text style={{ color: 'red' }}>{props.errors[props.name]?.message}</Text>
+      )}
     </View>
   );
 };
