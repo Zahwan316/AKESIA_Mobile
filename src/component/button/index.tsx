@@ -5,16 +5,18 @@ type props = {
   title: string,
   color: string,
   onPress: () => void,
-  customstyle?: any
+  customstyle?: any,
+  disabled?: boolean
 }
 
-const ButtonComponent = ({ title, color, onPress, customstyle }: props): React.JSX.Element => {
+const ButtonComponent = ({ title, color, onPress, customstyle, disabled }: props): React.JSX.Element => {
   return(
     <TouchableOpacity
       style={
         [style.main, customstyle, {backgroundColor: color} ]
       }
       onPress={onPress}
+      disabled={disabled}
     >
       <Text style={style.text}>
         {title}
@@ -34,7 +36,7 @@ const style = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },

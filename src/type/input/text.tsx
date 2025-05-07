@@ -1,6 +1,6 @@
 import { ColorValue, DimensionValue, View } from 'react-native';
 
-type textInputProps = {
+interface textInputProps  {
   width: DimensionValue,
   height: DimensionValue,
   label: string,

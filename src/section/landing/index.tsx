@@ -29,7 +29,7 @@ const LandingSection = (): React.JSX.Element => {
             source={require('../../assets/img/LogoBidanBunda.png')}
             style={style.imgLogo}
             resizeMethod='resize'
-            resizeMode='cover'
+            resizeMode='contain'
           />
         </View>
 
@@ -97,7 +97,7 @@ const style = StyleSheet.create({
   },
   imgLogo: {
     width: '55%',
-    height: '75%',
+    height: '85%',
     borderRadius: 0,
     borderWidth: 0,
   },

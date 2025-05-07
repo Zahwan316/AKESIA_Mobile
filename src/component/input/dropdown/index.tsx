@@ -18,11 +18,13 @@ type props = {
   message: string,
   isSearchable?: boolean,
   errors: any,
+  getValue?: 'id' | 'name' | string,
+  disabled: boolean
 }
 
 const DropdownInputComponent = (props: props): JSX.Element => {
   return (
-    <View style={{width: props.width, height: props.height, marginBottom: 12}}>
+    <View style={{width: props.width, height: props.height, marginBottom: 12, opacity: props.disabled ? 0.5 : 1}}>
       <Text style={[style.label, {color: props.textColor }]}>{props.label}</Text>
       <Controller
         control={props.control}
@@ -30,7 +32,8 @@ const DropdownInputComponent = (props: props): JSX.Element => {
           <SelectDropdown
             data={props.data}
             onSelect={(selectedItem) => {
-              onChange(selectedItem.id); // atau selectedItem.value, tergantung datanya
+              onChange(props.getValue ? selectedItem[props.getValue] : selectedItem.id);
+              props.onSelect(selectedItem.id); // atau selectedItem.value, tergantung datanya
              // props.onSelect(props.name, selectedItem); // jika diperlukan
             }}
             defaultValueByIndex={value}
@@ -54,6 +57,7 @@ const DropdownInputComponent = (props: props): JSX.Element => {
             searchPlaceHolder={'Cari disini'}
             showsVerticalScrollIndicator={true}
             search={props.isSearchable}
+            disabled={props.disabled}
           />
             )}
         name={props.name}
@@ -85,7 +89,10 @@ const style = StyleSheet.create({
   dropdownItemStyle: {
     width: '100%',
     height: 'auto',
-    padding: 8,
+    padding: 14,
+    borderWidth: 0,
+    marginBottom: 8,
+    borderRadius: 8
   },
   dropdownItemTxtStyle: {
     color: '#000',

@@ -5,13 +5,15 @@ import { View } from 'react-native';
 type props = {
   customstyle?: any,
   innerstyle?: any,
+  onPress?: () => void,
 }
 
-const RadioInputComponent = ({ customstyle, innerstyle }: props): JSX.Element => {
+const RadioInputComponent = ({ customstyle, innerstyle, onPress }: props): JSX.Element => {
   const [isSelected, setIsSelected] = useState(false);
 
   const handlePressed = () => {
     setIsSelected(!isSelected);
+    onPress && onPress();
   };
 
   return(

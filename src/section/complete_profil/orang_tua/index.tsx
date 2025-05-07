@@ -134,7 +134,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
               <InputComponent
                 height={"auto"}
                 label="NIK"
-                message="NIK"
+                message="NIK Wajib Diisi"
                 name="nik"
                 onChange={setForm}
                 placeholder="Status"
@@ -155,7 +155,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                 <InputComponent
                   height={"auto"}
                   label="Tempat Lahir"
-                  message="Tempat Lahir"
+                  message="Wajib Diisi"
                   name="tempat_lahir"
                   onChange={setForm}
                   placeholder="Tempat Lahir"
@@ -175,12 +175,13 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                   onChange={setForm}
                   customStyle={{width: "45%"}}
                   labelColor="#000"
-                /> 
+                  errors={errors}
+                />
               </View>
               <InputComponent
                 height={"auto"}
                 label="Golongan Darah"
-                message="Golongan Darah"
+                message="Wajib Diisi"
                 name="golongan_darah"
                 onChange={setForm}
                 placeholder="Golongan Darah"
@@ -194,7 +195,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
               <InputComponent
                 height={"auto"}
                 label="Alamat Domisili"
-                message="Alamat Domisili"
+                message="Wajib Diisi"
                 name="alamat_domisili"
                 onChange={setForm}
                 placeholder="Alamat Domisili"
@@ -229,7 +230,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                 <InputComponent
                   height={'auto'}
                   label="Nomor handphone"
-                  message="Nomor handphone"
+                  message="Wajib Diisi"
                   name="telepon"
                   onChange={setForm}
                   placeholder="Nomor handphone"
@@ -252,6 +253,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                 name="pendidikan"
                 onSelect={setForm}
                 placeholder=""
+                errors={errors}
               />
               <DropdownInputComponent
                 backgroundColor={'#ffff4440'}
@@ -263,7 +265,8 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                 name="pekerjaan"
                 onSelect={setForm}
                 placeholder=""
-              /> 
+                errors={errors}
+              />
             </View>
           </View>
           <View style={style.buttonGroupContainer}>
@@ -290,7 +293,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
 const style = StyleSheet.create({
   mainContainer: {
     width: widthPercentageToDP(100),
-    height: heightPercentageToDP(125),
+    height: heightPercentageToDP(135),
     padding: 12,
   },
   headerContainer: {

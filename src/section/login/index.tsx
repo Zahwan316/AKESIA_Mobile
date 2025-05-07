@@ -2,6 +2,7 @@ import {JSX, useEffect, useState} from 'react';
 import {
   Image,
   Modal,
+  ScrollView,
   StyleSheet,
   Text,
   Touchable,
@@ -16,6 +17,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   BUTTON_COLOR,
   BUTTON_COLOR_2,
+  BUTTON_COLOR_3,
   MAIN_COLOR,
   TEXT_HEADER_COLOR,
 } from '../../constants/color';
@@ -127,6 +129,7 @@ const LoginSection = (): JSX.Element => {
   const [successLogin, setSuccessLogin] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
   const [modalInfo, setModalInfo] = useState<modalInfo>({message:'', text: ''});
+  const [isAcceptTerm, setIsAcceptTerm] = useState<boolean>(false);
   const navigation = useNavigation<any>();
   const route = useRoute();
   const {selectedUser} = route.params as {selectedUser: string};
@@ -213,6 +216,10 @@ const LoginSection = (): JSX.Element => {
     }
   };
 
+  const handleAcceptTerm = () => {
+    setIsAcceptTerm(!isAcceptTerm);
+  };
+
   return (
     <SafeAreaView>
       <ModalComponent
@@ -245,7 +252,7 @@ const LoginSection = (): JSX.Element => {
                 style.buttonRadio,
                 {
                   backgroundColor:
-                    currSelect === 'login' ? BUTTON_COLOR_2 : '#fff',
+                    currSelect === 'login' ? BUTTON_COLOR_3 : '#fff',
                 },
               ]}
               onPress={() => handleSelected('login')}>
@@ -262,7 +269,7 @@ const LoginSection = (): JSX.Element => {
                 style.buttonRadio,
                 {
                   backgroundColor:
-                    currSelect === 'register' ? BUTTON_COLOR_2 : '#fff',
+                    currSelect === 'register' ? BUTTON_COLOR_3 : '#fff',
                   display: selectedUser === 'bidan' ? 'none' : 'flex'
                 },
               ]}
@@ -275,32 +282,35 @@ const LoginSection = (): JSX.Element => {
                 Sign Up
               </Text>
             </TouchableOpacity>
-          </View>
+          </View>          
           <View style={style.formGroup}>
-            {currSelect === 'login' ? (
-              <LoginLayout onChange={setForm} control={control} errors={errors}/>
-            ) : (
-              <RegisterLayout onChange={setForm} control={control} errors={errors}/>
-            )}
-          </View>
-          <View style={[style.agreeTermContainer, {position: 'relative', top: currSelect === "register" ? 64 : 0, zIndex: 4}]}>
+              {currSelect === 'login' ? (
+                <LoginLayout onChange={setForm} control={control} errors={errors}/>
+              ) : (
+                <RegisterLayout onChange={setForm} control={control} errors={errors}/>
+              )}
+          </View>  
+          <View style={[style.agreeTermContainer]}>
             <RadioInputComponent
               customstyle={{borderColor: '#606060', marginRight: 8}}
               innerstyle={{backgroundColor: MAIN_COLOR}}
+              onPress={handleAcceptTerm}
             />
             <Text style={{fontSize: 12}}>
-              l agree with the Terms of Service & Privacy Policy
+              Saya setuju dengan Ketentuan Layanan & Kebijakan Privasi
             </Text>
           </View>
-          <View style={[style.agreeTermContainer, {position: 'relative', top: 60, zIndex: 4, display: 'flex', justifyContent: 'center'}]}>
+          <View style={[style.agreeTermContainer]}>
             <ButtonComponent
               title={currSelect === 'login' ? 'Sign In' : 'Sign Up'}
-              color={BUTTON_COLOR}
-              onPress={handleSubmit(onSubmit)}
+              color={isAcceptTerm ? BUTTON_COLOR : '#A3A9DC'}
+              onPress={isAcceptTerm ? handleSubmit(onSubmit) : () => {}}
               customstyle={{width: '100%'}}
+              disabled={!isAcceptTerm}
             />
           </View>
-          <View style={style.bottomContainer}>
+        </View>
+        <View style={style.bottomContainer}>
             <View style={{marginBottom: 8}}>
               <TouchableOpacity>
                 <Image
@@ -310,9 +320,10 @@ const LoginSection = (): JSX.Element => {
               </TouchableOpacity>
             </View>
             <View style={{width: '90%'}}>
-              <Text style={{ textAlign: 'center', color:'#20202095', fontSize: 12 }}>By continuing, you agree to our Terms of Service and Privacy Policy.</Text>
+              <Text style={{ textAlign: 'center', color:'#20202095', fontSize: 12 }}>
+                Dengan melanjutkan, Anda menyetujui Persyaratan Layanan dan Kebijakan Privasi kami.
+              </Text>
             </View>
-          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -361,20 +372,33 @@ const style = StyleSheet.create({
   formContainer: {
     borderWidth: 0,
     width: '100%',
-    height: '75%',
+    height: '65%',
+    paddingHorizontal: 12,
+    /* width: '100%',
+    height: '75%', */
     display: 'flex',
-    alignItems: 'center',
+    /* alignItems: 'center',
+    justifyContent: 'center', */
+  },
+  scrollContainer: {
+    width: '100%',
+    height: '80%',
+    padding: 0,
+    paddingBottom: 0,
+    borderWidth: 0,
   },
   buttonGroup: {
-    width: '90%',
-    height: '8%',
+    width: '100%',
+    height: '7%',
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderColor: '#505050',
     borderWidth: 0,
     borderRadius: 8,
     marginBottom: 12,
-    position: 'relative'
+    position: 'relative',
   },
   buttonRadio: {
     backgroundColor: '#fff',
@@ -383,23 +407,32 @@ const style = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 16,
+    borderRadius: 12,
     boxShadow: '0px 2px 6px 0px rgba(0, 0, 0, 0.15)',
   },
   formGroup: {
-    width: '90%',
+    /* width: '90%',
     height: '30%',
     borderWidth: 0,
     marginBottom: 2,
-    position: 'relative'
+    position: 'relative' */
+    marginBottom: 24,
+    borderWidth: 0,
   },
   agreeTermContainer: {
-    width: '90%',
+    /* width: '90%',
     borderWidth: 0,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 12, */
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 24,
+    gap: 8,
+  },
+  buttonContainer:  {
+    marginBottom: 24,
   },
   bottomContainer: {
     width: '100%',
@@ -407,11 +440,10 @@ const style = StyleSheet.create({
     backgroundColor: MAIN_COLOR,
     borderWidth: 0,
     display: 'flex',
-    //position: 'absolute',
     bottom: 0,
     top: 26,
     alignItems: 'center',
-    padding: 36
+    padding: 36,
   },
 });
 
