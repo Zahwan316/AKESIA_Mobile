@@ -20,6 +20,7 @@ import { getPekerjaan } from '../../../api/data/ref/pekerjaan';
 import ModalComponent from '../../../component/modal';
 import axios from '../../../api/axios';
 import handleContentModal from '../../../component/modal/function';
+import golongan_darah_data from '../../../data/golongan_darah/index';
 
 type modalInfo = {
   message: string;
@@ -137,7 +138,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                 message="NIK Wajib Diisi"
                 name="nik"
                 onChange={setForm}
-                placeholder="Status"
+                placeholder="Nik"
                 type="number"
                 width={'100%'}
                 backgroundColor=""
@@ -178,19 +179,19 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                   errors={errors}
                 />
               </View>
-              <InputComponent
+              <DropdownInputComponent
                 height={"auto"}
                 label="Golongan Darah"
                 message="Wajib Diisi"
                 name="golongan_darah"
-                onChange={setForm}
+                onSelect={setForm}
                 placeholder="Golongan Darah"
-                type="text"
                 width={'100%'}
                 backgroundColor=""
-                border={1}
                 control={control}
                 errors={errors}
+                data={golongan_darah_data}
+                getValue="name"
               />
               <InputComponent
                 height={"auto"}

@@ -51,7 +51,7 @@ const RegisterLayout = (props: registerProps) => {
         onChange={props.onChange}
         name="email"
         message="Wajib diisi"
-        placeholder="Nama Anda"
+        placeholder="Email Anda"
         type="email"
         control={props.control}
         errors={props.errors}
@@ -282,14 +282,14 @@ const LoginSection = (): JSX.Element => {
                 Sign Up
               </Text>
             </TouchableOpacity>
-          </View>          
+          </View>
           <View style={style.formGroup}>
               {currSelect === 'login' ? (
                 <LoginLayout onChange={setForm} control={control} errors={errors}/>
               ) : (
                 <RegisterLayout onChange={setForm} control={control} errors={errors}/>
               )}
-          </View>  
+          </View>
           <View style={[style.agreeTermContainer]}>
             <RadioInputComponent
               customstyle={{borderColor: '#606060', marginRight: 8}}

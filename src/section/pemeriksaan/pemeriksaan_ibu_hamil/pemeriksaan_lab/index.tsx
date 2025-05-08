@@ -4,12 +4,24 @@ import InputDatePickerComponent from '../../../../component/input/datepicker';
 import InputComponent from '../../../../component/input/text';
 import {JSX, useEffect, useState} from 'react';
 
-const page1 = (formHandle: () => void, data: any[]): JSX.Element => {
+const page1 = ({
+  formHandle,
+  data,
+  control,
+  errors,
+}: {
+  formHandle: () => void;
+  data: any[];
+  control: any;
+  errors: any;
+}): JSX.Element => {
   return (
     <>
       <InputDatePickerComponent
         label="Tanggal Pemeriksaan"
         onChange={formHandle}
+        control={control}
+        errors={errors}
       />
       <InputComponent
         height={'auto'}
@@ -24,6 +36,8 @@ const page1 = (formHandle: () => void, data: any[]): JSX.Element => {
         border={1}
         labelColor={'#fff'}
         textColor={''}
+        control={control}
+        errors={errors}
       />
       <InputComponent
         height={'auto'}
@@ -38,6 +52,8 @@ const page1 = (formHandle: () => void, data: any[]): JSX.Element => {
         border={1}
         labelColor={'#fff'}
         textColor={''}
+        control={control}
+        errors={errors}
       />
       <InputComponent
         height={'50%'}
@@ -52,15 +68,32 @@ const page1 = (formHandle: () => void, data: any[]): JSX.Element => {
         border={1}
         labelColor={'#fff'}
         textColor={''}
+        control={control}
+        errors={errors}
       />
     </>
   );
 };
 
-const page2 = (formHandle: () => void, data: any[]): JSX.Element => {
+const page2 = ({
+  formHandle,
+  data,
+  control,
+  errors,
+}: {
+  formHandle: () => void;
+  data: any[];
+  control: any;
+  errors: any;
+}): JSX.Element => {
   return (
     <>
-      <InputDatePickerComponent label="Tanggal Pelayanan" onChange={formHandle} />
+      <InputDatePickerComponent
+        label="Tanggal Pelayanan"
+        onChange={formHandle}
+        control={control}
+        errors={errors}
+      />
       <InputComponent
         height={'auto'}
         width={'100%'}
@@ -74,6 +107,8 @@ const page2 = (formHandle: () => void, data: any[]): JSX.Element => {
         border={1}
         labelColor={'#fff'}
         textColor={''}
+        control={control}
+        errors={errors}
       />
       <InputComponent
         height={'auto'}
@@ -88,6 +123,8 @@ const page2 = (formHandle: () => void, data: any[]): JSX.Element => {
         border={1}
         labelColor={'#fff'}
         textColor={''}
+        control={control}
+        errors={errors}
       />
       <InputComponent
         height={'auto'}
@@ -102,6 +139,8 @@ const page2 = (formHandle: () => void, data: any[]): JSX.Element => {
         border={1}
         labelColor={'#fff'}
         textColor={''}
+        control={control}
+        errors={errors}
       />
     </>
   );
@@ -109,6 +148,7 @@ const page2 = (formHandle: () => void, data: any[]): JSX.Element => {
 
 const PemeriksaanLabSection = (): JSX.Element => {
   const [page, setpage] = useState<number>(1);
+  const { control, handleSubmit, formState: { errors } } = useForm();
 
   useEffect(() => {
     if (page <= 1) {
@@ -130,7 +170,12 @@ const PemeriksaanLabSection = (): JSX.Element => {
       handlePage={handlePage}
       page={page}
     >
-      {page === 1 ? page1(() => {}, []) : page2(() => {}, [])}
+      {page === 1 ?
+        <page1
+          
+        />
+        :
+        page2(() => {}, [])}
     </FormScreenLayout>
   );
 };

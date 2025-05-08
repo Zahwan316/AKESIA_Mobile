@@ -24,6 +24,9 @@ import ModalComponent from '../../../component/modal';
 import axios from '../../../api/axios';
 import handleContentModal from '../../../component/modal/function';
 import {useNavigation} from '@react-navigation/native';
+import DropdownInputComponent from '../../../component/input/dropdown';
+import Jenis_Kelamin from '../../../data/jenis_kelamin/index';
+import golongan_darah_data from '../../../data/golongan_darah';
 
 type modalInfo = {
   message: string;
@@ -57,21 +60,21 @@ const Page1 = ({
         control={control}
         errors={errors}
       />
-      <InputComponent
+      <DropdownInputComponent
         height={'auto'}
         width={'100%'}
         label="Jenis Kelamin"
         message="Mohon diisi"
         name="jenis_kelamin"
-        onChange={onChange}
+        onSelect={() => {}}
         placeholder=""
         type="text"
-        backgroundColor={'#fff'}
-        border={1}
+        backgroundColor={'#fff'}       
         labelColor={'#000'}
         textColor={''}
         control={control}
         errors={errors}
+        data={Jenis_Kelamin}
       />
       <View
         style={{
@@ -95,21 +98,19 @@ const Page1 = ({
           control={control}
           errors={errors}
         />
-        <InputComponent
-          height={'auto'}
-          width={'45%'}
+        <DropdownInputComponent
+          height={"auto"}
           label="Golongan Darah"
-          message="Mohon diisi"
+          message="Wajib Diisi"
           name="golongan_darah"
-          onChange={onChange}
-          placeholder=""
-          type="text"
-          backgroundColor={'#fff'}
-          border={1}
-          labelColor={'#000'}
-          textColor={''}
+          onSelect={() => {}}
+          placeholder="Golongan Darah"
+          width={'50%'}
+          backgroundColor=""
           control={control}
           errors={errors}
+          data={golongan_darah_data}
+          getValue="name"
         />
       </View>
       <InputComponent

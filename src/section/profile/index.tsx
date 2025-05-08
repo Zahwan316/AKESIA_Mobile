@@ -25,7 +25,7 @@ const ProfileSection = (): JSX.Element => {
   const itemFeature: item[] = [
     {
       id: 1,
-      name: 'Logout',
+      name: 'Keluar',
       icon: require('../../assets/icon/logout.png'),
       onPress: handleLogout,
     },
@@ -36,7 +36,7 @@ const ProfileSection = (): JSX.Element => {
       <SafeAreaView>
         <View style={style.mainContainer}>
           <View style={style.headerContainer}>
-            <Text style={{fontSize: 32, fontWeight: 'bold', color: '#fff'}}>Profile</Text>
+            <Text style={{fontSize: 32, fontWeight: 'bold', color: '#fff'}}>Profil</Text>
           </View>
           <View style={style.menuContainer}>
             {

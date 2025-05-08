@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -9,15 +9,19 @@ import {View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Text } from 'react-native';
 import ButtonComponent from '../../../component/button';
+import { useForm } from 'react-hook-form';
 
 type props = {
   page?: number,
   handlePage?: (op: "next" | "prev") => void,
   children: React.ReactNode,
-  title?: string
+  title?: string,
+  
 }
 
 const FormScreenLayout = ({page, handlePage, children, title}: props): React.JSX.Element => {
+  const { control, handleSubmit, formState: { errors } } = useForm();
+
   return (
     <SafeAreaView>
       <View style={style.mainContainer}>
@@ -40,17 +44,24 @@ const FormScreenLayout = ({page, handlePage, children, title}: props): React.JSX
             }
           </Text>
         </View>
-        <View style={style.formContainer}>
-          {children}
-        </View>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{flex: 1}}
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <ScrollView  style={style.formContainer}>
+              {children}
+            </ScrollView>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
         <View>
-        <ButtonComponent
-          color={BUTTON_COLOR}
-          onPress={() => handlePage("next")}
-          title={page === 1 ? 'Selanjutnya' : 'Selesai'}
-          customstyle={{width: '100%', height: 'auto'}}
-        />
-      </View>
+          <ButtonComponent
+            color={BUTTON_COLOR}
+            onPress={() => handlePage("next")}
+            title={page === 1 ? 'Selanjutnya' : 'Selesai'}
+            customstyle={{width: '100%', height: 'auto'}}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

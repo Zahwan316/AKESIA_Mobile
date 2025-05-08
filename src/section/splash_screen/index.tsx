@@ -13,7 +13,6 @@ const SplashScreenSection = (): JSX.Element => {
   const {screen_from = null, selectedUser = null} = router.params as {screen_from: string, selectedUser: string} || {};
 
   useEffect(() => {
-    console.log(token);
     const handleCheck = async() => {
       try{
         const responseToken = await Axios.get('checktoken');
@@ -68,6 +67,8 @@ const SplashScreenSection = (): JSX.Element => {
           <View style={style.imgContainer}>
             <Image
               source={require('../../assets/img/LogoBidanBunda.png')}
+              style={{width: '100%', height: '100%'}}
+              resizeMode='contain'
             />
           </View>
           <View style={style.textContainer}>

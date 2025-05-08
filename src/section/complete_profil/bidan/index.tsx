@@ -30,6 +30,9 @@ import {getKota} from '../../../api/data/ref/kota';
 import {getJenisPraktik} from '../../../api/data/ref/jenis_praktik';
 import ModalComponent from '../../../component/modal';
 import { opacity } from 'react-native-reanimated/lib/typescript/Colors';
+import UploadSelfie from '../../../component/input/upload/InputUpload';
+import axios from '../../../api/axios';
+import handleContentModal from '../../../component/modal/function';
 
 interface formBidanAdittion extends textInputProps {
   //typeForm: 'select' | 'text' | 'upload'
@@ -41,7 +44,7 @@ const formBidan: Omit<formBidanAdittion, 'control'>[] = [
     width: '100%',
     height: 'auto',
     label: 'Nama Lengkap',
-    //message: 'Wajib Diisi',
+    message: 'Wajib Diisi',
     name: 'nama_lengkap',
     onChange: () => {},
     placeholder: '',
@@ -65,7 +68,7 @@ const formBidan: Omit<formBidanAdittion, 'control'>[] = [
     width: '100%',
     height: 'auto',
     label: 'Kota Domisili',
-    //message: 'Wajib Diisi',
+    message: 'Wajib Diisi',
     name: 'kota_id',
     onChange: () => {},
     placeholder: 'Bandung...',
@@ -77,7 +80,7 @@ const formBidan: Omit<formBidanAdittion, 'control'>[] = [
     width: '100%',
     height: 'auto',
     label: 'Jenis Praktik',
-    //message: 'Wajib Diisi',
+    message: 'Wajib Diisi',
     name: 'jenis_praktik_id',
     onChange: () => {},
     placeholder: 'Jawa Barat...',
@@ -89,7 +92,7 @@ const formBidan: Omit<formBidanAdittion, 'control'>[] = [
     width: '100%',
     height: 'auto',
     label: 'Tempat Bekerja',
-    //message: 'Wajib Diisi',
+    message: 'Wajib Diisi',
     name: 'tempat_bekerja',
     onChange: () => {},
     placeholder: '...',
@@ -101,7 +104,7 @@ const formBidan: Omit<formBidanAdittion, 'control'>[] = [
     width: '100%',
     height: 'auto',
     label: 'Nama Tempat Praktik',
-    //message: 'Wajib Diisi',
+    message: 'Wajib Diisi',
     name: 'nama_tempat_praktik',
     onChange: () => {},
     placeholder: '...',
@@ -113,7 +116,7 @@ const formBidan: Omit<formBidanAdittion, 'control'>[] = [
     width: '100%',
     height: 'auto',
     label: 'Status Keanggotaan IBI',
-    //message: 'Wajib Diisi',
+    message: 'Wajib Diisi',
     name: 'status_keanggotaan_ibi',
     onChange: () => {},
     placeholder: '...',
@@ -126,8 +129,8 @@ const formBidan: Omit<formBidanAdittion, 'control'>[] = [
     width: '100%',
     height: 'auto',
     label: 'No STR',
-    //message: 'Wajib Diisi',
-    name: 'no_str',
+    message: 'Wajib Diisi',
+    name: 'no_STR',
     onChange: () => {},
     placeholder: '...',
     type: 'text',
@@ -138,8 +141,8 @@ const formBidan: Omit<formBidanAdittion, 'control'>[] = [
     width: '100%',
     height: 'auto',
     label: 'No SIP',
-    //message: 'Wajib Diisi',
-    name: 'no_sip',
+    message: 'Wajib Diisi',
+    name: 'no_SIP',
     onChange: () => {},
     placeholder: '...',
     type: 'text',
@@ -149,8 +152,8 @@ const formBidan: Omit<formBidanAdittion, 'control'>[] = [
   {
     width: '100%',
     height: 'auto',
+    message: 'Wajib mengungah selfie',
     label: 'Unggah Selfie',
-    //message: '',
     name: 'img',
     onChange: () => {},
     placeholder: '',
@@ -243,14 +246,59 @@ const CompleteProfileBidanSection = (): JSX.Element => {
     };
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async(data: any) => {
     console.table(data);
+    const formData = new FormData();
+
+    for (const key in data) {
+      if (key === 'img') {
+        const img = data[key];
+        if (img?.uri) {
+          formData.append('img', {
+            uri: img.uri,
+            name: img.fileName || 'photo.jpg',
+            type: img.type || 'image/jpeg',
+          });
+        }
+      } else {
+        formData.append(key, data[key]);
+      }
+    }
+
+    try{
+      const response = await axios.post('bidan', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      setSuccess(true);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: response.data.message,
+        text: 'Tutup',
+      });
+    }
+    catch(e){
+      console.log(e.response);
+      setSuccess(false);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: 'Terjadi kesalahan saat menyimpan data. Coba lagi nanti.',
+        text: 'Tutup',
+      });
+    }
   };
 
   useEffect(() => {}, []);
 
-  const handleButton = () => {
-    navigation.navigate('Home');
+  const handleModal = () => {
+    if(isSuccess){
+      navigation.navigate('BottomTabs');
+    }
+
+    setModal(!modal);
   };
 
   return (
@@ -262,6 +310,7 @@ const CompleteProfileBidanSection = (): JSX.Element => {
             message={modalInfo.message}
             text={modalInfo.text}
             modalVisible={modal}
+            handleModal={handleModal}
           />
           <View style={style.headerContainer}>
             <Text
@@ -282,7 +331,7 @@ const CompleteProfileBidanSection = (): JSX.Element => {
                     width={item.width}
                     height={item.height}
                     label={item.label}
-                    //message={item.message}
+                    message={item.message}
                     name={item.name}
                     onSelect={item.onChange}
                     placeholder={item.placeholder}
@@ -293,6 +342,7 @@ const CompleteProfileBidanSection = (): JSX.Element => {
                     errors={item.errors}
                     control={item.control}
                     data={item.options}
+                    initialValue={item.name === 'tempat_bekerja' ? 'Praktek Bidan Mandiri' : null}
                   />
                 );
               } else if (item.type === 'dropdown') {
@@ -312,6 +362,17 @@ const CompleteProfileBidanSection = (): JSX.Element => {
                     control={item.control}
                     data={item.options}
                     getValue={item.getValue}
+                  />
+                );
+              } else if (item.type === 'upload'){
+                return(
+                  <UploadSelfie
+                    key={index}
+                    control={item.control}
+                    name='img'
+                    label={item.label}
+                    errors={item.errors}
+                    message={item.message}
                   />
                 );
               }
@@ -337,7 +398,7 @@ const CompleteProfileBidanSection = (): JSX.Element => {
 const style = StyleSheet.create({
   mainContainer: {
     width: widthPercentageToDP(100),
-    height: heightPercentageToDP(140),
+    height: heightPercentageToDP(170),
     padding: 12,
   },
   headerContainer: {
