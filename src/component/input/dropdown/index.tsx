@@ -19,7 +19,8 @@ type props = {
   isSearchable?: boolean,
   errors: any,
   getValue?: 'id' | 'name' | string,
-  disabled: boolean
+  disabled: boolean,
+  initialValue: any,
 }
 
 const DropdownInputComponent = (props: props): JSX.Element => {
@@ -36,7 +37,10 @@ const DropdownInputComponent = (props: props): JSX.Element => {
               props.onSelect(selectedItem.id); // atau selectedItem.value, tergantung datanya
              // props.onSelect(props.name, selectedItem); // jika diperlukan
             }}
-            defaultValueByIndex={value}
+            defaultValue={props.data.find(item => {
+              const fieldValue = props.initialValue ? item[props.initialValue] : item.id;
+              return fieldValue === value;
+            })}
             renderButton={(selectedItem, isOpened) => {
               return (
                 <View style={style.dropdownButtonStyle}>
@@ -92,7 +96,7 @@ const style = StyleSheet.create({
     padding: 14,
     borderWidth: 0,
     marginBottom: 8,
-    borderRadius: 8
+    borderRadius: 8,
   },
   dropdownItemTxtStyle: {
     color: '#000',
@@ -104,7 +108,7 @@ const style = StyleSheet.create({
   },
   dropdownButtonArrowStyle: {
     fontSize: 16,
-  }
+  },
 });
 
 export default DropdownInputComponent;

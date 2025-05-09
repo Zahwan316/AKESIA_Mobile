@@ -15,7 +15,8 @@ type menu = {
   icon: ImageSourcePropType,
   screen: string,
   role: string,
-  onChange?: () => void
+  onChange?: () => void,
+  params?: object,
 }
 
 const menuList: menu[] = [
@@ -26,6 +27,15 @@ const menuList: menu[] = [
     role: 'user',
   },
   {
+    name: 'Data Bayi',
+    icon: require('../../assets/icon/databayi.png'),
+    screen: 'TambahAnak',
+    role: 'user',
+    params: {
+      screenType: 'edit_anak',
+    },
+  },
+  {
     name: 'Pemeriksaan',
     icon: require('../../assets/icon/pemeriksaan.png'),
     screen: 'Pemeriksaan',
@@ -34,14 +44,14 @@ const menuList: menu[] = [
 ];
 
 const HomeSection = (): JSX.Element => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const { data: userData} = useQuery({
     queryKey: ['user'],
     queryFn: getUserLogin,
   });
 
-  const handlePressButton = (screen: string) => {
-    navigation.navigate(screen);
+  const handlePressButton = (screen: string, params?: object) => {
+    navigation.navigate(screen, params);
   };
 
   useEffect(() => {
@@ -87,7 +97,7 @@ const HomeSection = (): JSX.Element => {
             {
               menuList.map((item, index) => (
                 item.role === userData?.user?.role &&
-                <TouchableOpacity style={Style.menuItemContainer} key={index} onPress={() => handlePressButton(item.screen)}>
+                <TouchableOpacity style={Style.menuItemContainer} key={index} onPress={() => handlePressButton(item.screen, item.params)}>
                   <View style={{width: "100%", height: "50%", display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 4}}>
                     <Image
                       source={item.icon}

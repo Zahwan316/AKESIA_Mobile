@@ -23,27 +23,52 @@ import handleFormStore from '../../../state/form';
 import ModalComponent from '../../../component/modal';
 import axios from '../../../api/axios';
 import handleContentModal from '../../../component/modal/function';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import DropdownInputComponent from '../../../component/input/dropdown';
 import Jenis_Kelamin from '../../../data/jenis_kelamin/index';
 import golongan_darah_data from '../../../data/golongan_darah';
+import { useQuery } from '@tanstack/react-query';
+import { getAllAnak } from '../../../api/data/allAnak';
 
 type modalInfo = {
   message: string;
   text: string;
 };
 
+type pageProps = {
+  onChange?: () => void;
+  control: any;
+  errors: any;
+  data?: {
+    'id': number,
+    'ibu_id': number,
+    'nama_lengkap': string,
+    'jenis_kelamin':string,
+    'nik': string,
+    'golongan_darah':string,
+    'tempat_lahir': string,
+    'tanggal_lahir': string,
+    'no_akta_kelahiran': string,
+    'no_registrasi_kohort_bayi': string,
+    'no_registrasi_kohort_balita': string,
+    'no_catatan_medik_rs': string,
+    'anak_ke': 2,
+  },
+  disabled: boolean
+};
+
 const Page1 = ({
   onChange,
   control,
   errors,
-}: {
-  onChange?: () => void;
-  control: any;
-  errors: any;
-}) => {
+  data,
+  disabled,
+}: pageProps) => {
   return (
     <>
+      <Text>
+        {data?.nama_lengkap}
+      </Text>
       <InputComponent
         height={'auto'}
         width={'100%'}
@@ -59,6 +84,8 @@ const Page1 = ({
         textColor={''}
         control={control}
         errors={errors}
+        initialValue={data?.nama_lengkap}
+        disabled={disabled}
       />
       <DropdownInputComponent
         height={'auto'}
@@ -75,6 +102,7 @@ const Page1 = ({
         control={control}
         errors={errors}
         data={Jenis_Kelamin}
+        disabled={disabled}
       />
       <View
         style={{
@@ -88,7 +116,7 @@ const Page1 = ({
           label="Anak Ke"
           message="Mohon diisi"
           name="anak_ke"
-          onChange={onChange}
+          onChange={() => {}}
           placeholder=""
           type="text"
           backgroundColor={'#fff'}
@@ -97,9 +125,11 @@ const Page1 = ({
           textColor={''}
           control={control}
           errors={errors}
+          initialValue={data?.anak_ke}
+          disabled={disabled}
         />
         <DropdownInputComponent
-          height={"auto"}
+          height={'auto'}
           label="Golongan Darah"
           message="Wajib Diisi"
           name="golongan_darah"
@@ -111,6 +141,7 @@ const Page1 = ({
           errors={errors}
           data={golongan_darah_data}
           getValue="name"
+          disabled={disabled}
         />
       </View>
       <InputComponent
@@ -128,6 +159,7 @@ const Page1 = ({
         textColor={''}
         control={control}
         errors={errors}
+        disabled={disabled}
       />
       <InputComponent
         height={'auto'}
@@ -143,6 +175,7 @@ const Page1 = ({
         textColor={''}
         control={control}
         errors={errors}
+        disabled={disabled}
       />
       <View
         style={{
@@ -165,6 +198,7 @@ const Page1 = ({
           textColor={''}
           control={control}
           errors={errors}
+          disabled={disabled}
         />
         <InputDatePickerComponent
           label="Tanggal Lahir"
@@ -175,6 +209,7 @@ const Page1 = ({
           name="tanggal_lahir"
           errors={errors}
           message='Mohon diisi'
+          disabled={disabled}
         />
       </View>
     </>
@@ -185,11 +220,9 @@ const Page2 = ({
   onChange,
   control,
   errors,
-}: {
-  onChange?: () => void;
-  control: any;
-  errors: any;
-}) => {
+  data,
+  disabled,
+}: pageProps) => {
   return (
     <>
       <View>
@@ -208,6 +241,7 @@ const Page2 = ({
           textColor={''}
           control={control}
           errors={errors}
+          disabled={disabled}
         />
         <InputComponent
           height={'auto'}
@@ -223,6 +257,7 @@ const Page2 = ({
           textColor={''}
           control={control}
           errors={errors}
+          disabled={disabled}
         />
       </View>
       <View>
@@ -241,6 +276,7 @@ const Page2 = ({
           textColor={''}
           control={control}
           errors={errors}
+          disabled={disabled}
         />
       </View>
     </>
@@ -249,11 +285,9 @@ const Page2 = ({
 
 const TambahAnakSection = (): JSX.Element => {
   const [page, setpage] = useState<number>(1);
-  const {
-    control,
-    handleSubmit,
-    formState: {errors},
-  } = useForm();
+  const [selectedAnakId, setSelectedAnakId] = useState<number>(0);
+  const route = useRoute();
+  const { screenType } = route.params as { screenType: string } || {};
   const [modal, setModal] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [modalInfo, setModalInfo] = useState<modalInfo>({
@@ -262,7 +296,29 @@ const TambahAnakSection = (): JSX.Element => {
   });
   const setForm = handleFormStore(state => state.setForm);
   const navigation = useNavigation<any>();
+  const { data: allAnakData} = useQuery({
+      queryKey: ['allAnak'],
+      queryFn: getAllAnak,
+  });
+  const dataAnak = allAnakData?.data.map((item) => {
+    const data = {
+      ...item,
+      name: item.nama_lengkap,
+    };
 
+    return data;
+  });
+  const filteredAnak = dataAnak?.find((item: any) => item.id === selectedAnakId) || {};
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: {errors},
+  } = useForm({
+    /* defaultValues: {
+      ...filteredAnak,
+    }, */
+  });
   useEffect(() => {
     if (page <= 1) {
       setpage(1);
@@ -283,14 +339,41 @@ const TambahAnakSection = (): JSX.Element => {
     }
   };
 
-  const handleNextPage = (page) => {
-
-  };
-
   const handleSubmitForm = async (data: any) => {
     //console.log('data = ', data);
+    if(screenType === 'edit_anak'){
+      updateData(data);
+      return;
+    }
+    
+    sendData(data);
+  };
+
+  const sendData = async(data: any) => {
     try {
       const response = await axios.post('bayi', data);
+      setSuccess(true);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: response.data.message,
+        text: 'Tutup',
+      });
+    } catch (e) {
+      console.log(e.response);
+      setSuccess(false);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: 'Terjadi kesalahan saat menyimpan data. Coba lagi nanti.',
+        text: 'Tutup',
+      });
+    }
+  };
+
+  const updateData = async(data: any) => {
+    try {
+      const response = await axios.put(`bayi/${selectedAnakId}`, data);
       setSuccess(true);
       handleContentModal({
         setModal,
@@ -317,6 +400,24 @@ const TambahAnakSection = (): JSX.Element => {
     setModal(!modal);
   };
 
+  useEffect(() => {
+    if (screenType === 'edit_anak' && selectedAnakId !== 0 && filteredAnak) {
+      reset({
+        nama_lengkap: filteredAnak.nama_lengkap,
+        jenis_kelamin: filteredAnak.jenis_kelamin,
+        golongan_darah: filteredAnak.golongan_darah,
+        tempat_lahir: filteredAnak.tempat_lahir,
+        tanggal_lahir: filteredAnak.tanggal_lahir,
+        no_akta_kelahiran: filteredAnak.no_akta_kelahiran,
+        no_registrasi_kohort_bayi: filteredAnak.no_registrasi_kohort_bayi,
+        no_registrasi_kohort_balita: filteredAnak.no_registrasi_kohort_balita,
+        no_catatan_medik_rs: filteredAnak.no_catatan_medik_rs,
+        anak_ke: filteredAnak.anak_ke.toString(),
+        nik: filteredAnak.nik,
+      });
+    }
+  }, [selectedAnakId]);
+
   return (
     <SafeAreaProvider>
       <SafeAreaView>
@@ -342,12 +443,49 @@ const TambahAnakSection = (): JSX.Element => {
           <ScrollView
             showsVerticalScrollIndicator={true}
             style={style.formContainer}>
-            {page === 1 && (
-              <Page1 data={[]} control={control} errors={errors} />
-            )}
-            {page === 2 && (
-              <Page2 data={[]} control={control} errors={errors} />
-            )}
+            {
+              screenType && screenType === 'edit_anak' ?
+              <DropdownInputComponent
+                control={control}
+                errors={errors}
+                height={'auto'}
+                label="Pilih Nama Anak"
+                name="anak_ke"
+                message="Wajib dipilih"
+                onSelect={setSelectedAnakId}
+                width={'100%'}
+                placeholder=""
+                data={dataAnak && dataAnak}
+                disabled={false}
+              />
+              :
+              null
+            }
+            <View style={{}} >
+              {page === 1 && (
+                screenType === 'edit_anak' ? (
+                  <Page1
+                    data={screenType === 'edit_anak' && Object.entries(filteredAnak).length !== 0 ? filteredAnak : []}
+                    control={control}
+                    errors={errors}
+                    disabled={(screenType === 'edit_anak' && selectedAnakId === 0) ? true : false}
+                  />
+                ) : (
+                  <Page1
+                    data={[]}
+                    control={control}
+                    errors={errors}
+                  />
+                )
+              )}
+              {page === 2 && (
+                <Page2
+                  data={screenType === 'edit_anak' && filteredAnak != null ? filteredAnak : []}
+                  control={control}
+                  errors={errors}
+                />
+              )}
+            </View>
           </ScrollView>
           <View style={style.buttonContainer}>
             <ButtonComponent

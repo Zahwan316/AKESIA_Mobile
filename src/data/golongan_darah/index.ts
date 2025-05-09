@@ -1,18 +1,18 @@
 const golongan_darah_data = [
   {
-    id: 1,
+    id: 'A',
     name: 'A',
   },
   {
-    id: 2,
+    id: 'B',
     name: 'B',
   },
   {
-    id: 3,
+    id: 'AB',
     name: 'AB',
   },
   {
-    id: 4,
+    id: 'O',
     name: 'O',
   },
 ];
