@@ -17,6 +17,7 @@ import handleContentModal from '../../../../component/modal/function';
 import axios from '../../../../api/axios';
 import { getPendaftaranUser } from '../../../../api/data/pendaftaran';
 import calculateAge from '../../../../utils/calculateAge';
+import DropdownInputComponent from '../../../../component/input/dropdown';
 
 type modalInfo = {
   message: string;
@@ -82,7 +83,7 @@ type apiResponse = {
 const PemesananJanjiSection = (): JSX.Element => {
   const {control, handleSubmit, formState: {errors}} = useForm();
   const route = useRoute();
-  const { pelayananId, pendaftaranId = null } = route.params as { pelayanId: number } || {};
+  const { pelayananId, pendaftaranId = null, jenisPelayananId = null } = route.params as { pelayanId: number } || {};
   const { data: pelayananData} = useQuery({
     queryKey: ['getPelayanan', pelayananId],
     queryFn: () => getPelayanan(`layanan/pelayanan/${pelayananId}`),
@@ -175,7 +176,7 @@ const PemesananJanjiSection = (): JSX.Element => {
           <Text style={{fontWeight: 'bold', fontSize: 16}}>Detail Pasien</Text>
         </View>
         <ScrollView style={{height: '100%', marginBottom: 8}}>
-          <View style={style.itemFormContainer}>
+          {/* <View style={style.itemFormContainer}>
             <InputComponent
               height={'auto'}
               width={'75%'}
@@ -206,38 +207,26 @@ const PemesananJanjiSection = (): JSX.Element => {
               disabled={pendaftaranId != null}
               initialValue={pendaftaranId != null && age.toString()}
             />
-          </View>
+          </View> */}
           <View style={style.itemFormContainer}>
-            <InputComponent
-              height={'auto'}
-              width={'75%'}
-              label="Nama Lengkap Anak"
-              name="nama_anak"
-              message="Wajib Diisi"
-              onChange={() => {}}
-              placeholder=""
-              type="text"
-              backgroundColor={'#6B779A20'}
-              control={control}
-              errors={errors}
-              disabled={pendaftaranId != null}
-              initialValue={pendaftaranId != null && pendaftaranItem?.nama_anak}
-            />
-            <InputComponent
-              height={'auto'}
-              width={'20%'}
-              label="Umur"
-              name="umur_anak"
-              message="Wajib Diisi"
-              onChange={() => {}}
-              placeholder=""
-              type="number"
-              backgroundColor={'#6B779A20'}
-              control={control}
-              errors={errors}
-              disabled={pendaftaranId != null}
-              initialValue={pendaftaranId != null && pendaftaranItem?.umur_anak.toString()}
-            />
+            {
+              jenisPelayananId === 1 ?
+              <DropdownInputComponent
+                height={'auto'}
+                width={'100%'}
+                label="Anak"
+                name="bayi_id"
+                control={control}
+                errors={errors}
+                data={[]}
+                onSelect={() => {}}
+                backgroundColor={'#6B779A20'}
+                disabled={pendaftaranId != null}
+                initialValue={pendaftaranId != null && pendaftaranItem?.bayi?.id}
+                
+              />
+              : null
+            }
           </View>
           <InputComponent
               height={'auto'}

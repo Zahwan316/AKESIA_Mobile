@@ -1,13 +1,11 @@
-import { JSX, useEffect, useState } from 'react';
-import { View } from 'react-native';
-import JanjiScreenLayout from '../layout';
-import ButtonComponent from '../../../../component/button';
-import QueueItemComponent from '../component/queue-item';
-import { ScrollView } from 'react-native';
-import FloatingIcon from '../../../../component/floatingIcon';
-import { useNavigation } from '@react-navigation/native';
-import { useQuery } from '@tanstack/react-query';
-import { getPendaftaranUser } from '../../../../api/data/pendaftaran';
+import { JSX, useEffect, useState } from "react";
+import JanjiScreenLayout from "../layout";
+import { ScrollView, View } from "react-native";
+import ButtonComponent from "../../../../component/button";
+import { useNavigation } from "@react-navigation/native";
+import { useQuery } from "@tanstack/react-query";
+import { getPendaftaranUser } from "../../../../api/data/pendaftaran";
+import QueueItemComponent from "../component/queue-item";
 
 type button = {
   title: string,
@@ -35,6 +33,7 @@ type apiResponse = {
       'nama': string,
       'harga': number,
       'kuantitas': number,
+      'form_id': number,
       'keterangan': string,
       'created_at': number,
       'updated_at': number,
@@ -64,47 +63,46 @@ const ButtonMenu: button[] = [
     color: '#000',
   },
 ];
-
-const JanjiKitaSection = (): JSX.Element => {
+const ListJanjiSection = (): JSX.Element => {
   const [currMenu, setCurrMenu] = useState<string>('Menunggu Konfirmasi');
   const navigation = useNavigation<any>();
-  const { data: pendaftaranUserData} = useQuery({
-    queryKey: ['getCurrUserPendaftaran'],
-    queryFn: () => getPendaftaranUser('getCurrUserPendaftaran'),
+  const { data: pendaftaranData} = useQuery({
+    queryKey: ['pendaftaran'],
+    queryFn: () => getPendaftaranUser('pendaftaran'),
   });
 
   const handleCurrMenu = (title: string) => {
     setCurrMenu(title);
   };
 
-  const handleScreen = (screen: string, pelayananId?: string | number, pendaftaranId?: string | number) => {
-    navigation.navigate(screen, {pelayananId: pelayananId, pendaftaranId: pendaftaranId});
-  }; 
+  const handleScreen = (screen: string, formId?: string | number, pendaftaranId?: string | number) => {
+    navigation.navigate(screen, {formId: formId, pendaftaranId: pendaftaranId});
+  };
 
-  /* useEffect(() => {
-    console.log(pendaftaranUserData);
-  },[]);  */
+  useEffect(() => {
+    console.log(pendaftaranData);
+  }, [pendaftaranData]);
 
-  return (
+  return(
     <JanjiScreenLayout
-      title="Janji Kita"
+      title="List Janji"
     >
-      <View style={{flexDirection: 'row',flexWrap: 'wrap',gap: 12, justifyContent: 'space-between', marginBottom: 32}}>
+      <View>
+        <View style={{flexDirection: 'row',flexWrap: 'wrap',gap: 12, justifyContent: 'space-between', marginBottom: 32}}>
+          {
+            ButtonMenu.map((item, index) => (
+              <ButtonComponent
+                title={item.title}
+                onPress={() => handleCurrMenu(item.title)}
+                color={currMenu === item.title ? '#000' : '#D9D9D9'}
+                key={index}
+              />
+            ))
+          }
+        </View>
+        <ScrollView style={{position: 'relative', height: '80%'}}>
         {
-          ButtonMenu.map((item, index) => (
-            <ButtonComponent
-              title={item.title}
-              onPress={() => handleCurrMenu(item.title)}
-              color={currMenu === item.title ? '#000' : '#D9D9D9'}
-              key={index}
-            />
-          ))
-        }
-      </View>
-      <ScrollView style={{position: 'relative', height: '50%'}}>
-        {
-          pendaftaranUserData?.data.map((item: apiResponse, index: number) => (
-            currMenu === item.status &&
+          pendaftaranData?.data.map((item: apiResponse, index: number) => (
             <QueueItemComponent
               description={item.pelayanan?.keterangan}
               handleClick={() => handleScreen('PemesananJanji', item.pelayanan_id, item.id)}
@@ -114,19 +112,16 @@ const JanjiKitaSection = (): JSX.Element => {
               title={item.pelayanan?.nama}
               key={index + item.id}
               status={item.status}
-              role='user'
+              role="bidan"
+              handlePeriksa={() => handleScreen('Pemeriksaan', item.pelayanan.form_id, item.id)}
             />
 
           ))
         }
       </ScrollView>
-      <FloatingIcon
-        handlePress={() => handleScreen('BuatJanji')}
-      />
+      </View>
     </JanjiScreenLayout>
   );
-};
+}
 
-
-
-export default JanjiKitaSection;
+export default ListJanjiSection;

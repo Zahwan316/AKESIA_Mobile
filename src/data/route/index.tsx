@@ -22,6 +22,7 @@ import BuatJanjiDetailScreen from '../../screen/BuatJanjiDetail';
 import PemesananJanjiScreen from '../../screen/PemesananJanji';
 import SplashScreen from '../../screen/SplashScreen';
 import ProfileScreen from '../../screen/Profile';
+import ListJanjiScreen from '../../screen/ListJanji';
 
 type routesType = {
   name: string,
@@ -213,6 +214,15 @@ const routes: routesType[] = [
   {
     name: 'SplashScreen',
     component: SplashScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
+  {
+    name: 'ListJanji',
+    component: ListJanjiScreen,
     options: {
       headerShown: false,
       tabBarStyle: { display: 'none' },

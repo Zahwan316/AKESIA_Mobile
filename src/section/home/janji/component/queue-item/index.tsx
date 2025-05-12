@@ -3,6 +3,7 @@ import { Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableOpacity } from 'react-native';
 import {  Dimensions } from 'react-native';
+import { BUTTON_COLOR, MAIN_COLOR } from '../../../../../constants/color';
 
 const { width, height } = Dimensions.get('window');
 
@@ -12,8 +13,10 @@ type props = {
   description: string,
   time: string,
   status: string,
+  role?: 'user' | 'bidan',
   handleClick: () => void,
   handleDelete: () => void,
+  handlePeriksa?: () => void
 }
 
 const QueueItemComponent = (props: props): JSX.Element => {
@@ -40,10 +43,18 @@ const QueueItemComponent = (props: props): JSX.Element => {
             <Text style={{fontSize: 16, fontWeight: 'bold'}}>{props.title}</Text>
             <Text style={{fontSize: 14}}>{props.description}</Text>
           </View>
-          <View>
+          <View style={{display: 'flex', flexDirection: 'row', gap: 8}}>
             <TouchableOpacity style={style.buttonMainContent} onPress={props.handleClick}>
               <Text style={style.textButtonContent}>Lihat</Text>
             </TouchableOpacity>
+            {
+              props.role === 'bidan' ?
+              <TouchableOpacity style={[style.buttonMainContent, {backgroundColor: BUTTON_COLOR}]} onPress={props.handlePeriksa}>
+                <Text style={style.textButtonContent}>Periksa</Text>
+              </TouchableOpacity>
+              :
+              null
+            }
           </View>
         </View>
         <View style={style.actionContainer}>
@@ -88,7 +99,7 @@ const style = StyleSheet.create({
   },
   infoItemContainer: {
     width: 'auto',
-    backgroundColor: '#CB7169',
+    backgroundColor: MAIN_COLOR,
     padding: 8,
     borderRadius: 8,
   },
@@ -101,7 +112,7 @@ const style = StyleSheet.create({
     gap: 12,
   },
   buttonMainContent: {
-    width: width * 0.40,
+    width: width * 0.20,
     height: 'auto',
     backgroundColor: '#000',
     padding: 8,

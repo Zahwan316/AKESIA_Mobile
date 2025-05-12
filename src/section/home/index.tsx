@@ -38,7 +38,7 @@ const menuList: menu[] = [
   {
     name: 'Pemeriksaan',
     icon: require('../../assets/icon/pemeriksaan.png'),
-    screen: 'Pemeriksaan',
+    screen: 'ListJanji',
     role: 'bidan',
   },
 ];
@@ -120,14 +120,20 @@ const HomeSection = (): JSX.Element => {
             />
           </View>
           <View style={Style.bannerItemContainer}>
-            <View>
+            <View style={Style.bannerImgContainer}>
               <Image
                 source={require('../../assets/img/banner.png')}
+                style={{width: '100%', height: '100%'}}
+                resizeMode='contain'
+              />
+            </View >
+            <View style={Style.bannerImgContainer}>
+              <Image
+                source={require('../../assets/img/banner2.png')}
+                style={{width: '100%', height: '100%'}}
+                resizeMode='contain'
               />
             </View>
-              <Image
-                source={require('../../assets/img/banner.png')}
-              />
           </View>
         </View>
       </ScrollView>
@@ -223,6 +229,16 @@ const Style = StyleSheet.create({
     flexDirection: 'row',
     gap: 12,
   },
+  bannerImgContainer: {
+    width: '50%',
+    height: '100%',
+    borderWidth: 0,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
 
 export default HomeSection;

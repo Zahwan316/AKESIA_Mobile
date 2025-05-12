@@ -76,7 +76,7 @@ const formBidan: Omit<formBidanAdittion, 'control'>[] = [
     backgroundColor: '',
     border: 1,
   },
-  {
+  /* {
     width: '100%',
     height: 'auto',
     label: 'Jenis Praktik',
@@ -87,7 +87,7 @@ const formBidan: Omit<formBidanAdittion, 'control'>[] = [
     type: 'dropdown',
     backgroundColor: '',
     border: 1,
-  },
+  }, */
   {
     width: '100%',
     height: 'auto',
@@ -100,7 +100,7 @@ const formBidan: Omit<formBidanAdittion, 'control'>[] = [
     backgroundColor: '',
     border: 1,
   },
-  {
+  /* {
     width: '100%',
     height: 'auto',
     label: 'Nama Tempat Praktik',
@@ -111,7 +111,7 @@ const formBidan: Omit<formBidanAdittion, 'control'>[] = [
     type: 'text',
     backgroundColor: '',
     border: 1,
-  },
+  }, */
   {
     width: '100%',
     height: 'auto',

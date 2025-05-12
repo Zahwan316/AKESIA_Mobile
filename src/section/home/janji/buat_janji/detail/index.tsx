@@ -33,6 +33,7 @@ const BuatJanjiDetailSection = (): JSX.Element => {
   const handleToPemesanan = (pelayananId: number) => {
     navigation.navigate('PemesananJanji', {
       pelayananId: pelayananId,
+      jenisPelayananId: jenisPelayananId,
     });
   };
 

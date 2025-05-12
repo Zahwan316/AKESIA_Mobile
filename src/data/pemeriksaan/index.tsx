@@ -6,13 +6,15 @@ type dropdownItemChild = {
 type dropdownItem = {
   id: number,
   title: string
-  child?: dropdownItemChild[]
+  child?: dropdownItemChild[],
+  formId: number,
 }
 
 const dropdownItem: dropdownItem[] = [
   {
     id: 1,
     title: 'Pemeriksaan Ibu Hamil',
+    formId: 2,
     child: [
       {
         name: 'Pemeriksaan Umum',
@@ -31,6 +33,7 @@ const dropdownItem: dropdownItem[] = [
   {
     id: 2,
     title: 'Pemeriksaan Bersalin',
+    formId: 4,
     child: [
       {
         name: 'Pelayanan Ibu Bersalin',
@@ -45,6 +48,7 @@ const dropdownItem: dropdownItem[] = [
   {
     id: 3,
     title: 'Pemeriksaan Nifas',
+    formId: 3,
     child: [
       {
         name: 'Pelayanan Ibu Nifas',
@@ -59,6 +63,7 @@ const dropdownItem: dropdownItem[] = [
   {
     id: 4,
     title: 'Pelayan Bayi',
+    formId: 1,
     child: [
       {
         name: 'Pelayanan Bayi',

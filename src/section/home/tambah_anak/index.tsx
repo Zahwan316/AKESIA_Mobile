@@ -347,7 +347,7 @@ const TambahAnakSection = (): JSX.Element => {
     }
     
     sendData(data);
-  };
+  }; 
 
   const sendData = async(data: any) => {
     try {

@@ -1,14 +1,17 @@
 import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 import dropdownItem from '../../data/pemeriksaan';
-import { BUTTON_COLOR, BUTTON_COLOR_2 } from '../../constants/color';
+import { BUTTON_COLOR, BUTTON_COLOR_2, BUTTON_COLOR_3, BUTTON_COLOR_4, MAIN_COLOR } from '../../constants/color';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import React, { act, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import ButtonComponent from '../../component/button';
 
 const PemeriksaanSection = (): React.JSX.Element => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const navigation = useNavigation();
+  const route = useRoute();
+  const {formId} = route.params as {formId: number};
 
   const handleActiveIndex = (index: number) => {
     if (activeIndex === index) {
@@ -26,19 +29,28 @@ const PemeriksaanSection = (): React.JSX.Element => {
     <SafeAreaView style={{}}>
       <View style={[style.mainContainer, {backgroundColor: '#D9D9D9'}]}>
         <View style={style.headerContainer}>
-          <View>
+          <View style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 24}}>
             <Image
               source={require('../../assets/img/LogoBidanBunda.png')}
-              style={{width: 70, height: 70, marginRight: 12}}
+              style={{width: 70, height: 70, marginBottom: 8}}
               resizeMethod="resize"
               resizeMode="contain"
             />
+          <Text style={{fontSize: 24, color: '#fff'}}>Pemeriksaan</Text>
           </View>
-          <Text style={{fontSize: 20}}>Pemeriksaan</Text>
+          <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '85%', gap: 12}}>
+            <View style={style.buttonInfo}>
+              <Text>Terakhir dibuat 20:30</Text>
+            </View>
+            <View style={style.buttonInfo}>
+              <Text>Terakhir diupdate 20:20</Text>
+            </View>
+          </View>
         </View>
         <View style={style.mainDropdownContainer}>
           {
             dropdownItem.map((item, index) => (
+              item.formId === formId &&
               <React.Fragment key={index}>
                 <TouchableOpacity style={style.mainDropdown} key={index + item.id} onPress={handleActiveIndex.bind(this, index)}>
                   <Text style={{color: BUTTON_COLOR, fontWeight: 'bold', fontSize: 16}}>{item.title}</Text>
@@ -65,6 +77,13 @@ const PemeriksaanSection = (): React.JSX.Element => {
             ))
           }
         </View>
+        <View style={style.buttonContainer}>
+          <ButtonComponent
+            title="Selesai"
+            color={BUTTON_COLOR_3}
+            onPress={() => handleChangeScreen('Home')}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -74,21 +93,28 @@ const style = StyleSheet.create({
   mainContainer: {
     width: widthPercentageToDP(100),
     height: heightPercentageToDP(100),
-    padding: 12,
+    //padding: 12,
   },
   headerContainer: {
     width: '100%',
-    height: '10%',
+    height: '30%',
     display: 'flex',
-    flexDirection: 'row',
-    marginBottom: 18
+    flexDirection: 'column',
+    marginBottom: 18,
+    backgroundColor: MAIN_COLOR,
+    padding: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
   },
   mainDropdownContainer: {
     width: '100%',
-    height: '90%',
+    height: '60%',
+    padding: 12,
   },
   mainDropdown: {
-    width: '60%',
+    width: '100%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -100,13 +126,29 @@ const style = StyleSheet.create({
     gap: 6,
   },
   childDropdown: {
-    width: '60%',
-    height: 'auto',
+    width: '100%',
+    height: '8%',
     backgroundColor: '#fff',
     marginBottom: 18,
     padding: 12,
     borderRadius: 12,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+  buttonInfo: {
+    width: 'auto',
+    backgroundColor: '#fff',
+    padding: 8,
+    borderRadius: 8,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonContainer: {
+    width: '100%',
+    paddingHorizontal: 12,
+  }
 });
 
 export default PemeriksaanSection;
