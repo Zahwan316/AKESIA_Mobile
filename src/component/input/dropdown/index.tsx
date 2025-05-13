@@ -37,9 +37,10 @@ const DropdownInputComponent = (props: props): JSX.Element => {
               props.onSelect(selectedItem.id); // atau selectedItem.value, tergantung datanya
              // props.onSelect(props.name, selectedItem); // jika diperlukan
             }}
-            defaultValue={props.data.find(item => {
-              const fieldValue = props.initialValue ? item[props.initialValue] : item.id;
-              return fieldValue === value;
+            defaultValue={props.data?.find(item => {
+              const fieldValue = props.getValue ? item[props.getValue] : item.id;
+              console.log('field Value = ',fieldValue);
+              return fieldValue === props.initialValue;
             })}
             renderButton={(selectedItem, isOpened) => {
               return (
@@ -82,6 +83,7 @@ const style = StyleSheet.create({
     borderRadius: 8,
     padding: 8,
     borderWidth: 1,
+    borderColor: '#00000015',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',

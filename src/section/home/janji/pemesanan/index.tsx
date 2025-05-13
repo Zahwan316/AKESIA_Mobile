@@ -18,6 +18,7 @@ import axios from '../../../../api/axios';
 import { getPendaftaranUser } from '../../../../api/data/pendaftaran';
 import calculateAge from '../../../../utils/calculateAge';
 import DropdownInputComponent from '../../../../component/input/dropdown';
+import { getAllAnak } from '../../../../api/data/allAnak';
 
 type modalInfo = {
   message: string;
@@ -89,11 +90,15 @@ const PemesananJanjiSection = (): JSX.Element => {
     queryFn: () => getPelayanan(`layanan/pelayanan/${pelayananId}`),
     //enabled: !!pelayananId,
   });
-  const { data: pendaftaranUserData} = useQuery({
+  const { data: pendaftaranUserData, isLoading} = useQuery({
       queryKey: ['getCurrUserPendaftaran', pendaftaranId],
       queryFn: () => getPendaftaranUser(`pendaftaran/${pendaftaranId}`),
       enabled: !!pendaftaranId,
     });
+  const { data: currUserAnakData } = useQuery({
+    queryKey: ['currUserAnak'],
+    queryFn: getAllAnak,
+  });
   const pesananItem = pelayananData?.data;
   const pendaftaranItem: apiResponse = pendaftaranUserData?.data;
   const [successLogin, setSuccessLogin] = useState<boolean>(false);
@@ -135,8 +140,12 @@ const PemesananJanjiSection = (): JSX.Element => {
   };
 
   useEffect(() => {
+    console.table(currUserAnakData);
+  }, [currUserAnakData]);
+
+  /* useEffect(() => {
     console.table(pendaftaranItem);
-  },[pendaftaranItem]);
+  },[pendaftaranItem]); */
 
   return (
     <JanjiScreenLayout
@@ -218,12 +227,14 @@ const PemesananJanjiSection = (): JSX.Element => {
                 name="bayi_id"
                 control={control}
                 errors={errors}
-                data={[]}
+                data={currUserAnakData?.data?.map((anak: any) => ({
+                  name: anak.nama_lengkap,
+                  id: anak.id,
+                }))}
                 onSelect={() => {}}
                 backgroundColor={'#6B779A20'}
                 disabled={pendaftaranId != null}
                 initialValue={pendaftaranId != null && pendaftaranItem?.bayi?.id}
-                
               />
               : null
             }

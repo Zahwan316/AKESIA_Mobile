@@ -14,7 +14,7 @@ const dropdownItem: dropdownItem[] = [
   {
     id: 1,
     title: 'Pemeriksaan Ibu Hamil',
-    formId: 2,
+    formId: 1,
     child: [
       {
         name: 'Pemeriksaan Umum',
@@ -33,7 +33,7 @@ const dropdownItem: dropdownItem[] = [
   {
     id: 2,
     title: 'Pemeriksaan Bersalin',
-    formId: 4,
+    formId: 2,
     child: [
       {
         name: 'Pelayanan Ibu Bersalin',
@@ -63,7 +63,7 @@ const dropdownItem: dropdownItem[] = [
   {
     id: 4,
     title: 'Pelayan Bayi',
-    formId: 1,
+    formId: 4,
     child: [
       {
         name: 'Pelayanan Bayi',
@@ -74,4 +74,4 @@ const dropdownItem: dropdownItem[] = [
 
 ];
 
-export default dropdownItem; 
+export default dropdownItem;

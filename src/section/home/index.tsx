@@ -79,8 +79,17 @@ const HomeSection = (): JSX.Element => {
                 />
               </View>
               <View>
-                <Text style={{fontSize: 14, color: '#fff', fontWeight: 'bold', marginBottom: 4}}>Babyku</Text>
-                <Text style={{fontSize: 12, color: '#fff', fontWeight: 'bold'}}>7 Minggu</Text>
+                {
+                  userData.role === 'user' ?
+                  <>
+                    <Text style={{fontSize: 14, color: '#fff', fontWeight: 'bold', marginBottom: 4}}>Babyku</Text>
+                    <Text style={{fontSize: 12, color: '#fff', fontWeight: 'bold'}}>7 Minggu</Text>          
+                  </>
+                  :
+                  <Text style={{fontSize: 16, color: '#fff', fontWeight: 'bold'}}>
+                    Bidan
+                  </Text>
+                }
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => handlePressButton('TambahAnak')} style={[Style.boxContainer, {justifyContent: 'center', alignItems: 'center', gap: 4, backgroundColor: BUTTON_COLOR, display: userData?.user?.role === 'bidan' ? 'none' : 'flex'}]}>

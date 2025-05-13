@@ -24,6 +24,7 @@ const InputComponent = ({
   errors,
   disabled,
   initialValue,
+  borderColor,
 }: textInputProps): JSX.Element => {
   return (
     <View style={[style.container, {width: width, height: height}]}>
@@ -40,6 +41,7 @@ const InputComponent = ({
                 backgroundColor: backgroundColor,
                 color: textColor,
                 borderWidth: border,
+                borderColor: borderColor,
                 textAlignVertical: type === 'textarea' ? 'top' : 'center',
                 height: type === 'textarea' ? 150 : 'auto',
                 opacity: disabled ? 0.45 : 1,

@@ -5,6 +5,7 @@ import { Button, StyleSheet, TextInput, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { formattedDateData } from "../../../utils/date";
+import { BORDER_COLOR } from "../../../constants/color";
 
 type props = {
   label: string,
@@ -92,6 +93,7 @@ const style = StyleSheet.create({
     backgroundColor: "#fff",
     display: 'flex',
     justifyContent: 'center',
+    borderColor: BORDER_COLOR
   },
   inputContainer: {
     flexDirection: 'row',

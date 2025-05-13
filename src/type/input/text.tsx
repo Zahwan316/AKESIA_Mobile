@@ -16,6 +16,7 @@ interface textInputProps  {
   border?: number,
   control: any,
   errors?: any,
+  borderColor?: string,
   disabled?: boolean
 }
 

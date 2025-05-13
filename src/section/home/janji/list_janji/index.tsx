@@ -6,6 +6,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { getPendaftaranUser } from "../../../../api/data/pendaftaran";
 import QueueItemComponent from "../component/queue-item";
+import statusPendaftaran from "../../../../type/statusPendaftaran";
+import { apiResponse } from "../../../../type/pendaftaran/pendaftaran";
 
 type button = {
   title: string,
@@ -13,33 +15,7 @@ type button = {
   color: string
 }
 
-type apiResponse = {
-  'id': number,
-  'ibu_id': number,
-  'bidan_id': number | null,
-  'pelayanan_id': number,
-  'tanggal_pendaftaran': string,
-  'jam_pendaftaran': null | string,
-  'status': 'Menunggu Konfirmasi' | 'Disetujui' | 'Dibatalkan' | 'Selesai' | string,
-  'keluhan': string,
-  'nama_anak': string,
-  'umur_anak': number,
-  'jam_ditentukan': string,
-  'created_at': string,
-  'updated_at': string,
-  'pelayanan': {
-      'id': number,
-      'jenis_layanan_id': number,
-      'nama': string,
-      'harga': number,
-      'kuantitas': number,
-      'form_id': number,
-      'keterangan': string,
-      'created_at': number,
-      'updated_at': number,
-      'deleted_at': null
-  }
-}
+
 
 const ButtonMenu: button[] = [
   {
@@ -75,8 +51,8 @@ const ListJanjiSection = (): JSX.Element => {
     setCurrMenu(title);
   };
 
-  const handleScreen = (screen: string, formId?: string | number, pendaftaranId?: string | number) => {
-    navigation.navigate(screen, {formId: formId, pendaftaranId: pendaftaranId});
+  const handleScreen = (screen: string, formId?: string | number, pendaftaranId?: string | number, pendaftaranData?: apiResponse) => {
+    navigation.navigate(screen, {formId: formId, pendaftaranId: pendaftaranId, pendaftaranData: pendaftaranData});
   };
 
   useEffect(() => {
@@ -103,17 +79,18 @@ const ListJanjiSection = (): JSX.Element => {
         <ScrollView style={{position: 'relative', height: '80%'}}>
         {
           pendaftaranData?.data.map((item: apiResponse, index: number) => (
+            item.status !== statusPendaftaran.NOT_CONFIRM &&
             <QueueItemComponent
-              description={item.pelayanan?.keterangan}
+              description={item.keluhan}
               handleClick={() => handleScreen('PemesananJanji', item.pelayanan_id, item.id)}
               handleDelete={() => {}}
               img={require('../../../../assets/icon/baby.png')}
               time={item.jam_ditentukan === null ? 'Segera Diinformasikan' : item.jam_ditentukan}
-              title={item.pelayanan?.nama}
+              title={item.ibu?.user?.nama_lengkap}
               key={index + item.id}
               status={item.status}
               role="bidan"
-              handlePeriksa={() => handleScreen('Pemeriksaan', item.pelayanan.form_id, item.id)}
+              handlePeriksa={() => handleScreen('Pemeriksaan', item.pelayanan.form_id, item.id, item)}
             />
 
           ))
@@ -122,6 +99,6 @@ const ListJanjiSection = (): JSX.Element => {
       </View>
     </JanjiScreenLayout>
   );
-}
+};
 
 export default ListJanjiSection;

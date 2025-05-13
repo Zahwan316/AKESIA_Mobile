@@ -1,5 +1,6 @@
 import {JSX, memo, useEffect, useMemo, useState} from 'react';
 import {
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -16,7 +17,7 @@ import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import InputComponent from '../../../component/input/text';
 import InputDatePickerComponent from '../../../component/input/datepicker';
 import ButtonComponent from '../../../component/button';
-import {BUTTON_COLOR, MAIN_COLOR} from '../../../constants/color';
+import {BORDER_COLOR, BUTTON_COLOR, MAIN_COLOR} from '../../../constants/color';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useForm} from 'react-hook-form';
 import handleFormStore from '../../../state/form';
@@ -29,6 +30,7 @@ import Jenis_Kelamin from '../../../data/jenis_kelamin/index';
 import golongan_darah_data from '../../../data/golongan_darah';
 import { useQuery } from '@tanstack/react-query';
 import { getAllAnak } from '../../../api/data/allAnak';
+import text from '../../../component/input/text';
 
 type modalInfo = {
   message: string;
@@ -56,6 +58,8 @@ type pageProps = {
   },
   disabled: boolean
 };
+
+
 
 const Page1 = ({
   onChange,
@@ -86,6 +90,7 @@ const Page1 = ({
         errors={errors}
         initialValue={data?.nama_lengkap}
         disabled={disabled}
+        borderColor={BORDER_COLOR}
       />
       <DropdownInputComponent
         height={'auto'}
@@ -127,6 +132,7 @@ const Page1 = ({
           errors={errors}
           initialValue={data?.anak_ke}
           disabled={disabled}
+          borderColor={BORDER_COLOR}
         />
         <DropdownInputComponent
           height={'auto'}
@@ -160,6 +166,7 @@ const Page1 = ({
         control={control}
         errors={errors}
         disabled={disabled}
+        borderColor={BORDER_COLOR}
       />
       <InputComponent
         height={'auto'}
@@ -176,6 +183,7 @@ const Page1 = ({
         control={control}
         errors={errors}
         disabled={disabled}
+        borderColor={BORDER_COLOR}
       />
       <View
         style={{
@@ -199,6 +207,7 @@ const Page1 = ({
           control={control}
           errors={errors}
           disabled={disabled}
+          borderColor={BORDER_COLOR}
         />
         <InputDatePickerComponent
           label="Tanggal Lahir"
@@ -242,6 +251,7 @@ const Page2 = ({
           control={control}
           errors={errors}
           disabled={disabled}
+          borderColor={BORDER_COLOR}
         />
         <InputComponent
           height={'auto'}
@@ -258,6 +268,7 @@ const Page2 = ({
           control={control}
           errors={errors}
           disabled={disabled}
+          borderColor={BORDER_COLOR}
         />
       </View>
       <View>
@@ -277,6 +288,7 @@ const Page2 = ({
           control={control}
           errors={errors}
           disabled={disabled}
+          borderColor={BORDER_COLOR}
         />
       </View>
     </>
@@ -417,6 +429,12 @@ const TambahAnakSection = (): JSX.Element => {
       });
     }
   }, [selectedAnakId]);
+
+  useEffect(() => {
+    if(screenType === 'edit_anak' && allAnakData?.data?.length === 0 || allAnakData?.data === null){
+      Alert.alert('Mohon maaf anda belum bisa mengakes bagian ini', 'Silahkan ke bagian tambah anak terlebih dahulu untuk menggunakan fitur ini', [{text: 'OK', onPress: () => navigation.navigate('BottomTabs')}]);
+    }
+  }, [screenType, allAnakData]);
 
   return (
     <SafeAreaProvider>

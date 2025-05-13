@@ -1,17 +1,28 @@
-import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 import dropdownItem from '../../data/pemeriksaan';
 import { BUTTON_COLOR, BUTTON_COLOR_2, BUTTON_COLOR_3, BUTTON_COLOR_4, MAIN_COLOR } from '../../constants/color';
 import Icon from 'react-native-vector-icons/FontAwesome'
-import React, { act, useState } from 'react';
+import React, { act, useEffect, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ButtonComponent from '../../component/button';
+import { apiResponse } from '../../type/pendaftaran/pendaftaran';
+import axios from '../../api/axios';
+import handleContentModal from '../../component/modal/function';
+import ModalComponent from '../../component/modal';
 
 const PemeriksaanSection = (): React.JSX.Element => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const route = useRoute();
-  const {formId} = route.params as {formId: number};
+  const {formId, pendaftaranId, pendaftaranData } = route.params as {formId: number, pendaftaranId: number, pendaftaranData: apiResponse};
+  const [modal, setModal] = useState<boolean>(false);
+  const [isSuccess, setSuccess] = useState<boolean>(false);
+  const [modalInfo, setModalInfo] = useState<modalInfo>({
+    message: '',
+    text: '',
+  });
+
 
   const handleActiveIndex = (index: number) => {
     if (activeIndex === index) {
@@ -21,9 +32,57 @@ const PemeriksaanSection = (): React.JSX.Element => {
     }
   };
 
-  const handleChangeScreen = (screen: string) => {
-    navigation.navigate(screen);
-  }
+  const handleChangeScreen = (screen: string, pendaftaranId?: number) => {
+    navigation.navigate(screen, {pendaftaranId: pendaftaranId, pendaftaranData: pendaftaranData});
+  };
+
+  const handleSetPendaftaranComplete = async() => {
+    const data = {status: 'Selesai'};
+    try{
+      const response = await axios.put(`pendaftaran/${pendaftaranId}`, data);
+      setSuccess(true);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: 'Formulir berhasil disimpan, Terima kasih sudah mengisi data pemeriksaan',
+        text: 'Tutup',
+      });
+    }
+    catch(e){
+      console.log(e.response);
+      setSuccess(true);
+        handleContentModal({
+          setModal,
+          setModalInfo,
+          message: e.response.data.message,
+          text: 'Tutup',
+        });
+    }
+  };
+
+  const handleModal = () => {
+    if(isSuccess){
+      navigation.navigate('ListJanji');
+    }
+    setModal(!modal);
+  };
+
+  const handleSelesai = () => {
+    Alert.alert(
+      'Konfirmasi',
+      'Apakah anda yakin ingin menyelesaikan formulir ini?',
+      [
+        {
+          text: 'Batal',
+          style: 'cancel',
+        },
+        {
+          text: 'Ya',
+          onPress: () => handleSetPendaftaranComplete(),
+        },
+      ]
+    );
+  };
 
   return(
     <SafeAreaView style={{}}>
@@ -39,12 +98,12 @@ const PemeriksaanSection = (): React.JSX.Element => {
           <Text style={{fontSize: 24, color: '#fff'}}>Pemeriksaan</Text>
           </View>
           <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '85%', gap: 12}}>
-            <View style={style.buttonInfo}>
+           {/*  <View style={style.buttonInfo}>
               <Text>Terakhir dibuat 20:30</Text>
             </View>
             <View style={style.buttonInfo}>
               <Text>Terakhir diupdate 20:20</Text>
-            </View>
+            </View> */}
           </View>
         </View>
         <View style={style.mainDropdownContainer}>
@@ -65,7 +124,7 @@ const PemeriksaanSection = (): React.JSX.Element => {
                   {
                     activeIndex === index &&
                     Array.isArray(item?.child) && item?.child.map((child, indexChild) => (
-                      <TouchableOpacity key={indexChild} style={{padding: 8, height: 48, justifyContent: 'center'}} onPress={() => handleChangeScreen(child.screen)}>
+                      <TouchableOpacity key={indexChild} style={{padding: 8, height: 48, justifyContent: 'center'}} onPress={() => handleChangeScreen(child.screen, pendaftaranId)}>
                         <Text style={{fontSize: 16}}>
                           {child.name}
                         </Text>
@@ -81,10 +140,17 @@ const PemeriksaanSection = (): React.JSX.Element => {
           <ButtonComponent
             title="Selesai"
             color={BUTTON_COLOR_3}
-            onPress={() => handleChangeScreen('Home')}
+            onPress={() => handleSelesai()}
           />
         </View>
       </View>
+      <ModalComponent
+        message={modalInfo.message}
+        text={modalInfo.text}
+        modalVisible={modal}
+        isSuccess={isSuccess}
+        handleModal={handleModal}
+      />
     </SafeAreaView>
   );
 };

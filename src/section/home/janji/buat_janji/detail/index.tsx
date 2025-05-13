@@ -71,7 +71,7 @@ const BuatJanjiDetailSection = (): JSX.Element => {
                 {
                     <View>
                       <ChildDropdownComponent
-                        key={item.id + index}
+                        key={item.id}
                         title={item.nama}
                         code={item.keterangan}
                         harga={item.harga}
