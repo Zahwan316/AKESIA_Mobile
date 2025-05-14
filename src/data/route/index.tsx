@@ -23,6 +23,8 @@ import PemesananJanjiScreen from '../../screen/PemesananJanji';
 import SplashScreen from '../../screen/SplashScreen';
 import ProfileScreen from '../../screen/Profile';
 import ListJanjiScreen from '../../screen/ListJanji';
+import NotificationScreen from '../../screen/Notification';
+import Icon from 'react-native-vector-icons/Feather';
 
 type routesType = {
   name: string,
@@ -235,12 +237,32 @@ export const routesBottom: routesType[] = [
   {
     name: 'Home',
     component: HomeScreen,
-    options: { headerShown: false },
+    options: {
+      headerShown: false,
+      tabBarIcon: ({color, size, focused}) => (
+      <Icon name="home" size={22} color="#202020"/>
+    ),
+  },
+  },
+  {
+    name: 'Notification',
+    component: NotificationScreen,
+    options: {
+      headerShown: false,
+      tabBarIcon: ({color, size, focused}) => (
+        <Icon name="bell" size={22} color="#202020"/>
+      ),
+    },
   },
   {
     name: 'Profile',
     component: ProfileScreen,
-    options: { headerShown: false },
+    options: {
+      headerShown: false,
+      tabBarIcon: ({color, size, focused}) => (
+        <Icon name="user" size={22} color="#202020"/>
+      ),
+    },
   },
 ];
 

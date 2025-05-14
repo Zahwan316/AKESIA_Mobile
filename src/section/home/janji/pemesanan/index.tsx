@@ -244,7 +244,7 @@ const PemesananJanjiSection = (): JSX.Element => {
               width={'100%'}
               label="Tulis Keluhan anda"
               name="keluhan"
-              message="Wajib Diisi"
+              //message="Wajib Diisi"
               onChange={() => {}}
               placeholder=""
               type="textarea"

@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import CarouselComponent from '../../component/carousel';
 import { useQuery } from '@tanstack/react-query';
 import { getUserLogin } from '../../api/data/user';
+import useUserStore from '../../state/user';
 
 type menu = {
   name: string,
@@ -49,14 +50,29 @@ const HomeSection = (): JSX.Element => {
     queryKey: ['user'],
     queryFn: getUserLogin,
   });
+  const user = useUserStore((state) => state.user);
+  const handleUser = useUserStore((state) => state.handleUser);
 
   const handlePressButton = (screen: string, params?: object) => {
     navigation.navigate(screen, params);
   };
 
   useEffect(() => {
-    console.log(userData);
-  });
+    const setUser = () => {
+      if(userData && userData?.user != null){
+        const data = userData?.user;
+        for(const key in data){
+          handleUser(key, data[key]);
+        }
+      }
+    };
+    setUser();
+  }, [userData, handleUser]);
+
+  useEffect(() => {
+    console.log('Data API = ', userData);
+    console.log('Data User = ', user);
+  }, [userData]);
 
   return(
     <SafeAreaView>

@@ -337,7 +337,7 @@ const PemeriksaanUmumSection = (): JSX.Element => {
 
   const handleSubmitForm = async(data: any) => {
     console.table(data);
-    const mergedData = {...data, pendaftaran_id: pendaftaranId};
+    const mergedData = {...data, pendaftaran_id: pendaftaranId, user_id: pendaftaranData.ibu.user_id ,};
 
     try{
       if(!checkIsDataFormPemeriksaanUmumNull()){
