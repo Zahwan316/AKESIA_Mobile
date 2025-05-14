@@ -75,7 +75,7 @@ const FormScreenLayout = ({
               <Icon
                 name="angle-left"
                 color="#fff"
-                size={42}
+                size={38}
                 style={{marginRight: 12}}
                 onPress={() => handlePage('prev')}
               />

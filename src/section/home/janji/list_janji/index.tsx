@@ -79,7 +79,7 @@ const ListJanjiSection = (): JSX.Element => {
         <ScrollView style={{position: 'relative', height: '80%'}}>
         {
           pendaftaranData?.data.map((item: apiResponse, index: number) => (
-            item.status !== statusPendaftaran.NOT_CONFIRM &&
+            item.status !== statusPendaftaran.NOT_CONFIRM && item.isVerif !== 0 ?
             <QueueItemComponent
               description={item.keluhan}
               handleClick={() => handleScreen('PemesananJanji', item.pelayanan_id, item.id)}
@@ -87,11 +87,13 @@ const ListJanjiSection = (): JSX.Element => {
               img={require('../../../../assets/icon/baby.png')}
               time={item.jam_ditentukan === null ? 'Segera Diinformasikan' : item.jam_ditentukan}
               title={item.ibu?.user?.nama_lengkap}
-              key={index + item.id}
+              key={index}
               status={item.status}
               role="bidan"
               handlePeriksa={() => handleScreen('Pemeriksaan', item.pelayanan.form_id, item.id, item)}
             />
+            :
+            null
 
           ))
         }

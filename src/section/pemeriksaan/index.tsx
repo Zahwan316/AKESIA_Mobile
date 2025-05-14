@@ -120,11 +120,11 @@ const PemeriksaanSection = (): React.JSX.Element => {
                     <Icon name="angle-down" size={20} color={BUTTON_COLOR} />
                   }
                 </TouchableOpacity>
-                <View style={[style.childDropdown, { display: activeIndex != index ? 'none' : 'flex'}]}>
+                <View style={[style.childDropdown, { display: activeIndex != index ? 'none' : 'contents'}]}>
                   {
                     activeIndex === index &&
                     Array.isArray(item?.child) && item?.child.map((child, indexChild) => (
-                      <TouchableOpacity key={indexChild} style={{padding: 8, height: 48, justifyContent: 'center'}} onPress={() => handleChangeScreen(child.screen, pendaftaranId)}>
+                      <TouchableOpacity key={indexChild} style={[style.childDropdown, {padding: 8, height: 48, justifyContent: 'center',}]} onPress={() => handleChangeScreen(child.screen, pendaftaranId)}>
                         <Text style={{fontSize: 16}}>
                           {child.name}
                         </Text>
@@ -195,7 +195,7 @@ const style = StyleSheet.create({
     width: '100%',
     height: '8%',
     backgroundColor: '#fff',
-    marginBottom: 18,
+    marginBottom: 10,
     padding: 12,
     borderRadius: 12,
     display: 'flex',

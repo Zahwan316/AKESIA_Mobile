@@ -10,6 +10,7 @@ export type apiResponse = {
   'nama_anak': string,
   'umur_anak': number,
   'jam_ditentukan': string,
+  'isVerif': boolean | 0 | 1,
   'created_at': string,
   'updated_at': string,
   'pelayanan': {

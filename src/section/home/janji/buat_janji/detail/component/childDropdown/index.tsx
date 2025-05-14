@@ -43,13 +43,13 @@ const ChildDropdownComponent = (props: props) => {
 
 const style = StyleSheet.create({
   mainHeaderContainer: {
-    width: width * 0.8,
-    minHeight: 50,
+    width: width * 0.9,
+    minHeight: 60,
     borderWidth: 1,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    borderColor: '#d1d1d1',
+    borderColor: '#10101015',
     alignItems: 'center',
     marginBottom: 14,
     borderRadius: 12,

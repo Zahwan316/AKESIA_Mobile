@@ -1,10 +1,20 @@
-import {View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import FormScreenLayout from '../../screen_layout';
 import InputDatePickerComponent from '../../../../component/input/datepicker';
 import InputComponent from '../../../../component/input/text';
 import {JSX, useEffect, useState} from 'react';
+import { modalInfo } from '../../../../type/modalInfo';
+import { useForm } from 'react-hook-form';
+import { BORDER_COLOR } from '../../../../constants/color';
+import { useQuery } from '@tanstack/react-query';
+import { getForm } from '../../../../api/data/form';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { checkIsDataNull } from '../../../../utils/checkDataIsNull';
+import axios from '../../../../api/axios';
+import handleContentModal from '../../../../component/modal/function';
+import { formattedDate, formattedDateData } from '../../../../utils/date';
 
-const page1 = ({
+const Page1 = ({
   formHandle,
   data,
   control,
@@ -22,60 +32,69 @@ const page1 = ({
         onChange={formHandle}
         control={control}
         errors={errors}
+        name='tanggal_pemeriksaan'
+        labelColor=''
+        initialValue={data?.tanggal_pemeriksaan}
       />
       <InputComponent
         height={'auto'}
         width={'100%'}
-        label="Jam"
+        label="Jam Pemeriksaan"
         message="Harap diisi"
-        name="jam"
+        name="jam_pemeriksaan"
         onChange={formHandle}
         placeholder="Contoh: 09:30"
         type="number"
         backgroundColor={'#fff'}
         border={1}
-        labelColor={'#fff'}
+        //labelColor={'#fff'}
         textColor={''}
         control={control}
         errors={errors}
+        borderColor={BORDER_COLOR}
+        initialValue={data?.jam_pemeriksaan}
       />
       <InputComponent
         height={'auto'}
         width={'100%'}
         label="Nama Pemeriksaan"
         message="Harap diisi"
-        name="nama_pemeriksaan"
+        name="nama"
         onChange={formHandle}
-        placeholder="0"
+        placeholder=""
         type="text"
         backgroundColor={'#fff'}
         border={1}
-        labelColor={'#fff'}
+        //labelColor={'#fff'}
         textColor={''}
         control={control}
         errors={errors}
+        borderColor={BORDER_COLOR}
+        initialValue={data?.nama}
       />
       <InputComponent
         height={'50%'}
         width={'100%'}
         label="Hasil Pemeriksaan"
         message="Harap diisi"
-        name="hasil_pemeriksaan"
+        name="hasil"
         onChange={formHandle}
-        placeholder="0"
+        placeholder=""
         type="textarea"
         backgroundColor={'#fff'}
         border={1}
-        labelColor={'#fff'}
+        //labelColor={'#fff'}
         textColor={''}
         control={control}
         errors={errors}
+        borderColor={BORDER_COLOR}
+        initialValue={data?.hasil}
       />
     </>
   );
 };
 
-const page2 = ({
+const Page2 = ({
   formHandle,
   data,
   control,
@@ -93,22 +112,27 @@ const page2 = ({
         onChange={formHandle}
         control={control}
         errors={errors}
+        initialValue={data?.tanggal_pelayanan}
+        name='tanggal_pelayanan'
+        labelColor='#000'
       />
       <InputComponent
         height={'auto'}
         width={'100%'}
-        label="Jam Pemeriksaan"
+        label="Jam Pelayanan"
         message="Harap diisi"
-        name="jam_pemeriksaan"
+        name="jam_pelayanan"
         onChange={formHandle}
         placeholder="Contoh: 09:30"
         type="number"
         backgroundColor={'#fff'}
         border={1}
-        labelColor={'#fff'}
+        //labelColor={'#fff'}
         textColor={''}
         control={control}
         errors={errors}
+        initialValue={data?.jam_pelayanan}
+        borderColor={BORDER_COLOR}
       />
       <InputComponent
         height={'auto'}
@@ -117,14 +141,16 @@ const page2 = ({
         message="Harap diisi"
         name="soap"
         onChange={formHandle}
-        placeholder="0"
+        placeholder=""
         type="textarea"
         backgroundColor={'#fff'}
         border={1}
-        labelColor={'#fff'}
+        //labelColor={'#fff'}
         textColor={''}
         control={control}
         errors={errors}
+        initialValue={data?.soap}
+        borderColor={BORDER_COLOR}
       />
       <InputComponent
         height={'auto'}
@@ -133,14 +159,16 @@ const page2 = ({
         message="Harap diisi"
         name="penatalaksanaan"
         onChange={formHandle}
-        placeholder="0"
+        placeholder=""
         type="textarea"
         backgroundColor={'#fff'}
         border={1}
-        labelColor={'#fff'}
+        //labelColor={'#fff'}
         textColor={''}
         control={control}
         errors={errors}
+        initialValue={data?.penatalaksanaan}
+        borderColor={BORDER_COLOR}
       />
     </>
   );
@@ -148,7 +176,24 @@ const page2 = ({
 
 const PemeriksaanLabSection = (): JSX.Element => {
   const [page, setpage] = useState<number>(1);
-  const { control, handleSubmit, formState: { errors } } = useForm();
+  const navigation = useNavigation<any>();
+  const route = useRoute();
+  const {pendaftaranId, pendaftaranData} = route.params as {
+    pendaftaranId: number;
+    pendaftaranData: any;
+  };
+  const { control, handleSubmit, reset, formState: { errors } } = useForm();
+  const [modal, setModal] = useState<boolean>(false);
+  const [isSuccess, setSuccess] = useState<boolean>(false);
+  const [modalInfo, setModalInfo] = useState<modalInfo>({
+    message: '',
+    text: '',
+  });
+  const {data: pemeriksaanLabData} = useQuery({
+    queryKey: ['pemeriksaanLab', pendaftaranId],
+    queryFn: () => getForm(`form/pemeriksaan_lab/show_by_pendaftaran/${pendaftaranId}`),
+    enabled: !!pendaftaranId,
+  });
 
   useEffect(() => {
     if (page <= 1) {
@@ -157,25 +202,108 @@ const PemeriksaanLabSection = (): JSX.Element => {
       setpage(2);
     }
   }, [page]);
+
   const handlePage = (operator: string) => {
     if (operator === 'next') {
-      setpage(prev => prev + 1);
+      if (page === 1) {
+        handleSubmit(() => setpage(2))(); // Pindah ke page 2
+      } else if (page === 2) {
+        handleSubmit(handleSubmitForm)(); // Submit form saat di page 2
+      }
     } else {
-      setpage(prev => prev - 1);
+      setpage(prev => Math.max(prev - 1, 1));
     }
   };
+
+  const handleSubmitForm = async(data: any) => {
+    const mergedData = { ...data, pendaftaran_id: pendaftaranId };
+
+    try{
+      if(checkIsDataNull(pemeriksaanLabData?.data)) {
+        await axios.post('form/pemeriksaan_lab', mergedData).then(response => {
+          setSuccess(true);
+          handleContentModal({
+            setModal,
+            setModalInfo,
+            message: response.data.message,
+            text: 'Tutup',
+          });
+        });
+      }
+      else {
+        await axios.put(`form/pemeriksaan_lab/${pemeriksaanLabData?.data.id}`, mergedData).then(response => {
+          setSuccess(true);
+          handleContentModal({
+            setModal,
+            setModalInfo,
+            message: response.data.message,
+            text: 'Tutup',
+          });
+        });
+      }
+    }
+    catch(e){
+      console.log(e.response);
+      setSuccess(false);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: e.response.data.message,
+        text: 'Tutup',
+      });
+    }
+  };
+
+  const handleModal = () => {
+    if(isSuccess){
+      navigation.goBack();
+    }
+    setModal(!modal);
+  };
+
+  useEffect(() => {
+    if(pemeriksaanLabData && pemeriksaanLabData?.data ){
+      reset({
+        tanggal_pemeriksaan: pemeriksaanLabData?.data?.tanggal_pemeriksaan,
+        jam_pemeriksaan: pemeriksaanLabData?.data?.jam_pemeriksaan,
+        hasil: pemeriksaanLabData?.data?.hasil,
+        nama: pemeriksaanLabData?.data?.nama,
+        tanggal_pelayanan: pemeriksaanLabData?.data?.tanggal_pelayanan,
+        jam_pelayanan: pemeriksaanLabData?.data?.jam_pelayanan,
+        soap: pemeriksaanLabData?.data?.soap,
+        penatalaksanaan: pemeriksaanLabData?.data?.penatalaksanaan,
+      });
+    }
+  }, [pemeriksaanLabData]);
 
   return (
     <FormScreenLayout
       handlePage={handlePage}
       page={page}
+      header="Pemeriksaan Lab"
+      modalHandleModal={handleModal}
+      modalIsSuccess={isSuccess}
+      modalMessage={modalInfo.message}
+      modalText={modalInfo.text}
+      modalVisible={modal}
+      created_at={checkIsDataNull(pemeriksaanLabData?.data) ? 'Belum ada' : formattedDateData(pemeriksaanLabData?.data?.created_at)}
+      updated_at={checkIsDataNull(pemeriksaanLabData?.data) ? 'Belum ada' : formattedDateData(pemeriksaanLabData?.data?.updated_at)}
     >
-      {page === 1 ?
-        <page1
-          
-        />
-        :
-        page2(() => {}, [])}
+        {page === 1 ?
+          <Page1
+            formHandle={() => {}}
+            control={control}
+            errors={errors}
+            data={checkIsDataNull(pemeriksaanLabData?.data) ? [] : pemeriksaanLabData?.data}
+          />
+          :
+          <Page2
+            control={control}
+            data={checkIsDataNull(pemeriksaanLabData?.data) ? [] : pemeriksaanLabData?.data}
+            errors={errors}
+            formHandle={() => {}}
+          />
+        }
     </FormScreenLayout>
   );
 };

@@ -25,7 +25,7 @@ const dropdownItem: dropdownItem[] = [
         screen: 'PemeriksaanLab',
       },
       {
-        name: 'Pengawasan Obat',
+        name: 'Pengawasan Tablet',
         screen: 'PengawasanObat',
       },
     ],

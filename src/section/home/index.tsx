@@ -80,7 +80,7 @@ const HomeSection = (): JSX.Element => {
               </View>
               <View>
                 {
-                  userData.role === 'user' ?
+                  userData?.user?.role === 'user' ?
                   <>
                     <Text style={{fontSize: 14, color: '#fff', fontWeight: 'bold', marginBottom: 4}}>Babyku</Text>
                     <Text style={{fontSize: 12, color: '#fff', fontWeight: 'bold'}}>7 Minggu</Text>          

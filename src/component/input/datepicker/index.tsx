@@ -25,7 +25,7 @@ const InputDatePickerComponent = (props: props): React.JSX.Element => {
   const [open, setOpen] = useState(false);
 
   return(
-    <View style={props.customStyle}>
+    <View style={[props.customStyle, { marginBottom: 12, }]}>
       <Text style={[style.label, {color: props.labelColor != null ? props.labelColor : '#fff'}]}>{props.label}</Text>
       <View style={style.inputContainer, {opacity: props.disabled ? 0.5 : 1}}>
         <Controller
