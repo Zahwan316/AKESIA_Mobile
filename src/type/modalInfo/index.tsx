@@ -1,4 +1,4 @@
-export type modalInfo = {
+export type modalInfoType = {
   message: string;
   text: string;
 };

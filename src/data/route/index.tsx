@@ -25,6 +25,7 @@ import ProfileScreen from '../../screen/Profile';
 import ListJanjiScreen from '../../screen/ListJanji';
 import NotificationScreen from '../../screen/Notification';
 import Icon from 'react-native-vector-icons/Feather';
+import PelayananLainnyaScreen from '../../screen/pemeriksaan/pelayanan_lainnya';
 
 type routesType = {
   name: string,
@@ -225,6 +226,15 @@ const routes: routesType[] = [
   {
     name: 'ListJanji',
     component: ListJanjiScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
+  {
+    name: 'PelayananLainnya',
+    component: PelayananLainnyaScreen,
     options: {
       headerShown: false,
       tabBarStyle: { display: 'none' },

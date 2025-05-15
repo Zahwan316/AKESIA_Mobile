@@ -3,10 +3,118 @@ import FormScreenLayout from "../../screen_layout";
 import { View } from "react-native";
 import InputComponent from "../../../../component/input/text";
 import DropdownInputComponent from "../../../../component/input/dropdown";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { modalInfoType } from "../../../../type/modalInfo";
+import { apiResponse } from "../../../../type/pendaftaran/pendaftaran";
+import { useQuery } from "@tanstack/react-query";
+import { getForm } from "../../../../api/data/form";
+import { BORDER_COLOR } from "../../../../constants/color";
+import handleContentModal from '../../../../component/modal/function';
+import { checkIsDataNull } from "../../../../utils/checkDataIsNull";
+import axios from "../../../../api/axios";
+import Jenis_Kelamin from "../../../../data/jenis_kelamin";
+import { AsuhanBayiSaatLahirDropdownData, JenisKelaminDropdownDataBayiSaatLahir, KondisiBayiSaatLahirDropdownData } from "../../../../data/pemeriksaan/bayi_saat_lahir";
+import { formattedDateData } from "../../../../utils/date";
 
 const BayiSaatLahirSection = (): JSX.Element => {
+   const navigate = useNavigation<any>();
+  const router = useRoute();
+  const { pendaftaranData, pendaftaranId} = router.params as {pendaftaranData: apiResponse, pendaftaranId: number};
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: {errors},
+  } = useForm();
+  const [modal, setModal] = useState<boolean>(false);
+  const [isSuccess, setSuccess] = useState<boolean>(false);
+  const [modalInfo, setModalInfo] = useState<modalInfoType>({
+    message: '',
+    text: '',
+  });
+
+  const { data: bayiSaatLahirFormData } = useQuery({
+    queryKey: ['bayiSaatlahir', pendaftaranId],
+    queryFn: () => getForm(`form/bayi_saat_lahir/show_by_pendaftaran/${pendaftaranId}`),
+  });
+
+  const handlePage = () => {
+    handleSubmit(handleSendToApi)();
+  };
+
+  const handleSendToApi = async(data: any) => {
+    const mergedData = {...data, pendaftaran_id: pendaftaranId};
+    try{
+      if(checkIsDataNull(bayiSaatLahirFormData?.data)){
+        await axios.post('form/bayi_saat_lahir', mergedData).then(response => {
+          setSuccess(true);
+          handleContentModal({
+            setModal,
+            setModalInfo,
+            message: response.data.message,
+            text: 'Tutup',
+          });
+        });
+      }
+      else{
+        await axios.put(`form/bayi_saat_lahir/${bayiSaatLahirFormData?.data.id}`, mergedData).then(response => {
+          setSuccess(true);
+          handleContentModal({
+            setModal,
+            setModalInfo,
+            message: response.data.message,
+            text: 'Tutup',
+          });
+        });
+      }
+    }
+    catch(error: any){
+      setSuccess(false);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: error.response.data.message,
+        text: 'Tutup',
+      });
+    }
+  };
+
+  const handleModal = () => {
+    if(isSuccess){
+      navigate.goBack();
+    }
+    setModal(!modal);
+  }
+
+  useEffect(() => {
+    console.log(bayiSaatLahirFormData);
+    if(bayiSaatLahirFormData && bayiSaatLahirFormData?.data){
+      reset({
+        anak_ke: bayiSaatLahirFormData?.data?.anak_ke.toString(),
+        berat_lahir: bayiSaatLahirFormData?.data?.berat_lahir,
+        panjang_badan: bayiSaatLahirFormData?.data?.panjang_badan,
+        lingkar_kepala: bayiSaatLahirFormData?.data?.lingkar_kepala,
+        jenis_kelamin: bayiSaatLahirFormData?.data?.jenis_kelamin,
+        kondisi_bayi_saat_lahir: bayiSaatLahirFormData?.data?.kondisi_bayi_saat_lahir,
+        asuhan_bayi_baru_lahir: bayiSaatLahirFormData?.data?.asuhan_bayi_baru_lahir,
+      });
+    }
+  }, [bayiSaatLahirFormData]);
+
   return(
-    <FormScreenLayout >
+    <FormScreenLayout
+      header="Bayi Saat Lahir"
+      handlePage={handlePage}
+      modalHandleModal={handleModal}
+      modalIsSuccess={isSuccess}
+      modalMessage={modalInfo.message}
+      modalText={modalInfo.text}
+      modalVisible={modal}
+      created_at={checkIsDataNull(bayiSaatLahirFormData?.data) ? 'Belum Ada' : formattedDateData(bayiSaatLahirFormData?.data.created_at)}
+      updated_at={checkIsDataNull(bayiSaatLahirFormData?.data) ? 'Belum Ada' : formattedDateData(bayiSaatLahirFormData?.data.updated_at)}
+    >
       <View>
         <InputComponent
           height={'auto'}
@@ -19,8 +127,12 @@ const BayiSaatLahirSection = (): JSX.Element => {
           type="number"
           backgroundColor={'#fff'}
           border={1}
-          labelColor={'#fff'}
+          //labelColor={'#fff'}
           textColor={''}
+          borderColor={BORDER_COLOR}
+          control={control}
+          errors={errors}
+          initialValue={checkIsDataNull(bayiSaatLahirFormData?.data) ? null : bayiSaatLahirFormData?.data?.anak_ke}
         />
         <InputComponent
           height={'auto'}
@@ -33,22 +145,30 @@ const BayiSaatLahirSection = (): JSX.Element => {
           type="number"
           backgroundColor={'#fff'}
           border={1}
-          labelColor={'#fff'}
+          //labelColor={'#fff'}
           textColor={''}
+          borderColor={BORDER_COLOR}
+          control={control}
+          errors={errors}
+          initialValue={checkIsDataNull(bayiSaatLahirFormData?.data) ? null : bayiSaatLahirFormData?.data?.berat_lahir}
         />
         <InputComponent
           height={'auto'}
           width={'100%'}
-          label="Panjang Kepala (cm)"
+          label="Panjang Badan (cm)"
           message="Harap diisi"
-          name="panjang_kepala"
+          name="panjang_badan"
           onChange={() => {}}
           placeholder=""
           type="number"
           backgroundColor={'#fff'}
           border={1}
-          labelColor={'#fff'}
+          //labelColor={'#fff'}
           textColor={''}
+          borderColor={BORDER_COLOR}
+          control={control}
+          errors={errors}
+          initialValue={checkIsDataNull(bayiSaatLahirFormData?.data) ? null : bayiSaatLahirFormData?.data?.panjang_badan}
         />
         <InputComponent
           height={'auto'}
@@ -61,35 +181,54 @@ const BayiSaatLahirSection = (): JSX.Element => {
           type="number"
           backgroundColor={'#fff'}
           border={1}
-          labelColor={'#fff'}
+          //labelColor={'#fff'}
           textColor={''}
+          borderColor={BORDER_COLOR}
+          control={control}
+          errors={errors}
+          initialValue={checkIsDataNull(bayiSaatLahirFormData?.data) ? null : bayiSaatLahirFormData?.data?.lingkar_kepala}
         />
         <DropdownInputComponent
           width={'100%'}
           backgroundColor={''}
-          data={[]}
+          data={JenisKelaminDropdownDataBayiSaatLahir}
           height={'auto'}
-          textColor={'#fff'}
+          //textColor={'#fff'}
           onSelect={() => {}}
           label={'Jenis Kelamin'}
+          control={control}
+          errors={errors}
+          name="jenis_kelamin"
+          getValue="name"
+          initialValue={checkIsDataNull(bayiSaatLahirFormData?.data) ? null : bayiSaatLahirFormData?.data?.jenis_kelamin}
         />
         <DropdownInputComponent
           width={'100%'}
           backgroundColor={''}
-          data={[]}
+          data={KondisiBayiSaatLahirDropdownData}
           height={'auto'}
-          textColor={'#fff'}
+          //textColor={'#fff'}
           onSelect={() => {}}
           label={'Kondisi Bayi Saat Lahir'}
+          control={control}
+          errors={errors}
+          name="kondisi_bayi_saat_lahir"
+          getValue="name"
+          initialValue={checkIsDataNull(bayiSaatLahirFormData?.data) ? null : bayiSaatLahirFormData?.data?.kondisi_bayi_saat_lahir}
         />
         <DropdownInputComponent
           width={'100%'}
           backgroundColor={''}
-          data={[]}
+          data={AsuhanBayiSaatLahirDropdownData}
           height={'auto'}
-          textColor={'#fff'}
+          //textColor={'#fff'}
           onSelect={() => {}}
           label={'Asuhan Bayi Baru Lahir'}
+          control={control}
+          errors={errors}
+          name="asuhan_bayi_baru_lahir"
+          getValue="name"
+          initialValue={checkIsDataNull(bayiSaatLahirFormData?.data) ? null : bayiSaatLahirFormData?.data?.asuhan_bayi_baru_lahir}
         />
       </View>
     </FormScreenLayout>

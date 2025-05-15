@@ -71,6 +71,17 @@ const dropdownItem: dropdownItem[] = [
       },
     ],
   },
+  {
+    id: 5,
+    title: 'Pelayan Lainnya',
+    formId: 5,
+    child: [
+      {
+        name: 'Pelayanan Lainnya',
+        screen: 'PelayananLainnya',
+      },
+    ],
+  },
 
 ];
 

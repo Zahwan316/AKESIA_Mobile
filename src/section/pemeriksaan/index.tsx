@@ -10,6 +10,9 @@ import { apiResponse } from '../../type/pendaftaran/pendaftaran';
 import axios from '../../api/axios';
 import handleContentModal from '../../component/modal/function';
 import ModalComponent from '../../component/modal';
+import { modalInfo } from '../../type/modalInfo';
+import { useQuery } from '@tanstack/react-query';
+import { getForm } from '../../api/data/form';
 
 const PemeriksaanSection = (): React.JSX.Element => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -21,6 +24,15 @@ const PemeriksaanSection = (): React.JSX.Element => {
   const [modalInfo, setModalInfo] = useState<modalInfo>({
     message: '',
     text: '',
+  });
+  const {data: formData} = useQuery({
+    queryKey: ['formData'],
+    queryFn: () => getForm(`layanan/pelayanan_form_item?pelayanan_id=${pendaftaranData?.pelayanan_id}`),
+  });
+
+  const getFormId = formData?.data?.map((item,index) => {
+    const data = item.form_id;
+    return data;
   });
 
 
@@ -84,6 +96,18 @@ const PemeriksaanSection = (): React.JSX.Element => {
     );
   };
 
+  /* useEffect(() => {
+    console.log(formData);
+    console.table(getFormId);
+    dropdownItem.map((item) => {
+      getFormId.map((items) => {
+        //console.log(items);
+        item.formId === items &&
+        console.log('Found Form Id = ', items);
+      });
+    });
+  }, [formData, getFormId]); */
+
   return(
     <SafeAreaView style={{}}>
       <View style={[style.mainContainer, {backgroundColor: '#D9D9D9'}]}>
@@ -109,30 +133,35 @@ const PemeriksaanSection = (): React.JSX.Element => {
         <View style={style.mainDropdownContainer}>
           {
             dropdownItem.map((item, index) => (
-              item.formId === formId &&
-              <React.Fragment key={index}>
-                <TouchableOpacity style={style.mainDropdown} key={index + item.id} onPress={handleActiveIndex.bind(this, index)}>
-                  <Text style={{color: BUTTON_COLOR, fontWeight: 'bold', fontSize: 16}}>{item.title}</Text>
-                  {
-                    activeIndex === index ?
-                    <Icon name="angle-up" size={20} color={BUTTON_COLOR} />
-                    :
-                    <Icon name="angle-down" size={20} color={BUTTON_COLOR} />
-                  }
-                </TouchableOpacity>
-                <View style={[style.childDropdown, { display: activeIndex != index ? 'none' : 'contents'}]}>
-                  {
-                    activeIndex === index &&
-                    Array.isArray(item?.child) && item?.child.map((child, indexChild) => (
-                      <TouchableOpacity key={indexChild} style={[style.childDropdown, {padding: 8, height: 48, justifyContent: 'center',}]} onPress={() => handleChangeScreen(child.screen, pendaftaranId)}>
-                        <Text style={{fontSize: 16}}>
-                          {child.name}
-                        </Text>
-                      </TouchableOpacity>
-                    ))
-                  }
-                </View>
-              </React.Fragment>
+              getFormId?.map((itemFormId: number) => (
+                item.formId === itemFormId && (
+                <React.Fragment key={index}>
+                  <TouchableOpacity style={style.mainDropdown} key={index + item.id} onPress={handleActiveIndex.bind(this, index)}>
+                    <Text style={{color: BUTTON_COLOR, fontWeight: 'bold', fontSize: 16}}>{item.title}</Text>
+                    {
+                      activeIndex === index ?
+                      <Icon name="angle-up" size={20} color={BUTTON_COLOR} />
+                      :
+                      <Icon name="angle-down" size={20} color={BUTTON_COLOR} />
+                    }
+                  </TouchableOpacity>
+                  <View style={[style.childDropdown, { display: activeIndex != index ? 'none' : 'contents'}]}>
+                    {
+                      activeIndex === index &&
+                      Array.isArray(item?.child) && item?.child.map((child, indexChild) => (
+                        <TouchableOpacity key={indexChild} style={[style.childDropdown, {padding: 8, height: 48, justifyContent: 'center',}]} onPress={() => handleChangeScreen(child.screen, pendaftaranId)}>
+                          <Text style={{fontSize: 16}}>
+                            {child.name}
+                          </Text>
+                        </TouchableOpacity>
+                      ))
+                    }
+                  </View>
+                </React.Fragment>
+
+                )
+
+              ))
             ))
           }
         </View>
