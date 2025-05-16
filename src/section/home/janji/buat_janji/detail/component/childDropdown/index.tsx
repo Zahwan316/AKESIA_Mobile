@@ -35,7 +35,7 @@ const ChildDropdownComponent = (props: props) => {
         </Text>
       </View>
       <View style={style.priceContainer}>
-        <Text style={{fontSize: 14, fontWeight: 'bold'}}>{CurrencyFormat(props.harga)} </Text>
+        <Text style={{fontSize: 14, fontWeight: 'bold'}}>{props.harga === 0 ? 'Chat Admin' : CurrencyFormat(props.harga)} </Text>
       </View>
     </TouchableOpacity>
   );
@@ -44,22 +44,25 @@ const ChildDropdownComponent = (props: props) => {
 const style = StyleSheet.create({
   mainHeaderContainer: {
     width: width * 0.9,
-    minHeight: 60,
+    //minHeight: 60,
     borderWidth: 1,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    borderColor: '#10101015',
+    borderColor: '#10101020',
+    backgroundColor: '#fff',
     alignItems: 'center',
     marginBottom: 14,
     borderRadius: 12,
     padding: 8,
-    gap: 4,
-    flex: 1,
+    gap: 12,
+    shadowColor: '#101010',
+    elevation: 4,
+    //flex: 1,
   },
   imgContainer: {
     width: width * 0.1,
-    height: '100%',
+    height: 60,
     borderWidth: 0,
     backgroundColor: MAIN_COLOR,
     borderRadius: 8,
@@ -69,18 +72,20 @@ const style = StyleSheet.create({
   },
   textContainer: {
     width: '45%',
-    height: '100%',
+    /* height: '100%', */
     borderWidth: 0,
     display: 'flex',
     justifyContent: 'center',
+    flex:1,
   },
   priceContainer: {
-    width: '35%',
-    height: '100%',
+    /* width: '35%',
+    height: '100%', */
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0,
+    flex:1,
   },
 });
 

@@ -13,9 +13,17 @@ type dropdownItem = {
 const dropdownItem: dropdownItem[] = [
   {
     id: 1,
-    title: 'Pemeriksaan Ibu Hamil',
+    title: 'Formulir Pelayanan Ibu Hamil',
     formId: 1,
     child: [
+      {
+        name: 'Riwayat Kehamilan Sebelumnya',
+        screen: 'RiwayatKehamilanSebelumnya',
+      },
+      {
+        name: 'Riwayat Kehamilan Sekarang',
+        screen: 'RiwayatKehamilanSekarang',
+      },
       {
         name: 'Pemeriksaan Umum',
         screen: 'PemeriksaanUmum',
@@ -32,7 +40,7 @@ const dropdownItem: dropdownItem[] = [
   },
   {
     id: 2,
-    title: 'Pemeriksaan Bersalin',
+    title: 'Formulir Pemeriksaan Bersalin',
     formId: 2,
     child: [
       {
@@ -47,7 +55,7 @@ const dropdownItem: dropdownItem[] = [
   },
   {
     id: 3,
-    title: 'Pemeriksaan Nifas',
+    title: 'Formulir Pemeriksaan Nifas',
     formId: 3,
     child: [
       {
@@ -62,7 +70,7 @@ const dropdownItem: dropdownItem[] = [
   },
   {
     id: 4,
-    title: 'Pelayan Bayi',
+    title: 'Formulir Pelayanan Bayi',
     formId: 4,
     child: [
       {
@@ -73,7 +81,7 @@ const dropdownItem: dropdownItem[] = [
   },
   {
     id: 5,
-    title: 'Pelayan Lainnya',
+    title: 'Formulir Pelayanan Lainnya',
     formId: 5,
     child: [
       {

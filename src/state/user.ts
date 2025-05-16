@@ -1,6 +1,6 @@
 import {create} from 'zustand';
 
-type action = {
+export type action = {
   user: {
     id: number,
     username: string | null,

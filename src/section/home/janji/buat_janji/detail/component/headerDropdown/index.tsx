@@ -21,7 +21,7 @@ const HeaderDropdownComponent = ({ title }: props): JSX.Element => {
         />
       </View>
       <View style={style.textContainer}>
-        <Text style={{fontWeight: 'bold'}}>{title}</Text>
+        <Text style={{fontWeight: 'bold', color:'#fff'}}>{title}</Text>
       </View>
     </View>
   );

@@ -14,6 +14,7 @@ import axios from '../../../api/axios';
 import handleContentModal from '../../../component/modal/function';
 import { formattedDateData } from '../../../utils/date';
 import { checkIsDataNull } from '../../../utils/checkDataIsNull';
+import { handlePostFormApi } from '../../../api/handleSendFormApi';
 
 export type modalInfo = {
   message: string;
@@ -56,45 +57,7 @@ const PelayananBayiSection = (): JSX.Element => {
   };
 
   const handleSendData = async(page: any) => {
-    handleSubmit(sendToApi)();
-  };
-
-  const sendToApi = async(data: any) => {
-    const dataForm = {...data, pendaftaran_id: pendaftaranId};
-    console.log(data);
-    try{
-      if(chechkIsDataFormBayiNull()){
-        const response = await axios.post('form/pelayanan_bayi', dataForm);
-        setSuccess(true);
-        handleContentModal({
-          setModal,
-          setModalInfo,
-          message: response.data.message,
-          text: 'Tutup',
-        });
-      }
-      else{
-        const response = await axios.put(`form/pelayanan_bayi/${pelayananBayiFormData.data.id}`, dataForm);
-        setSuccess(true);
-        handleContentModal({
-          setModal,
-          setModalInfo,
-          message: response.data.message,
-          text: 'Tutup',
-        });
-      }
-    }
-    catch(e){
-      console.log(e.response)
-      setSuccess(false);
-      handleContentModal({
-        setModal,
-        setModalInfo,
-        message: e.response.data.message,
-        text: 'Tutup',
-      });
-    }
-    
+    handleSubmit((data) => handlePostFormApi(data, 'form/pelayanan_bayi', pendaftaranId, pelayananBayiFormData, setSuccess, setModal, setModalInfo))();
   };
 
   const handleModal = () => {
@@ -206,12 +169,12 @@ const PelayananBayiSection = (): JSX.Element => {
         <InputComponent
           height={'auto'}
           width={'100%'}
-          label="Keterangan Kondisi Bayi"
+          label="Catatan Soap (Keterangan Kondisi Bayi)"
           message="Harap diisi"
           name="keterangan_kondisi_bayi"
           onChange={() => {}}
           placeholder=""
-          type="text"
+          type="textarea"
           backgroundColor={''}
           border={1}
           labelColor={''}

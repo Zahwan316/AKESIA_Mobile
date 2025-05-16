@@ -1,25 +1,26 @@
-import { JSX } from "react/jsx-runtime";
-import FormScreenLayout from "../../screen_layout";
-import { View } from "react-native";
-import InputComponent from "../../../../component/input/text";
-import DropdownInputComponent from "../../../../component/input/dropdown";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { modalInfoType } from "../../../../type/modalInfo";
-import { apiResponse } from "../../../../type/pendaftaran/pendaftaran";
-import { useQuery } from "@tanstack/react-query";
-import { getForm } from "../../../../api/data/form";
-import { BORDER_COLOR } from "../../../../constants/color";
+import { JSX } from 'react/jsx-runtime';
+import FormScreenLayout from '../../screen_layout';
+import { View } from 'react-native';
+import InputComponent from '../../../../component/input/text';
+import DropdownInputComponent from '../../../../component/input/dropdown';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { modalInfoType } from '../../../../type/modalInfo';
+import { apiResponse } from '../../../../type/pendaftaran/pendaftaran';
+import { useQuery } from '@tanstack/react-query';
+import { getForm } from '../../../../api/data/form';
+import { BORDER_COLOR } from '../../../../constants/color';
 import handleContentModal from '../../../../component/modal/function';
-import { checkIsDataNull } from "../../../../utils/checkDataIsNull";
-import axios from "../../../../api/axios";
-import Jenis_Kelamin from "../../../../data/jenis_kelamin";
-import { AsuhanBayiSaatLahirDropdownData, JenisKelaminDropdownDataBayiSaatLahir, KondisiBayiSaatLahirDropdownData } from "../../../../data/pemeriksaan/bayi_saat_lahir";
-import { formattedDateData } from "../../../../utils/date";
+import { checkIsDataNull } from '../../../../utils/checkDataIsNull';
+import axios from '../../../../api/axios';
+import Jenis_Kelamin from '../../../../data/jenis_kelamin';
+import { AsuhanBayiSaatLahirDropdownData, JenisKelaminDropdownDataBayiSaatLahir, KondisiBayiSaatLahirDropdownData } from '../../../../data/pemeriksaan/bayi_saat_lahir';
+import { formattedDateData } from '../../../../utils/date';
+import { handlePostFormApi } from '../../../../api/handleSendFormApi';
 
 const BayiSaatLahirSection = (): JSX.Element => {
-   const navigate = useNavigation<any>();
+  const navigate = useNavigation<any>();
   const router = useRoute();
   const { pendaftaranData, pendaftaranId} = router.params as {pendaftaranData: apiResponse, pendaftaranId: number};
   const {
@@ -41,44 +42,7 @@ const BayiSaatLahirSection = (): JSX.Element => {
   });
 
   const handlePage = () => {
-    handleSubmit(handleSendToApi)();
-  };
-
-  const handleSendToApi = async(data: any) => {
-    const mergedData = {...data, pendaftaran_id: pendaftaranId};
-    try{
-      if(checkIsDataNull(bayiSaatLahirFormData?.data)){
-        await axios.post('form/bayi_saat_lahir', mergedData).then(response => {
-          setSuccess(true);
-          handleContentModal({
-            setModal,
-            setModalInfo,
-            message: response.data.message,
-            text: 'Tutup',
-          });
-        });
-      }
-      else{
-        await axios.put(`form/bayi_saat_lahir/${bayiSaatLahirFormData?.data.id}`, mergedData).then(response => {
-          setSuccess(true);
-          handleContentModal({
-            setModal,
-            setModalInfo,
-            message: response.data.message,
-            text: 'Tutup',
-          });
-        });
-      }
-    }
-    catch(error: any){
-      setSuccess(false);
-      handleContentModal({
-        setModal,
-        setModalInfo,
-        message: error.response.data.message,
-        text: 'Tutup',
-      });
-    }
+    handleSubmit((data) => handlePostFormApi(data, 'form/bayi_saat_lahir', pendaftaranId, bayiSaatLahirFormData, setSuccess, setModal, setModalInfo))();
   };
 
   const handleModal = () => {
@@ -86,7 +50,7 @@ const BayiSaatLahirSection = (): JSX.Element => {
       navigate.goBack();
     }
     setModal(!modal);
-  }
+  };
 
   useEffect(() => {
     console.log(bayiSaatLahirFormData);

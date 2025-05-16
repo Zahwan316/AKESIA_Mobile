@@ -44,6 +44,11 @@ type apiResponse = {
 
 const ButtonMenu: button[] = [
   {
+    title: 'Semua',
+    onPress: () => {},
+    color: '#000',
+  },
+  {
     title: 'Menunggu Konfirmasi',
     onPress: () => {},
     color: '#000',
@@ -66,7 +71,7 @@ const ButtonMenu: button[] = [
 ];
 
 const JanjiKitaSection = (): JSX.Element => {
-  const [currMenu, setCurrMenu] = useState<string>('Menunggu Konfirmasi');
+  const [currMenu, setCurrMenu] = useState<string>('Semua');
   const navigation = useNavigation<any>();
   const { data: pendaftaranUserData} = useQuery({
     queryKey: ['getCurrUserPendaftaran'],
@@ -89,7 +94,7 @@ const JanjiKitaSection = (): JSX.Element => {
     <JanjiScreenLayout
       title="Janji Kita"
     >
-      <View style={{flexDirection: 'row',flexWrap: 'wrap',gap: 12, justifyContent: 'space-between', marginBottom: 32}}>
+      <View style={{flexDirection: 'row',flexWrap: 'wrap',gap: 12, justifyContent: 'flex-start', marginBottom: 32}}>
         {
           ButtonMenu.map((item, index) => (
             <ButtonComponent
@@ -104,7 +109,7 @@ const JanjiKitaSection = (): JSX.Element => {
       <ScrollView style={{position: 'relative', height: '50%'}}>
         {
           pendaftaranUserData?.data.map((item: apiResponse, index: number) => (
-            currMenu === item.status &&
+            (currMenu === 'Semua' || currMenu === item.status) &&
             <QueueItemComponent
               description={item.pelayanan?.keterangan}
               handleClick={() => handleScreen('PemesananJanji', item.pelayanan_id, item.id)}
@@ -112,11 +117,10 @@ const JanjiKitaSection = (): JSX.Element => {
               img={require('../../../../assets/icon/baby.png')}
               time={item.jam_ditentukan === null ? 'Segera Diinformasikan' : item.jam_ditentukan}
               title={item.pelayanan?.nama}
-              key={index + item.id}
+              key={index}
               status={item.status}
-              role='user'
+              role="user"
             />
-
           ))
         }
       </ScrollView>

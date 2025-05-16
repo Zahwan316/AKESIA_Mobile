@@ -14,11 +14,6 @@ const NotificationItem = ({title, message, createdAt}: props): JSX.Element => {
     <View style={Style.itemMainContainer}>
       <View style={Style.imgContainer}>
         <Icon name='bell' size={36} color='#000' />
-        {/* <Image
-          source={require('../../../../assets/icon/bell-gray.png')}
-          style={{width: '100%', height: '100%'}}
-          resizeMode="cover"
-        /> */}
       </View>
       <View style={{flex:1, gap: 4}}>
         <Text style={{fontSize: 16, fontWeight: 'bold'}}>{title}</Text>

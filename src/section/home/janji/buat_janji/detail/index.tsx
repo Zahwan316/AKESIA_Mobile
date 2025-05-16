@@ -51,8 +51,8 @@ const BuatJanjiDetailSection = (): JSX.Element => {
             />
           </View>
           <View style={style.textContainer}>
-            <Text style={{fontSize: 14}}>{formattedDate}</Text>
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>{subItem}</Text>
+            <Text style={{fontSize: 14, color: '#fff'}}>{formattedDate}</Text>
+            <Text style={{fontSize: 18, fontWeight: 'bold', color: '#fff'}}>{subItem}</Text>
           </View>
         </View>
         <View>
@@ -71,7 +71,7 @@ const BuatJanjiDetailSection = (): JSX.Element => {
                 {
                     <View>
                       <ChildDropdownComponent
-                        key={item.id}
+                        key={index}
                         title={item.nama}
                         code={item.keterangan}
                         harga={item.harga}

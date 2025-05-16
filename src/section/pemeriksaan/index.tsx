@@ -13,11 +13,23 @@ import ModalComponent from '../../component/modal';
 import { modalInfo } from '../../type/modalInfo';
 import { useQuery } from '@tanstack/react-query';
 import { getForm } from '../../api/data/form';
+import ChildDropdownComponent from '../home/janji/buat_janji/detail/component/childDropdown';
+import usePelayananStore from '../../state/pelayanan';
+
+enum PelayananId{
+  'BABY_SPA'= 1,
+  'BIDAN_BUNDA' = 2,
+  'PERIKSA_HAMIL'= 3,
+  'PERSALINAN'= 4,
+}
 
 const PemeriksaanSection = (): React.JSX.Element => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const navigation = useNavigation<any>();
   const route = useRoute();
+  //const [pelayananPeriksaHamilId, setPelayananPeriksaHamilId] = useState<number>(0);
+  const pelayananPeriksaHamilId = usePelayananStore((state) => state.pelayananPeriksaHamilId);
+  const setPelayananPeriksaHamilId = usePelayananStore((state) => state.setPelayananPeriksaHamilId);
   const {formId, pendaftaranId, pendaftaranData } = route.params as {formId: number, pendaftaranId: number, pendaftaranData: apiResponse};
   const [modal, setModal] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
@@ -28,6 +40,10 @@ const PemeriksaanSection = (): React.JSX.Element => {
   const {data: formData} = useQuery({
     queryKey: ['formData'],
     queryFn: () => getForm(`layanan/pelayanan_form_item?pelayanan_id=${pendaftaranData?.pelayanan_id}`),
+  });
+  const {data: periksaHamilLayananData} = useQuery({
+    queryKey: ['periksaHamilLayananData'],
+    queryFn: () => getForm(`layanan/pelayanan?jenis_layanan_id=3`),
   });
 
   const getFormId = formData?.data?.map((item,index) => {
@@ -44,8 +60,8 @@ const PemeriksaanSection = (): React.JSX.Element => {
     }
   };
 
-  const handleChangeScreen = (screen: string, pendaftaranId?: number) => {
-    navigation.navigate(screen, {pendaftaranId: pendaftaranId, pendaftaranData: pendaftaranData});
+  const handleChangeScreen = (screen: string, pendaftaranId?: number, pelayananPemeriksaanIdParams?: number) => {
+    navigation.navigate(screen, {pendaftaranId: pendaftaranId, pendaftaranData: pendaftaranData, pelayananPemeriksaanId: pelayananPemeriksaanIdParams});
   };
 
   const handleSetPendaftaranComplete = async() => {
@@ -96,21 +112,22 @@ const PemeriksaanSection = (): React.JSX.Element => {
     );
   };
 
-  /* useEffect(() => {
-    console.log(formData);
-    console.table(getFormId);
-    dropdownItem.map((item) => {
-      getFormId.map((items) => {
-        //console.log(items);
-        item.formId === items &&
-        console.log('Found Form Id = ', items);
-      });
-    });
-  }, [formData, getFormId]); */
+  useEffect(() => {
+    //console.table(getFormId);
+    console.log(pendaftaranData);
+    console.log('data pelayanan periksa hamil id = ', pelayananPeriksaHamilId);
+
+  }, [pendaftaranData, pelayananPeriksaHamilId]);
+
+  //tambahkan pengecekan jika pendaftaraData.pelayanan.harga = 0, maka pelayananPeriksaHamilId(0), jika harga != 0 maka set pelayananPeriksaHamilId dengan data yang sudah terupdate
+
+  useEffect(() => {
+    setPelayananPeriksaHamilId(0);
+  }, []);
 
   return(
     <SafeAreaView style={{}}>
-      <View style={[style.mainContainer, {backgroundColor: '#D9D9D9'}]}>
+      <View style={[style.mainContainer, {backgroundColor: '#f4f4f4'}]}>
         <View style={style.headerContainer}>
           <View style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 24}}>
             <Image
@@ -132,6 +149,26 @@ const PemeriksaanSection = (): React.JSX.Element => {
         </View>
         <View style={style.mainDropdownContainer}>
           {
+            pelayananPeriksaHamilId === 0 &&
+            <View style={style.titleItemContainer}>
+              <Text style={{fontWeight: 'bold', fontSize: 16}}>Periksa Hamil Nyaman</Text>
+            </View>
+          }
+          {
+            pendaftaranData?.pelayanan.jenis_layanan_id === PelayananId.PERIKSA_HAMIL && pelayananPeriksaHamilId === 0 ?
+            periksaHamilLayananData?.data.map((item, index) => (
+              item.harga !== 0 &&
+              <React.Fragment key={index}>
+                <ChildDropdownComponent
+                  title={item.nama}
+                  handlePress={() => setPelayananPeriksaHamilId(item.id)}
+                  code={item.keterangan}
+                  harga={item.harga}
+                  key={index}
+                />
+              </React.Fragment>
+            ))
+            :
             dropdownItem.map((item, index) => (
               getFormId?.map((itemFormId: number) => (
                 item.formId === itemFormId && (
@@ -149,7 +186,7 @@ const PemeriksaanSection = (): React.JSX.Element => {
                     {
                       activeIndex === index &&
                       Array.isArray(item?.child) && item?.child.map((child, indexChild) => (
-                        <TouchableOpacity key={indexChild} style={[style.childDropdown, {padding: 8, height: 48, justifyContent: 'center',}]} onPress={() => handleChangeScreen(child.screen, pendaftaranId)}>
+                        <TouchableOpacity key={indexChild} style={[style.childDropdown, {padding: 8, height: 48, justifyContent: 'center',}]} onPress={() => handleChangeScreen(child.screen, pendaftaranId, pelayananPeriksaHamilId)}>
                           <Text style={{fontSize: 16}}>
                             {child.name}
                           </Text>
@@ -169,7 +206,9 @@ const PemeriksaanSection = (): React.JSX.Element => {
           <ButtonComponent
             title="Selesai"
             color={BUTTON_COLOR_3}
+            disabled={pendaftaranData?.status === 'Selesai' ? true : false}
             onPress={() => handleSelesai()}
+            customstyle={{display: pelayananPeriksaHamilId === 0 ? 'none' : 'flex'}}
           />
         </View>
       </View>
@@ -219,17 +258,21 @@ const style = StyleSheet.create({
     marginBottom: 14,
     padding: 12,
     gap: 6,
+    shadowColor: '#101010',
+    elevation: 2,
   },
   childDropdown: {
     width: '100%',
     height: '8%',
     backgroundColor: '#fff',
-    marginBottom: 10,
+    marginBottom: 12,
     padding: 12,
     borderRadius: 12,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#101010',
+    elevation: 2,
   },
   buttonInfo: {
     width: 'auto',
@@ -243,7 +286,18 @@ const style = StyleSheet.create({
   buttonContainer: {
     width: '100%',
     paddingHorizontal: 12,
-  }
+  },
+  titleItemContainer: {
+    width: '100%',
+    padding: 10,
+    borderRadius: 10,
+    marginBottom: 12,
+    backgroundColor: '#fff',
+    borderColor: '#10101010',
+    borderWidth: 1,
+    shadowColor: '#101010',
+    elevation: 3,
+  },
 });
 
 export default PemeriksaanSection;

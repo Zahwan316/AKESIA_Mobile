@@ -1,9 +1,28 @@
 import { ScrollView, View } from "react-native";
 import FormScreenLayout from "../../screen_layout";
-import { JSX } from "react";
+import { JSX, useState } from "react";
 import InputComponent from "../../../../component/input/text";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useForm } from "react-hook-form";
+import { modalInfoType } from "../../../../type/modalInfo";
+import { apiResponse } from "../../../../type/pendaftaran/pendaftaran";
 
 const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
+   const navigate = useNavigation<any>();
+  const router = useRoute();
+  const { pendaftaranData, pendaftaranId, pelayananPemeriksaanHamilId} = router.params as {pendaftaranData: apiResponse, pendaftaranId: number, pelayananPemeriksaanHamilId: number};
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: {errors},
+  } = useForm();
+  const [modal, setModal] = useState<boolean>(false);
+  const [isSuccess, setSuccess] = useState<boolean>(false);
+  const [modalInfo, setModalInfo] = useState<modalInfoType>({
+    message: '',
+    text: '',
+  });
   return(
     <FormScreenLayout>
       <ScrollView style={{marginBottom: 64}}>

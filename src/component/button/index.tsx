@@ -9,11 +9,14 @@ type props = {
   disabled?: boolean
 }
 
+const OPACITY_DISABLED = 0.5;
+const OPACITY_ENABLED = 1;
+
 const ButtonComponent = ({ title, color, onPress, customstyle, disabled }: props): React.JSX.Element => {
   return(
     <TouchableOpacity
       style={
-        [style.main, customstyle, {backgroundColor: color} ]
+        [style.main, customstyle, {backgroundColor: color, opacity: disabled ? OPACITY_DISABLED : OPACITY_ENABLED} ]
       }
       onPress={onPress}
       disabled={disabled}
@@ -33,6 +36,8 @@ const style = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignContent: 'center',
+    shadowColor: '#101010',
+    elevation: 2,
   },
   text: {
     textAlign: 'center',

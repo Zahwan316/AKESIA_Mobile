@@ -16,6 +16,7 @@ import axios from '../../../../api/axios';
 import handleContentModal from '../../../../component/modal/function';
 import { formattedDateData } from '../../../../utils/date';
 import { modalInfoType } from '../../../../type/modalInfo';
+import { handlePostFormApi } from '../../../../api/handleSendFormApi';
 
 const PelayananIbuBersalinSection = (): JSX.Element => {
   const navigate = useNavigation<any>();
@@ -40,7 +41,7 @@ const PelayananIbuBersalinSection = (): JSX.Element => {
   });
 
   const handlePage = () => {
-    handleSubmit(handleSendToApi)();
+    handleSubmit((data) => handlePostFormApi(data, 'form/pelayanan_ibu_bersalin', pendaftaranId, pelayananIbuBersalinData, setSuccess, setModal, setModalInfo))();
   };
 
   const handleSendToApi = async(data: any) => {
