@@ -49,13 +49,6 @@ const PelayananBayiSection = (): JSX.Element => {
     text: '',
   });
 
-  const chechkIsDataFormBayiNull = () => {
-    if(pelayananBayiFormData?.data === null || pelayananBayiFormData?.data === undefined){
-      return true;
-    }
-    return false;
-  };
-
   const handleSendData = async(page: any) => {
     handleSubmit((data) => handlePostFormApi(data, 'form/pelayanan_bayi', pendaftaranId, pelayananBayiFormData, setSuccess, setModal, setModalInfo))();
   };

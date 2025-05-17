@@ -13,7 +13,7 @@ export const handlePostFormApi = async(
 ) => {
   const mergedData = {...data, pendaftaran_id: pendaftaranId};
   try{
-    console.log(mergedData)
+    console.log(mergedData);
     if(checkIsDataNull(apiFormData?.data)){
       await axios.post(`${url}`, mergedData).then(response => {
         setSuccess(true);
