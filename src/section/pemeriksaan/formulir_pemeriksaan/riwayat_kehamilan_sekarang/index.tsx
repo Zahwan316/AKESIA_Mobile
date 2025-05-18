@@ -337,7 +337,7 @@ const RiwayatKehamilanSekarangSection = (): JSX.Element => {
       created_at={checkIsDataNull(riwayatKehamilanSekarangFormData?.data) ? 'Belum ada' : formattedDateData(riwayatKehamilanSekarangFormData?.data.created_at)}
       updated_at={checkIsDataNull(riwayatKehamilanSekarangFormData?.data) ? 'Belum ada' : formattedDateData(riwayatKehamilanSekarangFormData?.data.updated_at)}
     >
-      <ScrollView style={{marginBottom: 32}}>
+      <ScrollView style={{marginBottom: 64}}>
         {
           page === 1 ?
           <Page1

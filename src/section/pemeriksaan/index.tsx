@@ -16,7 +16,7 @@ import { getForm } from '../../api/data/form';
 import ChildDropdownComponent from '../home/janji/buat_janji/detail/component/childDropdown';
 import usePelayananStore from '../../state/pelayanan';
 
-enum PelayananId{
+enum JenisLayananId{
   'BABY_SPA'= 1,
   'BIDAN_BUNDA' = 2,
   'PERIKSA_HAMIL'= 3,
@@ -65,8 +65,15 @@ const PemeriksaanSection = (): React.JSX.Element => {
   };
 
   const handleSetPendaftaranComplete = async() => {
-    const data = {status: 'Selesai'};
+    let data;
+    if(pelayananPeriksaHamilId !== 0 && pendaftaranData?.pelayanan?.jenis_layanan_id === JenisLayananId.PERIKSA_HAMIL){
+      data = { status: 'Selesai', pelayanan_id: pelayananPeriksaHamilId };
+    }
+    else{
+      data = { status: 'Selesai' };
+    }
     try{
+      console.log('Data yang dikirim: ', data);
       const response = await axios.put(`pendaftaran/${pendaftaranId}`, data);
       setSuccess(true);
       handleContentModal({
@@ -122,6 +129,10 @@ const PemeriksaanSection = (): React.JSX.Element => {
   //tambahkan pengecekan jika pendaftaraData.pelayanan.harga = 0, maka pelayananPeriksaHamilId(0), jika harga != 0 maka set pelayananPeriksaHamilId dengan data yang sudah terupdate
 
   useEffect(() => {
+    if(pendaftaranData?.pelayanan?.jenis_layanan_id === JenisLayananId.PERIKSA_HAMIL && pendaftaranData?.pelayanan?.harga !== 0){
+      setPelayananPeriksaHamilId(pendaftaranData?.pelayanan?.id);
+      return;
+    }
     setPelayananPeriksaHamilId(0);
   }, []);
 
@@ -155,7 +166,7 @@ const PemeriksaanSection = (): React.JSX.Element => {
             </View>
           }
           {
-            pendaftaranData?.pelayanan.jenis_layanan_id === PelayananId.PERIKSA_HAMIL && pelayananPeriksaHamilId === 0 ?
+            pendaftaranData?.pelayanan.jenis_layanan_id === JenisLayananId.PERIKSA_HAMIL && pelayananPeriksaHamilId === 0 ?
             periksaHamilLayananData?.data.map((item, index) => (
               item.harga !== 0 &&
               <React.Fragment key={index}>
@@ -204,9 +215,9 @@ const PemeriksaanSection = (): React.JSX.Element => {
         </View>
         <View style={style.buttonContainer}>
           <ButtonComponent
-            title="Selesai"
+            title="Simpan"
             color={BUTTON_COLOR_3}
-            disabled={pendaftaranData?.status === 'Selesai' ? true : false}
+            //disabled={pendaftaranData?.status === 'Selesai' ? true : false}
             onPress={() => handleSelesai()}
             customstyle={{display: pelayananPeriksaHamilId === 0 ? 'none' : 'flex'}}
           />

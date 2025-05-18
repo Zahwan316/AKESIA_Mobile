@@ -6,8 +6,5 @@ export const checkIsDataNull = (data: any) => {
 };
 
 export const checkIsDataFormNull = (data: any) => {
-  if(Array.isArray(data?.data[0]) && data?.data.length === 0){
-    return true;
-  }
-  return false;
+  return !data || !Array.isArray(data.data) || data.data.length === 0;
 };

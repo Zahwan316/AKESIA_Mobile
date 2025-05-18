@@ -139,13 +139,14 @@ const PemesananJanjiSection = (): JSX.Element => {
     setModal(!modal);
   };
 
-  useEffect(() => {
-    console.table(currUserAnakData);
-  }, [currUserAnakData]);
-
   /* useEffect(() => {
-    console.table(pendaftaranItem);
-  },[pendaftaranItem]); */
+    console.table(currUserAnakData);
+  }, [currUserAnakData]); */
+
+  useEffect(() => {
+    console.table(pelayananData);
+    console.log(pendaftaranId);
+  },[pelayananData]);
 
   return (
     <JanjiScreenLayout
@@ -163,9 +164,9 @@ const PemesananJanjiSection = (): JSX.Element => {
           <Text style={{fontWeight: 'bold', fontSize: 16}}>Pesanan: </Text>
         </View>
         <ChildDropdownComponent
-          title={pesananItem?.nama}
-          harga={pesananItem?.harga}
-          code={pesananItem?.keterangan}
+          title={pendaftaranUserData?.data?.pelayanan?.nama}
+          harga={pendaftaranUserData?.data?.pelayanan?.harga}
+          code={pendaftaranUserData?.data?.pelayanan?.keterangan}
         />
       </View>
       <View style={style.dateContainer}>
