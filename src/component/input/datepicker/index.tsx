@@ -4,7 +4,7 @@ import { Text, TouchableOpacity } from "react-native";
 import { Button, StyleSheet, TextInput, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { formattedDateData } from "../../../utils/date";
+import { formattedDateData, formattedDateDataWithoutHour } from "../../../utils/date";
 import { BORDER_COLOR } from "../../../constants/color";
 
 type props = {
@@ -36,7 +36,8 @@ const InputDatePickerComponent = (props: props): React.JSX.Element => {
             <>
               <TouchableOpacity onPress={() => setOpen(true)} style={style.formInput}>
                 <Text>{value ?
-                      new Date(value).toLocaleDateString('id-ID')
+                      formattedDateDataWithoutHour(value)
+                      
                         :
                       props.initialValue || 'Pilih tanggal'}
                 </Text>
@@ -56,7 +57,7 @@ const InputDatePickerComponent = (props: props): React.JSX.Element => {
                 onConfirm={(dates) => {
                   setOpen(false);
                   setDate(dates);
-                  const formattedDates = formattedDateData(dates);
+                  const formattedDates = formattedDateDataWithoutHour(dates);
                   onChange(formattedDates);
                   props.onChange();
                 }}

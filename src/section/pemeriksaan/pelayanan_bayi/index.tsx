@@ -106,7 +106,7 @@ const PelayananBayiSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
-          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? null : pelayananBayiFormData?.data.nama_bayi}
+          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? pendaftaranData?.bayi.nama_lengkap : pelayananBayiFormData?.data.nama_bayi}
         />
         <InputComponent
           height={'auto'}
@@ -124,7 +124,7 @@ const PelayananBayiSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
-          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? null : pelayananBayiFormData?.data.umur_bayi.toString() }
+          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? calculateAge(pendaftaranData?.bayi.tanggal_lahir).toString() : pelayananBayiFormData?.data.umur_bayi.toString() }
         />
         <DropdownInputComponent
           width={'100%'}
@@ -139,7 +139,7 @@ const PelayananBayiSection = (): JSX.Element => {
           name="jenis_kelamin_bayi"
           message="Harap diisi"
           getValue="name"
-          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? null : pelayananBayiFormData?.data.jenis_kelamin_bayi }
+          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? (pendaftaranData?.bayi.jenis_kelamin === 'L' ? 'Laki Laki' : 'Perempuan') : pelayananBayiFormData?.data.jenis_kelamin_bayi }
         />
         <InputComponent
           height={'auto'}

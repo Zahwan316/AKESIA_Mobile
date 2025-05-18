@@ -6,7 +6,7 @@ import { formattedDate } from '../../../../utils/date';
 import InputDatePickerComponent from '../../../../component/input/datepicker';
 import InputComponent from '../../../../component/input/text';
 import ButtonComponent from '../../../../component/button';
-import { MAIN_COLOR } from '../../../../constants/color';
+import { BORDER_COLOR, MAIN_COLOR } from '../../../../constants/color';
 import { useForm } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
 import { getPelayanan } from '../../../../api/data/pelayanan';
@@ -164,9 +164,9 @@ const PemesananJanjiSection = (): JSX.Element => {
           <Text style={{fontWeight: 'bold', fontSize: 16}}>Pesanan: </Text>
         </View>
         <ChildDropdownComponent
-          title={pendaftaranUserData?.data?.pelayanan?.nama}
-          harga={pendaftaranUserData?.data?.pelayanan?.harga}
-          code={pendaftaranUserData?.data?.pelayanan?.keterangan}
+          title={pelayananId ? pelayananData?.data?.nama : pendaftaranUserData?.data?.pelayanan?.nama}
+          harga={pelayananId ? pelayananData?.data?.harga : pendaftaranUserData?.data?.pelayanan?.harga}
+          code={pelayananId ? pelayananData?.data?.keterangan : pendaftaranUserData?.data?.pelayanan?.keterangan}
         />
       </View>
       <View style={style.dateContainer}>
@@ -249,10 +249,12 @@ const PemesananJanjiSection = (): JSX.Element => {
               onChange={() => {}}
               placeholder=""
               type="textarea"
-              backgroundColor={'#6B779A20'}
+              backgroundColor={'#fff'}
               control={control}
               errors={errors}
               disabled={pendaftaranId != null}
+              border={1}
+              borderColor={BORDER_COLOR}
               initialValue={pendaftaranId != null && pendaftaranItem?.keluhan}
             />
         </ScrollView>

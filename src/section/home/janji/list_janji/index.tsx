@@ -48,7 +48,7 @@ const ListJanjiSection = (): JSX.Element => {
   const [tanggalFilter, setTanggalFilter] = useState<string | null>(null);
   const { data: pendaftaranData, refetch} = useQuery({
     queryKey: ['pendaftaran', tanggalFilter],
-    queryFn: () => getPendaftaranUser(tanggalFilter ? `pendaftaran?tanggal=${tanggalFilter}` : `pendaftaran?tanggal=${formattedDateData(Date.now())}`),
+    queryFn: () => getPendaftaranUser(tanggalFilter ? `pendaftaran?tanggal=${tanggalFilter}` : `pendaftaran?tanggal=${formattedDateDataWithoutHour(Date.now())}`),
   });
   const {
     control,

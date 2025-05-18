@@ -1,17 +1,17 @@
-import { ScrollView, View } from "react-native";
-import FormScreenLayout from "../../screen_layout";
-import { JSX, useEffect, useState } from "react";
-import InputComponent from "../../../../component/input/text";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { useForm } from "react-hook-form";
-import { modalInfoType } from "../../../../type/modalInfo";
-import { apiResponse } from "../../../../type/pendaftaran/pendaftaran";
-import { handlePostFormApi } from "../../../../api/handleSendFormApi";
-import { BORDER_COLOR } from "../../../../constants/color";
-import { getForm } from "../../../../api/data/form";
-import { useQuery } from "@tanstack/react-query";
-import { checkIsDataNull } from "../../../../utils/checkDataIsNull";
-import { formattedDateData } from "../../../../utils/date";
+import { ScrollView, View } from 'react-native';
+import FormScreenLayout from '../../screen_layout';
+import { JSX, useEffect, useState } from 'react';
+import InputComponent from '../../../../component/input/text';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useForm } from 'react-hook-form';
+import { modalInfoType } from '../../../../type/modalInfo';
+import { apiResponse } from '../../../../type/pendaftaran/pendaftaran';
+import { handlePostFormApi } from '../../../../api/handleSendFormApi';
+import { BORDER_COLOR } from '../../../../constants/color';
+import { getForm } from '../../../../api/data/form';
+import { useQuery } from '@tanstack/react-query';
+import { checkIsDataNull } from '../../../../utils/checkDataIsNull';
+import { formattedDateData } from '../../../../utils/date';
 
 const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
   const navigate = useNavigation<any>();

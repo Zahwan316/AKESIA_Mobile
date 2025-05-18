@@ -160,7 +160,7 @@ const PemeriksaanSection = (): React.JSX.Element => {
         </View>
         <View style={style.mainDropdownContainer}>
           {
-            pelayananPeriksaHamilId === 0 &&
+            pelayananPeriksaHamilId === 0 && pendaftaranData?.pelayanan.jenis_layanan_id === JenisLayananId.PERIKSA_HAMIL &&
             <View style={style.titleItemContainer}>
               <Text style={{fontWeight: 'bold', fontSize: 16}}>Periksa Hamil Nyaman</Text>
             </View>
@@ -219,7 +219,7 @@ const PemeriksaanSection = (): React.JSX.Element => {
             color={BUTTON_COLOR_3}
             //disabled={pendaftaranData?.status === 'Selesai' ? true : false}
             onPress={() => handleSelesai()}
-            customstyle={{display: pelayananPeriksaHamilId === 0 ? 'none' : 'flex'}}
+            //customstyle={{display: pelayananPeriksaHamilId === 0 ? 'none' : 'flex'}}
           />
         </View>
       </View>
