@@ -1,13 +1,16 @@
 import { JSX, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 import JanjiScreenLayout from '../layout';
 import ButtonComponent from '../../../../component/button';
-import QueueItemComponent from '../component/queue-item';
+import QueueItemComponent, { style } from '../component/queue-item';
 import { ScrollView } from 'react-native';
 import FloatingIcon from '../../../../component/floatingIcon';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import { getPendaftaranUser } from '../../../../api/data/pendaftaran';
+import handleContentModal from '../../../../component/modal/function';
+import axios from '../../../../api/axios';
+import ModalComponent from '../../../../component/modal';
 
 type button = {
   title: string,
@@ -77,6 +80,12 @@ const JanjiKitaSection = (): JSX.Element => {
     queryKey: ['getCurrUserPendaftaran'],
     queryFn: () => getPendaftaranUser('getCurrUserPendaftaran'),
   });
+  const [modal, setModal] = useState<boolean>(false);
+  const [isSuccess, setSuccess] = useState<boolean>(false);
+  const [modalInfo, setModalInfo] = useState<modalInfoType>({
+    message: '',
+    text: '',
+  });
 
   const handleCurrMenu = (title: string) => {
     setCurrMenu(title);
@@ -84,7 +93,39 @@ const JanjiKitaSection = (): JSX.Element => {
 
   const handleScreen = (screen: string, pelayananId?: string | number, pendaftaranId?: string | number) => {
     navigation.navigate(screen, {pelayananId: pelayananId, pendaftaranId: pendaftaranId});
-  }; 
+  };
+
+  const handleBatalkanJanji = async(pendaftaranId: number) => {
+    const data = { status: 'Dibatalkan' };
+
+    try{
+      const response = await axios.put(`pendaftaran/${pendaftaranId}`, data);
+      setSuccess(true);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: 'Janji berhasil dibatalkan',
+        text: 'Tutup',
+      });
+    }
+    catch(e){
+      console.log(e.response);
+      setSuccess(false);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: e.response.data.message,
+        text: 'Tutup',
+      });
+    }
+  };
+
+  const handleModal = () => {
+    if(isSuccess){
+      navigation.replace('JanjiKita');
+    }
+    setModal(!modal);
+  };
 
   /* useEffect(() => {
     console.log(pendaftaranUserData);
@@ -94,6 +135,13 @@ const JanjiKitaSection = (): JSX.Element => {
     <JanjiScreenLayout
       title="Janji Kita"
     >
+      <ModalComponent
+        handleModal={handleModal}
+        message={modalInfo.message}
+        text={modalInfo.text}
+        isSuccess={isSuccess}
+        modalVisible={modal}
+      />
       <View style={{flexDirection: 'row',flexWrap: 'wrap',gap: 12, justifyContent: 'flex-start', marginBottom: 32}}>
         {
           ButtonMenu.map((item, index) => (
@@ -113,13 +161,14 @@ const JanjiKitaSection = (): JSX.Element => {
             <QueueItemComponent
               description={item.pelayanan?.keterangan}
               handleClick={() => handleScreen('PemesananJanji', item.pelayanan_id, item.id)}
-              handleDelete={() => {}}
+              handleDelete={() => handleBatalkanJanji(item.id)}
               img={require('../../../../assets/icon/baby.png')}
-              time={item.jam_ditentukan === null ? 'Segera Diinformasikan' : item.jam_ditentukan}
+              time={ item.status === 'Dibatalkan' ? 'Dibatalkan' : (item.jam_ditentukan === null ? 'Segera Diinformasikan' : item.jam_ditentukan)}
               title={item.pelayanan?.nama}
               key={index}
               status={item.status}
               role="user"
+              pendaftaranId={item.id}
             />
           ))
         }

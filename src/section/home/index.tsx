@@ -42,6 +42,12 @@ const menuList: menu[] = [
     screen: 'ListJanji',
     role: 'bidan',
   },
+  {
+    name: 'Berat Mama',
+    icon: require('../../assets/icon/berat_mama_icon.png'),
+    screen: 'BeratMama',
+    role: 'user',
+  },
 ];
 
 const HomeSection = (): JSX.Element => {
@@ -79,12 +85,14 @@ const HomeSection = (): JSX.Element => {
       <ScrollView>
         <View style={Style.profileContainer}>
           <View style={Style.nameContainer}>
-            <Text style={{fontSize: 18, color: "#fff"}}>Hi, {userData?.user?.nama_lengkap}</Text>
-            <Image
-              source={require('../../assets/icon/bell.png')}
-              style={{width: 28, height: 28}}
-              resizeMode='contain'
-            />
+            <Text style={{fontSize: 18, color: "#fff"}}>Halo, {userData?.user?.nama_lengkap}</Text>
+            <TouchableOpacity onPress={() => handlePressButton('Notifikasi')}>
+              <Image
+                source={require('../../assets/icon/bell.png')}
+                style={{width: 28, height: 28}}
+                resizeMode='contain'
+              />
+            </TouchableOpacity>
           </View>
           <View style={Style.boxGroupContainer}>
             <TouchableOpacity style={Style.boxContainer}>

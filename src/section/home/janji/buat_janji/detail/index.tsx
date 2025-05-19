@@ -10,6 +10,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { formattedDate } from '../../../../../utils/date';
 import { getPelayanan } from '../../../../../api/data/pelayanan';
 import { useQuery } from '@tanstack/react-query';
+import { ChangePrice } from '../../../../../utils/changePrice';
+import LoadingIndicator from '../../../../../component/loading';
 
 type apiResponse = {
   'id': number,
@@ -74,7 +76,7 @@ const BuatJanjiDetailSection = (): JSX.Element => {
                         key={index}
                         title={item.nama}
                         code={item.keterangan}
-                        harga={item.harga}
+                        harga={ChangePrice(item.harga, item.nama, item.kuantitas)}
                         handlePress={() => handleToPemesanan(item.id)}
                       />
                     </View>

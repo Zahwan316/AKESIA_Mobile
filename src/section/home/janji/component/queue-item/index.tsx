@@ -1,9 +1,12 @@
-import { JSX } from 'react';
-import { Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native';
+import { JSX, useState } from 'react';
+import { Alert, Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableOpacity } from 'react-native';
 import {  Dimensions } from 'react-native';
 import { BUTTON_COLOR, MAIN_COLOR } from '../../../../../constants/color';
+import axios from '../../../../../api/axios';
+import { modalInfoType } from '../../../../../type/modalInfo';
+import handleContentModal from '../../../../../component/modal/function';
 
 const { width, height } = Dimensions.get('window');
 
@@ -14,20 +17,39 @@ type props = {
   time: string,
   status: string,
   role?: 'user' | 'bidan',
+  pendaftaranId: number,
   handleClick: () => void,
   handleDelete: () => void,
   handlePeriksa?: () => void
 }
 
 const QueueItemComponent = (props: props): JSX.Element => {
+  const handleAlert = () => {
+    Alert.alert(
+      'Konfirmasi',
+      'Apakah anda yakin ingin menghapus janji ini?',
+      [
+        {
+          text: 'Batal',
+          style: 'cancel',
+        },
+        {
+          text: 'Ya',
+          onPress: props.handleDelete,
+        },
+      ]
+    );
+  };
+
   return(
     <View style={style.mainContentContainer}>
+      
       <View style={style.infoContainer}>
         <View style={style.infoItemContainer}>
           <Text style={{fontWeight: 'bold', fontSize: 14, color: '#fff'}}>{props.status}</Text>
         </View>
         <View>
-            <Text style={{fontWeight: 'bold', fontSize: 15}}>{props.time}</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 15}}>{props.time}</Text>
         </View>
       </View>
       <View style={style.descContainer}>
@@ -64,7 +86,12 @@ const QueueItemComponent = (props: props): JSX.Element => {
               <Icon name='whatsapp' size={30} color='#00ff0090'/>
             </TouchableOpacity>
             <TouchableOpacity>
-              <Icon name='trash' size={30} color='#ff000090' onPress={props.handleDelete}/>
+              {
+                props.role === 'user' && props.status !== "Menunggu Konfirmasi" ?
+                null
+                :
+                <Icon name='trash' size={30} color='#ff000090' onPress={handleAlert}/>
+              }
             </TouchableOpacity>
           </View>
         </View>
@@ -73,7 +100,7 @@ const QueueItemComponent = (props: props): JSX.Element => {
   );
 };
 
-const style = StyleSheet.create({
+export const style = StyleSheet.create({
   mainContentContainer: {
     width: '100%',
     minHeight: height * 0.26,

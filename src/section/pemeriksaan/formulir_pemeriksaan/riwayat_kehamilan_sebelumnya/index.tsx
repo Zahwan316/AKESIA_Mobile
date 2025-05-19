@@ -132,7 +132,7 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
         <InputComponent
           height={'auto'}
           width={'100%'}
-          label="P/L"
+          label="Jenis Kelamin"
           message="Harap diisi"
           name="p_l"
           onChange={() => {}}

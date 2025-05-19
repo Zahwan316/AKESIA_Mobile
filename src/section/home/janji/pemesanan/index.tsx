@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { JSX } from 'react/jsx-runtime';
 import JanjiScreenLayout from '../layout';
 import ChildDropdownComponent from '../buat_janji/detail/component/childDropdown';
@@ -19,6 +19,8 @@ import { getPendaftaranUser } from '../../../../api/data/pendaftaran';
 import calculateAge from '../../../../utils/calculateAge';
 import DropdownInputComponent from '../../../../component/input/dropdown';
 import { getAllAnak } from '../../../../api/data/allAnak';
+import useComponentStore from '../../../../state/component';
+import { ChangePrice } from '../../../../utils/changePrice';
 
 type modalInfo = {
   message: string;
@@ -99,13 +101,14 @@ const PemesananJanjiSection = (): JSX.Element => {
     queryKey: ['currUserAnak'],
     queryFn: getAllAnak,
   });
-  const pesananItem = pelayananData?.data;
   const pendaftaranItem: apiResponse = pendaftaranUserData?.data;
-  const [successLogin, setSuccessLogin] = useState<boolean>(false);
-  const [modal, setModal] = useState<boolean>(false);
-  const [modalInfo, setModalInfo] = useState<modalInfo>({message:'', text: ''});
+  const [ successLogin, setSuccessLogin ] = useState<boolean>(false);
+  const [ modal, setModal ] = useState<boolean>(false);
+  const [ modalInfo, setModalInfo ] = useState<modalInfo>({message:'', text: ''});
   const navigate = useNavigation<any>();
-  const age = pendaftaranId != null ? calculateAge(pendaftaranItem?.ibu?.tanggal_lahir || '') : '';
+  const [ ageChildren, setChildrenAge ] = useState<number>(0);
+  const setLoading = useComponentStore((state) => state.setLoading);
+  const loading = useComponentStore((state) => state.loading);
 
   const onSubmit = async(data: any) => {
     const dataForm = {...data, pelayanan_id: pelayananId};
@@ -132,6 +135,23 @@ const PemesananJanjiSection = (): JSX.Element => {
     }
   };
 
+  const handleAlert = () => {
+    Alert.alert(
+      'Konfirmasi',
+      'Apakah anda yakin dengan pesanan anda? lihat kembali tanggal dan pesanan anda',
+      [
+        {
+          text: 'Batal',
+          style: 'cancel',
+        },
+        {
+          text: 'Ya',
+          onPress: () => handleSubmit(onSubmit)(),
+        },
+      ]
+    )
+  };
+
   const handleModal = () => {
     if(successLogin){
       navigate.navigate('JanjiKita');
@@ -139,14 +159,23 @@ const PemesananJanjiSection = (): JSX.Element => {
     setModal(!modal);
   };
 
-  /* useEffect(() => {
-    console.table(currUserAnakData);
-  }, [currUserAnakData]); */
+  const handleChangeAnak = (id: number) => {
+    setLoading(true);
+    const findChildren = currUserAnakData?.data.find((item) => item.id === id);
+    const age = calculateAge(findChildren?.tanggal_lahir);
+    setChildrenAge(age);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  };
 
-  useEffect(() => {
+
+ /*  useEffect(() => {
     console.table(pelayananData);
     console.log(pendaftaranId);
-  },[pelayananData]);
+    console.log(ageChildren);
+    console.log(loading);
+  },[pelayananData, ageChildren, loading]); */
 
   return (
     <JanjiScreenLayout
@@ -159,19 +188,10 @@ const PemesananJanjiSection = (): JSX.Element => {
         modalVisible={modal}
         handleModal={handleModal}
       />
-      <View style={style.pesananContainer}>
-        <View style={{marginBottom: 12}}>
-          <Text style={{fontWeight: 'bold', fontSize: 16}}>Pesanan: </Text>
-        </View>
-        <ChildDropdownComponent
-          title={pelayananId ? pelayananData?.data?.nama : pendaftaranUserData?.data?.pelayanan?.nama}
-          harga={pelayananId ? pelayananData?.data?.harga : pendaftaranUserData?.data?.pelayanan?.harga}
-          code={pelayananId ? pelayananData?.data?.keterangan : pendaftaranUserData?.data?.pelayanan?.keterangan}
-        />
-      </View>
+      
       <View style={style.dateContainer}>
         <InputDatePickerComponent
-          label="Tanggal"
+          label="Tanggal Pertemuan"
           onChange={() => {}}
           labelColor="#000"
           control={control}
@@ -185,7 +205,7 @@ const PemesananJanjiSection = (): JSX.Element => {
         <View style={style.headerFormContainer}>
           <Text style={{fontWeight: 'bold', fontSize: 16}}>Detail Pasien</Text>
         </View>
-        <ScrollView style={{height: '100%', marginBottom: 8}}>
+        <ScrollView style={{height: '100%', marginBottom: 0}}>
           {/* <View style={style.itemFormContainer}>
             <InputComponent
               height={'auto'}
@@ -232,7 +252,7 @@ const PemesananJanjiSection = (): JSX.Element => {
                   name: anak.nama_lengkap,
                   id: anak.id,
                 }))}
-                onSelect={() => {}}
+                onSelect={handleChangeAnak}
                 backgroundColor={'#6B779A20'}
                 disabled={pendaftaranId != null}
                 initialValue={pendaftaranId != null && pendaftaranItem?.bayi?.id}
@@ -259,10 +279,20 @@ const PemesananJanjiSection = (): JSX.Element => {
             />
         </ScrollView>
       </View>
+      <View style={style.pesananContainer}>
+        <View style={{marginBottom: 12}}>
+          <Text style={{fontWeight: 'bold', fontSize: 16}}>Pesanan: </Text>
+        </View>
+        <ChildDropdownComponent
+          title={pelayananId ? pelayananData?.data?.nama : pendaftaranUserData?.data?.pelayanan?.nama}
+          harga={pelayananId ? ChangePrice(pelayananData?.data?.harga, pelayananData?.data?.nama, ageChildren) : ChangePrice(pendaftaranUserData?.data?.pelayanan?.harga, pendaftaranUserData?.data?.pelayanan?.nama, ageChildren)}
+          code={pelayananId ? pelayananData?.data?.keterangan : pendaftaranUserData?.data?.pelayanan?.keterangan}
+        />
+      </View>
       <View style={style.buttonContainer}>
         <ButtonComponent
           color={MAIN_COLOR}
-          onPress={handleSubmit(onSubmit)}
+          onPress={handleAlert}
           title="Tentukan Janji Temu"
           customstyle={{width: '100%', display: pendaftaranId != null ? 'none' : 'flex'}}
         />
@@ -274,7 +304,7 @@ const PemesananJanjiSection = (): JSX.Element => {
 const style = StyleSheet.create({
   pesananContainer: {
     width: '100%',
-    height: '15%',
+    height: '25%',
     marginBottom: 12,
   },
   dateContainer: {
@@ -284,7 +314,7 @@ const style = StyleSheet.create({
   },
   formContainer: {
     width: '100%',
-    height: '55%',
+    height: '45%',
     marginBottom: 12,
     borderWidth: 0,
   },

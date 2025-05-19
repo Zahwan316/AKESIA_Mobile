@@ -35,7 +35,10 @@ const ChildDropdownComponent = (props: props) => {
         </Text>
       </View>
       <View style={style.priceContainer}>
-        <Text style={{fontSize: 14, fontWeight: 'bold'}}>{props.harga === 0 ? 'Chat Admin' : CurrencyFormat(props.harga)} </Text>
+        <Text style={{fontSize: 14, fontWeight: 'bold'}}>{
+          props.harga === 0 ? 'Chat Admin' : CurrencyFormat(props.harga)}
+        </Text>
+        <Text></Text>
       </View>
     </TouchableOpacity>
   );

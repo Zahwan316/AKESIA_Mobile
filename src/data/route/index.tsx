@@ -26,6 +26,7 @@ import ListJanjiScreen from '../../screen/ListJanji';
 import NotificationScreen from '../../screen/Notification';
 import Icon from 'react-native-vector-icons/Feather';
 import PelayananLainnyaScreen from '../../screen/pemeriksaan/pelayanan_lainnya';
+import BeratMamaScreen from '../../screen/BeratMama';
 
 type routesType = {
   name: string,
@@ -241,6 +242,24 @@ const routes: routesType[] = [
       tabBarButton: () => null,
     },
   },
+  {
+    name: 'Notifikasi',
+    component: NotificationScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
+  {
+    name: 'BeratMama',
+    component: BeratMamaScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
 ];
 
 export const routesBottom: routesType[] = [
@@ -253,16 +272,6 @@ export const routesBottom: routesType[] = [
       <Icon name="home" size={22} color="#202020"/>
     ),
   },
-  },
-  {
-    name: 'Notification',
-    component: NotificationScreen,
-    options: {
-      headerShown: false,
-      tabBarIcon: ({color, size, focused}) => (
-        <Icon name="bell" size={22} color="#202020"/>
-      ),
-    },
   },
   {
     name: 'Profile',
