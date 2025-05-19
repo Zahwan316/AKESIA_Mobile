@@ -4,19 +4,38 @@ import { View } from "react-native";
 import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/FontAwesome";
+import ButtonComponent from "../../../component/button";
+import { MAIN_COLOR } from "../../../constants/color";
+import ModalComponent from "../../../component/modal";
+import { useNavigation } from "@react-navigation/native";
 
 type props = {
   title: string,
   children: React.ReactNode,
+  onPress: () => void,
+  modalHandleModal: () => void,
+  modalVisible: boolean,
+  modalIsSuccess: boolean,
+  modalMessage: string,
+  modalText: string
 }
 
 const HomeFeatureLayoutSection = (props: props) => {
+  const navigate = useNavigation<any>();
+
   return(
     <SafeAreaProvider>
       <SafeAreaView>
+        <ModalComponent
+          handleModal={props.modalHandleModal}
+          modalVisible={props.modalVisible}
+          isSuccess={props.modalIsSuccess}
+          message={props.modalMessage}
+          text={props.modalText}
+        />
         <View style={Style.mainContainer}>
           <View style={Style.headerContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigate.goBack()}>
               <Icon name='chevron-left' size={26}/>
             </TouchableOpacity>
             <Text style={{fontSize: 24, fontWeight: 'bold'}}>{props.title}</Text>
@@ -24,6 +43,13 @@ const HomeFeatureLayoutSection = (props: props) => {
           </View>
           <View style={Style.contentContainer}>
             {props.children}
+          </View>
+          <View style={Style.buttonContainer}>
+            <ButtonComponent
+              onPress={props.onPress}
+              title="Simpan"
+              color={MAIN_COLOR}
+            />
           </View>
         </View>
       </SafeAreaView>
@@ -48,7 +74,11 @@ const Style = StyleSheet.create({
   },
   contentContainer: {
     width: '100%',
-    height: '94%',
+    height: '84%',
+  },
+  buttonContainer: {
+    width: '100%',
+    height: '10%',
   },
 });
 

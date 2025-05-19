@@ -32,7 +32,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getAllAnak } from '../../../api/data/allAnak';
 import text from '../../../component/input/text';
 
-type modalInfo = {
+export type modalInfo = {
   message: string;
   text: string;
 };
