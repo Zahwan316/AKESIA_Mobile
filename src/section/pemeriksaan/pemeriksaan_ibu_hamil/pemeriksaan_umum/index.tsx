@@ -1,24 +1,15 @@
 import {JSX, useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {SafeAreaView, Text, View} from 'react-native';
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from 'react-native-responsive-screen';
-import {BORDER_COLOR, BUTTON_COLOR, MAIN_COLOR} from '../../../../constants/color';
+import { Text, View} from 'react-native';
+import {BORDER_COLOR} from '../../../../constants/color';
 import DropdownInputComponent from '../../../../component/input/dropdown';
 import InputComponent from '../../../../component/input/text';
-import ButtonComponent from '../../../../component/button';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import FormScreenLayout from '../../screen_layout';
 import { useForm } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
 import { getForm } from '../../../../api/data/form';
 import axios from '../../../../api/axios';
 import handleContentModal from '../../../../component/modal/function';
-import ModalComponent from '../../../../component/modal';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { apiResponse } from '../../../../type/pendaftaran/pendaftaran';
 import { formattedDateData } from '../../../../utils/date';
 import InputDatePickerComponent from '../../../../component/input/datepicker';
 
@@ -296,16 +287,16 @@ type modalInfo = {
 const PemeriksaanUmumSection = (): JSX.Element => {
   const [page, setpage] = useState<number>(1);
   const router = useRoute();
-  const {pendaftaranId, pendaftaranData} = router.params as {pendaftaranId: number, pendaftaranData: apiResponse};
+  const {pemeriksaanId, PemeriksaanData} = router.params as {pemeriksaanId: number, PemeriksaanData: PemeriksaanApiResponse};
   const { control, handleSubmit, reset, formState: { errors } } = useForm();
   const {data: kesadaranData} = useQuery({
     queryKey: ['kesadaran'],
     queryFn: () => getForm('referensi/kesadaran'),
   });
   const {data: pemeriksaanUmumData} = useQuery({
-    queryKey: ['pemeriksaanUmum', pendaftaranId],
-    queryFn: () => getForm(`form/pemeriksaan_umum/show_by_pendaftaran/${pendaftaranId}`),
-    enabled: !!pendaftaranId,
+    queryKey: ['pemeriksaanUmum', pemeriksaanId],
+    queryFn: () => getForm(`form/pemeriksaan_umum/show_by_pendaftaran/${pemeriksaanId}`),
+    enabled: !!pemeriksaanId,
   });
   const [modal, setModal] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
@@ -337,7 +328,7 @@ const PemeriksaanUmumSection = (): JSX.Element => {
 
   const handleSubmitForm = async(data: any) => {
     console.table(data);
-    const mergedData = {...data, pendaftaran_id: pendaftaranId, user_id: pendaftaranData.ibu.user_id ,};
+    const mergedData = {...data, pemeriksaan_id: pemeriksaanId, user_id: PemeriksaanData.ibu.user_id ,};
 
     try{
       if(!checkIsDataFormPemeriksaanUmumNull()){

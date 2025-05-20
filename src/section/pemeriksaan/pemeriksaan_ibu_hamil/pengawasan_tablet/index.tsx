@@ -18,7 +18,7 @@ import { formattedDateData } from '../../../../utils/date';
 
 const PengawasanObatSection = (): JSX.Element => {
   const router = useRoute();
-  const {pendaftaranId, pendaftaranData} = router.params as {pendaftaranId: number, pendaftaranData: apiResponse};
+  const {pemeriksaanId, pendaftaranData} = router.params as {pemeriksaanId: number, pendaftaranData: apiResponse};
   const { control, handleSubmit, reset, formState: { errors } } = useForm();
   const [modal, setModal] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
@@ -27,9 +27,9 @@ const PengawasanObatSection = (): JSX.Element => {
     text: '',
   });
   const {data: pengawasanTabletData} = useQuery({
-    queryKey: ['pengawasanTablet', pendaftaranId],
-    queryFn: () => getForm(`form/pengawasan_tablet/show_by_pendaftaran/${pendaftaranId}`),
-    enabled: !!pendaftaranId,
+    queryKey: ['pengawasanTablet', pemeriksaanId],
+    queryFn: () => getForm(`form/pengawasan_tablet/show_by_pendaftaran/${pemeriksaanId}`),
+    enabled: !!pemeriksaanId,
   });
   const navigation = useNavigation<any>();
 
@@ -38,7 +38,7 @@ const PengawasanObatSection = (): JSX.Element => {
   };
 
   const handleSendApi = async(data: any) => {
-    const mergedData = {...data, pendaftaran_id: pendaftaranId};
+    const mergedData = {...data, pemeriksaan_id: pemeriksaanId};
 
     try{
       if(checkIsDataNull(pengawasanTabletData?.data)){

@@ -30,7 +30,14 @@ const BuatJanjiDetailSection = (): JSX.Element => {
     queryFn: () => getPelayanan('layanan/pelayanan'),
   });
   const navigation = useNavigation<any>();
-  const filteredPelayananData = pelayananData?.data.filter((item) => item.jenis_layanan_id === jenisPelayananId) || [];
+  const filteredPelayananData = pelayananData?.data.filter((item) => {
+    if(item.jenis_layanan_id === 3){
+      return item.harga === 0 && item.jenis_layanan_id === jenisPelayananId;
+    }
+    else{
+      return item.jenis_layanan_id === jenisPelayananId;
+    }
+  }) || [];
 
   const handleToPemesanan = (pelayananId: number) => {
     navigation.navigate('PemesananJanji', {

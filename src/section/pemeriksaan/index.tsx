@@ -1,26 +1,43 @@
-import { Alert, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+import {
+  Alert,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from 'react-native-responsive-screen';
 import dropdownItem from '../../data/pemeriksaan';
-import { BUTTON_COLOR, BUTTON_COLOR_2, BUTTON_COLOR_3, BUTTON_COLOR_4, MAIN_COLOR } from '../../constants/color';
-import Icon from 'react-native-vector-icons/FontAwesome'
-import React, { act, useEffect, useState } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import {
+  BUTTON_COLOR,
+  BUTTON_COLOR_2,
+  BUTTON_COLOR_3,
+  BUTTON_COLOR_4,
+  MAIN_COLOR,
+} from '../../constants/color';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import React, {act, useEffect, useState} from 'react';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import ButtonComponent from '../../component/button';
-import { apiResponse } from '../../type/pendaftaran/pendaftaran';
+import {apiResponse} from '../../type/pendaftaran/pendaftaran';
 import axios from '../../api/axios';
 import handleContentModal from '../../component/modal/function';
 import ModalComponent from '../../component/modal';
-import { modalInfo } from '../../type/modalInfo';
-import { useQuery } from '@tanstack/react-query';
-import { getForm } from '../../api/data/form';
+import {modalInfo} from '../../type/modalInfo';
+import {useQuery} from '@tanstack/react-query';
+import {getForm} from '../../api/data/form';
 import ChildDropdownComponent from '../home/janji/buat_janji/detail/component/childDropdown';
 import usePelayananStore from '../../state/pelayanan';
 
-enum JenisLayananId{
-  'BABY_SPA'= 1,
+enum JenisLayananId {
+  'BABY_SPA' = 1,
   'BIDAN_BUNDA' = 2,
-  'PERIKSA_HAMIL'= 3,
-  'PERSALINAN'= 4,
+  'PERIKSA_HAMIL' = 3,
+  'PERSALINAN' = 4,
 }
 
 const PemeriksaanSection = (): React.JSX.Element => {
@@ -28,9 +45,19 @@ const PemeriksaanSection = (): React.JSX.Element => {
   const navigation = useNavigation<any>();
   const route = useRoute();
   //const [pelayananPeriksaHamilId, setPelayananPeriksaHamilId] = useState<number>(0);
-  const pelayananPeriksaHamilId = usePelayananStore((state) => state.pelayananPeriksaHamilId);
-  const setPelayananPeriksaHamilId = usePelayananStore((state) => state.setPelayananPeriksaHamilId);
-  const {formId, pendaftaranId, pendaftaranData } = route.params as {formId: number, pendaftaranId: number, pendaftaranData: apiResponse};
+  const pelayananPeriksaHamilId = usePelayananStore(
+    state => state.pelayananPeriksaHamilId,
+  );
+  const setPelayananPeriksaHamilId = usePelayananStore(
+    state => state.setPelayananPeriksaHamilId,
+  );
+  const {formId, pemeriksaanId, pemeriksaanData, pendaftaranId} =
+    route.params as {
+      formId: number;
+      pemeriksaanId: number;
+      pemeriksaanData: PemeriksaanApiResponse;
+      pendaftaranId: number;
+    };
   const [modal, setModal] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [modalInfo, setModalInfo] = useState<modalInfo>({
@@ -39,18 +66,20 @@ const PemeriksaanSection = (): React.JSX.Element => {
   });
   const {data: formData} = useQuery({
     queryKey: ['formData'],
-    queryFn: () => getForm(`layanan/pelayanan_form_item?pelayanan_id=${pendaftaranData?.pelayanan_id}`),
+    queryFn: () =>
+      getForm(
+        `layanan/pelayanan_form_item?pelayanan_id=${pemeriksaanData?.pelayanan_id}`,
+      ),
   });
   const {data: periksaHamilLayananData} = useQuery({
     queryKey: ['periksaHamilLayananData'],
     queryFn: () => getForm(`layanan/pelayanan?jenis_layanan_id=3`),
   });
 
-  const getFormId = formData?.data?.map((item,index) => {
+  const getFormId = formData?.data?.map((item, index) => {
     const data = item.form_id;
     return data;
   });
-
 
   const handleActiveIndex = (index: number) => {
     if (activeIndex === index) {
@@ -60,43 +89,55 @@ const PemeriksaanSection = (): React.JSX.Element => {
     }
   };
 
-  const handleChangeScreen = (screen: string, pendaftaranId?: number, pelayananPemeriksaanIdParams?: number) => {
-    navigation.navigate(screen, {pendaftaranId: pendaftaranId, pendaftaranData: pendaftaranData, pelayananPemeriksaanId: pelayananPemeriksaanIdParams});
+  const handleChangeScreen = (
+    screen: string,
+    pemeriksaanId?: number,
+    pelayananPemeriksaanIdParams?: number,
+  ) => {
+    navigation.navigate(screen, {
+      pemeriksaanId: pemeriksaanId,
+      pemeriksaanData: pemeriksaanData,
+      pelayananPemeriksaanId: pelayananPemeriksaanIdParams,
+    });
   };
 
-  const handleSetPendaftaranComplete = async() => {
+  const handleSetPendaftaranComplete = async () => {
     let data;
-    if(pelayananPeriksaHamilId !== 0 && pendaftaranData?.pelayanan?.jenis_layanan_id === JenisLayananId.PERIKSA_HAMIL){
-      data = { status: 'Selesai', pelayanan_id: pelayananPeriksaHamilId };
+    if (
+      pelayananPeriksaHamilId !== 0 &&
+      pemeriksaanData?.pelayanan?.jenis_layanan_id ===
+        JenisLayananId.PERIKSA_HAMIL
+    ) {
+        data = {status: 'Selesai', pelayanan_id: pelayananPeriksaHamilId, pelayanan: pemeriksaanData?.pelayanan};
+    } else {
+        data = {status: 'Selesai', pelayanan: pemeriksaanData?.pelayanan, tanggal_lahir_bayi_pemeriksaan: pemeriksaanData?.pendaftaran?.bayi?.tanggal_lahir || null};
     }
-    else{
-      data = { status: 'Selesai' };
-    }
-    try{
+    try {
       console.log('Data yang dikirim: ', data);
       const response = await axios.put(`pendaftaran/${pendaftaranId}`, data);
+      const pemeriksaanResponse = await axios.put(`pemeriksaan/${pemeriksaanId}`, data);
       setSuccess(true);
       handleContentModal({
         setModal,
         setModalInfo,
-        message: 'Formulir berhasil disimpan, Terima kasih sudah mengisi data pemeriksaan',
+        message:
+          'Formulir berhasil disimpan, Terima kasih sudah mengisi data pemeriksaan',
         text: 'Tutup',
       });
-    }
-    catch(e){
+    } catch (e) {
       console.log(e.response);
       setSuccess(true);
-        handleContentModal({
-          setModal,
-          setModalInfo,
-          message: e.response.data.message,
-          text: 'Tutup',
-        });
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: e.response.data.message,
+        text: 'Tutup',
+      });
     }
   };
 
   const handleModal = () => {
-    if(isSuccess){
+    if (isSuccess) {
       navigation.navigate('ListJanji');
     }
     setModal(!modal);
@@ -115,103 +156,143 @@ const PemeriksaanSection = (): React.JSX.Element => {
           text: 'Ya',
           onPress: () => handleSetPendaftaranComplete(),
         },
-      ]
+      ],
     );
   };
 
   useEffect(() => {
     //console.table(getFormId);
-    console.log(pendaftaranData);
+    console.log(pemeriksaanData);
     console.log('data pelayanan periksa hamil id = ', pelayananPeriksaHamilId);
-
-  }, [pendaftaranData, pelayananPeriksaHamilId]);
+  }, [pemeriksaanData, pelayananPeriksaHamilId]);
 
   //tambahkan pengecekan jika pendaftaraData.pelayanan.harga = 0, maka pelayananPeriksaHamilId(0), jika harga != 0 maka set pelayananPeriksaHamilId dengan data yang sudah terupdate
 
   useEffect(() => {
-    if(pendaftaranData?.pelayanan?.jenis_layanan_id === JenisLayananId.PERIKSA_HAMIL && pendaftaranData?.pelayanan?.harga !== 0){
-      setPelayananPeriksaHamilId(pendaftaranData?.pelayanan?.id);
+    if (
+      pemeriksaanData?.pelayanan?.jenis_layanan_id ===
+        JenisLayananId.PERIKSA_HAMIL &&
+      pemeriksaanData?.pelayanan?.harga !== 0
+    ) {
+      setPelayananPeriksaHamilId(pemeriksaanData?.pelayanan?.id);
       return;
     }
     setPelayananPeriksaHamilId(0);
   }, []);
 
-  return(
+  return (
     <SafeAreaView style={{}}>
       <View style={[style.mainContainer, {backgroundColor: '#f4f4f4'}]}>
         <View style={style.headerContainer}>
-          <View style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 24}}>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              marginBottom: 24,
+            }}>
             <Image
               source={require('../../assets/img/LogoBidanBunda.png')}
               style={{width: 70, height: 70, marginBottom: 8}}
               resizeMethod="resize"
               resizeMode="contain"
             />
-          <Text style={{fontSize: 24, color: '#fff'}}>Pemeriksaan</Text>
-          </View>
-          <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '85%', gap: 12}}>
-           {/*  <View style={style.buttonInfo}>
-              <Text>Terakhir dibuat 20:30</Text>
-            </View>
-            <View style={style.buttonInfo}>
-              <Text>Terakhir diupdate 20:20</Text>
-            </View> */}
+            <Text style={{fontSize: 24, color: '#fff'}}>Pemeriksaan</Text>
           </View>
         </View>
         <View style={style.mainDropdownContainer}>
-          {
-            pelayananPeriksaHamilId === 0 && pendaftaranData?.pelayanan.jenis_layanan_id === JenisLayananId.PERIKSA_HAMIL &&
-            <View style={style.titleItemContainer}>
-              <Text style={{fontWeight: 'bold', fontSize: 16}}>Periksa Hamil Nyaman</Text>
-            </View>
-          }
-          {
-            pendaftaranData?.pelayanan.jenis_layanan_id === JenisLayananId.PERIKSA_HAMIL && pelayananPeriksaHamilId === 0 ?
-            periksaHamilLayananData?.data.map((item, index) => (
-              item.harga !== 0 &&
-              <React.Fragment key={index}>
-                <ChildDropdownComponent
-                  title={item.nama}
-                  handlePress={() => setPelayananPeriksaHamilId(item.id)}
-                  code={item.keterangan}
-                  harga={item.harga}
-                  key={index}
-                />
-              </React.Fragment>
-            ))
-            :
-            dropdownItem.map((item, index) => (
-              getFormId?.map((itemFormId: number) => (
-                item.formId === itemFormId && (
-                <React.Fragment key={index}>
-                  <TouchableOpacity style={style.mainDropdown} key={index + item.id} onPress={handleActiveIndex.bind(this, index)}>
-                    <Text style={{color: BUTTON_COLOR, fontWeight: 'bold', fontSize: 16}}>{item.title}</Text>
-                    {
-                      activeIndex === index ?
-                      <Icon name="angle-up" size={20} color={BUTTON_COLOR} />
-                      :
-                      <Icon name="angle-down" size={20} color={BUTTON_COLOR} />
-                    }
-                  </TouchableOpacity>
-                  <View style={[style.childDropdown, { display: activeIndex != index ? 'none' : 'contents'}]}>
-                    {
-                      activeIndex === index &&
-                      Array.isArray(item?.child) && item?.child.map((child, indexChild) => (
-                        <TouchableOpacity key={indexChild} style={[style.childDropdown, {padding: 8, height: 48, justifyContent: 'center',}]} onPress={() => handleChangeScreen(child.screen, pendaftaranId, pelayananPeriksaHamilId)}>
-                          <Text style={{fontSize: 16}}>
-                            {child.name}
+          {pelayananPeriksaHamilId === 0 &&
+            pemeriksaanData?.pelayanan.jenis_layanan_id ===
+              JenisLayananId.PERIKSA_HAMIL && (
+              <View style={style.titleItemContainer}>
+                <Text style={{fontWeight: 'bold', fontSize: 16}}>
+                  Periksa Hamil Nyaman
+                </Text>
+              </View>
+            )}
+          {pemeriksaanData?.pelayanan.jenis_layanan_id ===
+            JenisLayananId.PERIKSA_HAMIL && pelayananPeriksaHamilId === 0
+            ? periksaHamilLayananData?.data.map(
+                (item, index) =>
+                  item.harga !== 0 && (
+                    <React.Fragment key={index}>
+                      <ChildDropdownComponent
+                        title={item.nama}
+                        handlePress={() => setPelayananPeriksaHamilId(item.id)}
+                        code={item.keterangan}
+                        harga={item.harga}
+                        key={index}
+                      />
+                    </React.Fragment>
+                  ),
+              )
+            : dropdownItem.map((item, index) =>
+                getFormId?.map(
+                  (itemFormId: number) =>
+                    item.formId === itemFormId && (
+                      <React.Fragment key={index}>
+                        <TouchableOpacity
+                          style={style.mainDropdown}
+                          key={index + item.id}
+                          onPress={handleActiveIndex.bind(this, index)}>
+                          <Text
+                            style={{
+                              color: BUTTON_COLOR,
+                              fontWeight: 'bold',
+                              fontSize: 16,
+                            }}>
+                            {item.title}
                           </Text>
+                          {activeIndex === index ? (
+                            <Icon
+                              name="angle-up"
+                              size={20}
+                              color={BUTTON_COLOR}
+                            />
+                          ) : (
+                            <Icon
+                              name="angle-down"
+                              size={20}
+                              color={BUTTON_COLOR}
+                            />
+                          )}
                         </TouchableOpacity>
-                      ))
-                    }
-                  </View>
-                </React.Fragment>
-
-                )
-
-              ))
-            ))
-          }
+                        <View
+                          style={[
+                            style.childDropdown,
+                            {
+                              display:
+                                activeIndex != index ? 'none' : 'contents',
+                            },
+                          ]}>
+                          {activeIndex === index &&
+                            Array.isArray(item?.child) &&
+                            item?.child.map((child, indexChild) => (
+                              <TouchableOpacity
+                                key={indexChild}
+                                style={[
+                                  style.childDropdown,
+                                  {
+                                    padding: 8,
+                                    height: 48,
+                                    justifyContent: 'center',
+                                  },
+                                ]}
+                                onPress={() =>
+                                  handleChangeScreen(
+                                    child.screen,
+                                    pemeriksaanId,
+                                    pelayananPeriksaHamilId,
+                                  )
+                                }>
+                                <Text style={{fontSize: 16}}>{child.name}</Text>
+                              </TouchableOpacity>
+                            ))}
+                        </View>
+                      </React.Fragment>
+                    ),
+                ),
+              )}
         </View>
         <View style={style.buttonContainer}>
           <ButtonComponent

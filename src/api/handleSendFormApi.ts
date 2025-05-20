@@ -5,13 +5,13 @@ import axios from './axios';
 export const handlePostFormApi = async(
   data: any,
   url: string,
-  pendaftaranId: number,
+  pemeriksaanId: number,
   apiFormData: any,
   setSuccess: any,
   setModal: any,
   setModalInfo: any
 ) => {
-  const mergedData = {...data, pendaftaran_id: pendaftaranId};
+  const mergedData = {...data, pemeriksaan_id: pemeriksaanId};
   try{
     console.log(mergedData);
     if(checkIsDataNull(apiFormData?.data)){

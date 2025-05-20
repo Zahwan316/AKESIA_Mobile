@@ -9,7 +9,7 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import InputComponent from '../../../component/input/text';
 import ButtonComponent from '../../../component/button';
-import { BUTTON_COLOR} from '../../../constants/color';
+import { BORDER_COLOR, BUTTON_COLOR} from '../../../constants/color';
 import { useNavigation } from '@react-navigation/native';
 import handleFormStore from '../../../state/form';
 import DropdownInputComponent from '../../../component/input/dropdown';
@@ -127,8 +127,9 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                 placeholder="Nama Ibu"
                 type="text"
                 width={'100%'}
-                backgroundColor=""
+                backgroundColor="#fff"
                 border={1}
+                borderColor={BORDER_COLOR}
                 control={control}
                 errors={errors}
               />
@@ -141,7 +142,8 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                 placeholder="Nik"
                 type="number"
                 width={'100%'}
-                backgroundColor=""
+                backgroundColor="#fff"
+                borderColor={BORDER_COLOR}
                 border={1}
                 control={control}
                 errors={errors}
@@ -162,10 +164,11 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                   placeholder="Tempat Lahir"
                   type="text"
                   width={'45%'}
-                  backgroundColor=""
+                  backgroundColor="#fff"
                   border={1}
                   control={control}
                   errors={errors}
+                  borderColor={BORDER_COLOR}
                 />
 
                  <InputDatePickerComponent
@@ -202,10 +205,11 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                 placeholder="Alamat Domisili"
                 type="text"
                 width={'100%'}
-                backgroundColor=""
+                backgroundColor="#fff"
                 border={1}
                 control={control}
                 errors={errors}
+                borderColor={BORDER_COLOR}
               />
               <View
                 style={{
@@ -237,10 +241,11 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                   placeholder="Nomor handphone"
                   type="number"
                   width={'100%'}
-                  backgroundColor=""
+                  backgroundColor="#fff"
                   border={1}
                   control={control}
                   errors={errors}
+                  borderColor={BORDER_COLOR}
                 />
               </View>
 

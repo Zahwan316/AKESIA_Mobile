@@ -13,6 +13,7 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import {
+  BORDER_COLOR,
   BUTTON_COLOR,
   BUTTON_COLOR_2,
   MAIN_COLOR,
@@ -336,12 +337,13 @@ const CompleteProfileBidanSection = (): JSX.Element => {
                     onSelect={item.onChange}
                     placeholder={item.placeholder}
                     type={item.type}
-                    backgroundColor={item.backgroundColor}
+                    backgroundColor={'#fff'}
+                    borderColor={BORDER_COLOR}
                     key={index}
                     border={item.border}
                     errors={item.errors}
                     control={item.control}
-                    data={item.options}
+                    data={item.options}                
                     initialValue={item.name === 'tempat_bekerja' ? 'Praktek Bidan Mandiri' : null}
                   />
                 );

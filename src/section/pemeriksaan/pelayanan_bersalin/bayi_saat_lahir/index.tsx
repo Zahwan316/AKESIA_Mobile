@@ -22,7 +22,7 @@ import { handlePostFormApi } from '../../../../api/handleSendFormApi';
 const BayiSaatLahirSection = (): JSX.Element => {
   const navigate = useNavigation<any>();
   const router = useRoute();
-  const { pendaftaranData, pendaftaranId} = router.params as {pendaftaranData: apiResponse, pendaftaranId: number};
+  const { pemeriksaanData, pemeriksaanId} = router.params as {pemeriksaanData: apiResponse, pemeriksaanId: number};
   const {
     control,
     handleSubmit,
@@ -37,12 +37,12 @@ const BayiSaatLahirSection = (): JSX.Element => {
   });
 
   const { data: bayiSaatLahirFormData } = useQuery({
-    queryKey: ['bayiSaatlahir', pendaftaranId],
-    queryFn: () => getForm(`form/bayi_saat_lahir/show_by_pendaftaran/${pendaftaranId}`),
+    queryKey: ['bayiSaatlahir', pemeriksaanId],
+    queryFn: () => getForm(`form/bayi_saat_lahir/show_by_pendaftaran/${pemeriksaanId}`),
   });
 
   const handlePage = () => {
-    handleSubmit((data) => handlePostFormApi(data, 'form/bayi_saat_lahir', pendaftaranId, bayiSaatLahirFormData, setSuccess, setModal, setModalInfo))();
+    handleSubmit((data) => handlePostFormApi(data, 'form/bayi_saat_lahir', pemeriksaanId, bayiSaatLahirFormData, setSuccess, setModal, setModalInfo))();
   };
 
   const handleModal = () => {

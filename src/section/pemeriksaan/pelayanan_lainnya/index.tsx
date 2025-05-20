@@ -20,7 +20,7 @@ import calculateAge from '../../../utils/calculateAge';
 const PelayananLainnyaSection = (): JSX.Element => {
   const navigate = useNavigation<any>();
   const router = useRoute();
-  const { pendaftaranData, pendaftaranId} = router.params as {pendaftaranData: apiResponse, pendaftaranId: number};
+  const { pemeriksaanData, pemeriksaanId} = router.params as {pemeriksaanData: PemeriksaanApiResponse, pemeriksaanId: number};
   const {
     control,
     handleSubmit,
@@ -34,13 +34,13 @@ const PelayananLainnyaSection = (): JSX.Element => {
     text: '',
   });
   const { data: layananIbuLainnyaFormData } = useQuery({
-    queryKey: ['layananIbuLainnya', pendaftaranId],
-    queryFn: () => getForm(`form/layanan_ibu_lainnya/show_by_pendaftaran/${pendaftaranId}`),
-    enabled: !!pendaftaranId,
+    queryKey: ['layananIbuLainnya', pemeriksaanId],
+    queryFn: () => getForm(`form/layanan_ibu_lainnya/show_by_pendaftaran/${pemeriksaanId}`),
+    enabled: !!pemeriksaanId,
   });
 
   const handleSendData = () => {
-    handleSubmit((data) => handlePostFormApi(data, 'form/layanan_ibu_lainnya', pendaftaranId, layananIbuLainnyaFormData, setSuccess, setModal, setModalInfo))();
+    handleSubmit((data) => handlePostFormApi(data, 'form/layanan_ibu_lainnya', pemeriksaanId, layananIbuLainnyaFormData, setSuccess, setModal, setModalInfo))();
   };
 
   const handleModal = () => {
@@ -94,7 +94,7 @@ const PelayananLainnyaSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
-          initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? pendaftaranData?.ibu?.user?.nama_lengkap : layananIbuLainnyaFormData?.data.nama_ibu}
+          initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? pemeriksaanData?.ibu?.user?.nama_lengkap : layananIbuLainnyaFormData?.data.nama_ibu}
         />
         <InputComponent
           height={'auto'}
@@ -112,7 +112,7 @@ const PelayananLainnyaSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
-          initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? calculateAge(pendaftaranData?.ibu?.tanggal_lahir).toString() : layananIbuLainnyaFormData?.data?.umur_ibu}
+          initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? calculateAge(pemeriksaanData?.ibu?.tanggal_lahir).toString() : layananIbuLainnyaFormData?.data?.umur_ibu}
         />
         <InputComponent
           height={'auto'}
@@ -130,7 +130,7 @@ const PelayananLainnyaSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
-          initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? pendaftaranData?.pelayanan?.nama : layananIbuLainnyaFormData?.data.booking_layanan }
+          initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? pemeriksaanData?.pelayanan?.nama : layananIbuLainnyaFormData?.data.booking_layanan }
         />
         <InputComponent
           height={'auto'}

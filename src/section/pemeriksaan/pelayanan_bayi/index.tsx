@@ -26,15 +26,15 @@ const BORDER_COLOR = '#00000015';
 const PelayananBayiSection = (): JSX.Element => {
   const navigate = useNavigation<any>();
   const router = useRoute();
-  const { pendaftaranData, pendaftaranId} = router.params as {pendaftaranData: apiResponse, pendaftaranId: number};
+  const { pemeriksaanData, pemeriksaanId} = router.params as {pemeriksaanData: PemeriksaanApiResponse, pemeriksaanId: number};
   const { data: tambahanLayananData } = useQuery({
     queryKey: ['tambahanLayanan'],
     queryFn: () => getForm('layanan/tambahan_layanan'),
   });
   const { data: pelayananBayiFormData } = useQuery({
-    queryKey: ['PelayananBayiFormData', pendaftaranId],
-    queryFn: () => getForm(`form/pelayanan_bayi/show_by_pendaftaran/${pendaftaranId}`),
-    enabled: !!pendaftaranId,
+    queryKey: ['PelayananBayiFormData', pemeriksaanId],
+    queryFn: () => getForm(`form/pelayanan_bayi/show_by_pendaftaran/${pemeriksaanId}`),
+    enabled: !!pemeriksaanId,
   });
   const {
     control,
@@ -50,7 +50,7 @@ const PelayananBayiSection = (): JSX.Element => {
   });
 
   const handleSendData = async(page: any) => {
-    handleSubmit((data) => handlePostFormApi(data, 'form/pelayanan_bayi', pendaftaranId, pelayananBayiFormData, setSuccess, setModal, setModalInfo))();
+    handleSubmit((data) => handlePostFormApi(data, 'form/pelayanan_bayi', pemeriksaanId, pelayananBayiFormData, setSuccess, setModal, setModalInfo))();
   };
 
   const handleModal = () => {
@@ -61,8 +61,8 @@ const PelayananBayiSection = (): JSX.Element => {
   };
 
   useEffect(() => {
-    console.table(pendaftaranData);
-  }, [pendaftaranData]);
+    console.table(pemeriksaanId);
+  }, [pemeriksaanId]);
 
   useEffect(() => {
     if (pelayananBayiFormData && pelayananBayiFormData.data) {
@@ -106,7 +106,7 @@ const PelayananBayiSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
-          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? pendaftaranData?.bayi.nama_lengkap : pelayananBayiFormData?.data.nama_bayi}
+          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? pemeriksaanData?.pendaftaran?.bayi?.nama_lengkap : pelayananBayiFormData?.data.nama_bayi}
         />
         <InputComponent
           height={'auto'}
@@ -124,7 +124,7 @@ const PelayananBayiSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
-          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? calculateAge(pendaftaranData?.bayi.tanggal_lahir).toString() : pelayananBayiFormData?.data.umur_bayi.toString() }
+          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? calculateAge(pemeriksaanData?.pendaftaran?.bayi?.tanggal_lahir).toString() : pelayananBayiFormData?.data.umur_bayi.toString() }
         />
         <DropdownInputComponent
           width={'100%'}
@@ -139,7 +139,7 @@ const PelayananBayiSection = (): JSX.Element => {
           name="jenis_kelamin_bayi"
           message="Harap diisi"
           getValue="name"
-          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? (pendaftaranData?.bayi.jenis_kelamin === 'L' ? 'Laki Laki' : 'Perempuan') : pelayananBayiFormData?.data.jenis_kelamin_bayi }
+          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? (pemeriksaanData?.pendaftaran?.bayi?.jenis_kelamin === 'L' ? 'Laki Laki' : 'Perempuan') : pelayananBayiFormData?.data.jenis_kelamin_bayi }
         />
         <InputComponent
           height={'auto'}
@@ -157,7 +157,7 @@ const PelayananBayiSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
-          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? pendaftaranData?.pelayanan?.nama : pelayananBayiFormData?.data.booking_layanan }
+          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? pemeriksaanData?.pelayanan?.nama : pelayananBayiFormData?.data.booking_layanan }
         />
         <InputComponent
           height={'auto'}

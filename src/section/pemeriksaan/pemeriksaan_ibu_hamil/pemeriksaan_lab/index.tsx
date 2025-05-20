@@ -178,9 +178,9 @@ const PemeriksaanLabSection = (): JSX.Element => {
   const [page, setpage] = useState<number>(1);
   const navigation = useNavigation<any>();
   const route = useRoute();
-  const {pendaftaranId, pendaftaranData} = route.params as {
-    pendaftaranId: number;
-    pendaftaranData: any;
+  const {pemeriksaanId, pemeriksaanData} = route.params as {
+    pemeriksaanId: number;
+    pemeriksaanData: any;
   };
   const { control, handleSubmit, reset, formState: { errors } } = useForm();
   const [modal, setModal] = useState<boolean>(false);
@@ -190,9 +190,9 @@ const PemeriksaanLabSection = (): JSX.Element => {
     text: '',
   });
   const {data: pemeriksaanLabData} = useQuery({
-    queryKey: ['pemeriksaanLab', pendaftaranId],
-    queryFn: () => getForm(`form/pemeriksaan_lab/show_by_pendaftaran/${pendaftaranId}`),
-    enabled: !!pendaftaranId,
+    queryKey: ['pemeriksaanLab', pemeriksaanId],
+    queryFn: () => getForm(`form/pemeriksaan_lab/show_by_pendaftaran/${pemeriksaanId}`),
+    enabled: !!pemeriksaanId,
   });
 
   useEffect(() => {
@@ -216,7 +216,7 @@ const PemeriksaanLabSection = (): JSX.Element => {
   };
 
   const handleSubmitForm = async(data: any) => {
-    const mergedData = { ...data, pendaftaran_id: pendaftaranId };
+    const mergedData = { ...data, pemeriksaan_id: pemeriksaanId };
 
     try{
       if(checkIsDataNull(pemeriksaanLabData?.data)) {

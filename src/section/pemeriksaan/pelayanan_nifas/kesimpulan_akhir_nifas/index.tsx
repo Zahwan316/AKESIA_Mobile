@@ -16,7 +16,7 @@ import { formattedDateData } from '../../../../utils/date';
 const KesimpulanAkhirNifasSection = (): JSX.Element => {
   const navigate = useNavigation<any>();
   const router = useRoute();
-  const { pendaftaranData, pendaftaranId} = router.params as {pendaftaranData: apiResponse, pendaftaranId: number};
+  const { pemeriksaanData, pemeriksaanId} = router.params as {pemeriksaanData: apiResponse, pemeriksaanId: number};
   const {
     control,
     handleSubmit,
@@ -30,13 +30,13 @@ const KesimpulanAkhirNifasSection = (): JSX.Element => {
     text: '',
   });
   const { data: kesimpulanAkhirNifasFormData } = useQuery({
-    queryKey: ['kesimpulanAkhirNifas', pendaftaranId],
-    queryFn: () => getForm(`form/kesimpulan_ibu_nifas/show_by_pendaftaran/${pendaftaranId}`),
-    enabled: !!pendaftaranId,
+    queryKey: ['kesimpulanAkhirNifas', pemeriksaanId],
+    queryFn: () => getForm(`form/kesimpulan_ibu_nifas/show_by_pendaftaran/${pemeriksaanId}`),
+    enabled: !!pemeriksaanId,
   });
 
   const handleSendData = () => {
-    handleSubmit((data) => handlePostFormApi(data, 'form/kesimpulan_ibu_nifas', pendaftaranId, kesimpulanAkhirNifasFormData, setSuccess, setModal, setModalInfo))();
+    handleSubmit((data) => handlePostFormApi(data, 'form/kesimpulan_ibu_nifas', pemeriksaanId, kesimpulanAkhirNifasFormData, setSuccess, setModal, setModalInfo))();
   };
 
   const handleModal = () => {

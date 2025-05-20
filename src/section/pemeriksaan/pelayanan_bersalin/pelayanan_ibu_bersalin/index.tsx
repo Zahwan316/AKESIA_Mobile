@@ -21,7 +21,7 @@ import { handlePostFormApi } from '../../../../api/handleSendFormApi';
 const PelayananIbuBersalinSection = (): JSX.Element => {
   const navigate = useNavigation<any>();
   const router = useRoute();
-  const { pendaftaranData, pendaftaranId} = router.params as {pendaftaranData: apiResponse, pendaftaranId: number};
+  const { pemeriksaanData, pemeriksaanId} = router.params as {pemeriksaanData: apiResponse, pemeriksaanId: number};
   const {
     control,
     handleSubmit,
@@ -35,51 +35,13 @@ const PelayananIbuBersalinSection = (): JSX.Element => {
     text: '',
   });
   const {data: pelayananIbuBersalinData} = useQuery({
-    queryKey: ['pelayananIbuBersalinData', pendaftaranId],
-    queryFn: () => getForm(`form/pelayanan_ibu_bersalin/show_by_pendaftaran/${pendaftaranId}`),
-    enabled: !!pendaftaranId,
+    queryKey: ['pelayananIbuBersalinData', pemeriksaanId],
+    queryFn: () => getForm(`form/pelayanan_ibu_bersalin/show_by_pendaftaran/${pemeriksaanId}`),
+    enabled: !!pemeriksaanId,
   });
 
   const handlePage = () => {
-    handleSubmit((data) => handlePostFormApi(data, 'form/pelayanan_ibu_bersalin', pendaftaranId, pelayananIbuBersalinData, setSuccess, setModal, setModalInfo))();
-  };
-
-  const handleSendToApi = async(data: any) => {
-    const mergedData = {...data, pendaftaran_id: pendaftaranId};
-    try{
-      if(checkIsDataNull(pelayananIbuBersalinData?.data)){
-        await axios.post('form/pelayanan_ibu_bersalin', mergedData).then(response => {
-          setSuccess(true);
-          handleContentModal({
-            setModal,
-            setModalInfo,
-            message: response.data.message,
-            text: 'Tutup',
-          });
-        });
-      }
-      else{
-        await axios.put(`form/pelayanan_ibu_bersalin/${pelayananIbuBersalinData?.data.id}`, mergedData).then(response => {
-          setSuccess(true);
-          handleContentModal({
-            setModal,
-            setModalInfo,
-            message: response.data.message,
-            text: 'Tutup',
-          });
-    });
-      }
-    }
-    catch(e){
-      console.log(e.response);
-      setSuccess(false);
-      handleContentModal({
-        setModal,
-        setModalInfo,
-        message: e.response.data.message,
-        text: 'Tutup',
-      });
-    }
+    handleSubmit((data) => handlePostFormApi(data, 'form/pelayanan_ibu_bersalin', pemeriksaanId, pelayananIbuBersalinData, setSuccess, setModal, setModalInfo))();
   };
 
   const handleModal = () => {

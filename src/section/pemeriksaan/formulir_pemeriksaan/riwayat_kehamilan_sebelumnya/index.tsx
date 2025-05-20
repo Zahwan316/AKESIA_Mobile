@@ -16,7 +16,7 @@ import { formattedDateData } from '../../../../utils/date';
 const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
   const navigate = useNavigation<any>();
   const router = useRoute();
-  const { pendaftaranData, pendaftaranId, pelayananPemeriksaanHamilId} = router.params as {pendaftaranData: apiResponse, pendaftaranId: number, pelayananPemeriksaanHamilId: number};
+  const { pemeriksaanData, pemeriksaanId, pelayananPemeriksaanHamilId} = router.params as {pemeriksaanData: apiResponse, pemeriksaanId: number, pelayananPemeriksaanHamilId: number};
   const {
     control,
     handleSubmit,
@@ -30,13 +30,13 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
     text: '',
   });
   const { data: riwayatKehamilanSebelumnyaFormData } = useQuery({
-    queryKey: ['riwayatKehamilanSebelumnya', pendaftaranId],
-    queryFn: () => getForm(`form/riwayat_kehamilan_sebelumnya/show_by_pendaftaran/${pendaftaranId}`),
-    enabled: !!pendaftaranId,
+    queryKey: ['riwayatKehamilanSebelumnya', pemeriksaanId],
+    queryFn: () => getForm(`form/riwayat_kehamilan_sebelumnya/show_by_pendaftaran/${pemeriksaanId}`),
+    enabled: !!pemeriksaanId,
   });
 
   const handleSend = () => {
-    handleSubmit((data) => handlePostFormApi(data, 'form/riwayat_kehamilan_sebelumnya', pendaftaranId, riwayatKehamilanSebelumnyaFormData, setSuccess, setModal, setModalInfo))();
+    handleSubmit((data) => handlePostFormApi(data, 'form/riwayat_kehamilan_sebelumnya', pemeriksaanId, riwayatKehamilanSebelumnyaFormData, setSuccess, setModal, setModalInfo))();
   };
 
   const handleModal = () => {
@@ -70,7 +70,7 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
       handlePage={handleSend}
       created_at={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? 'Belum Ada' : formattedDateData(riwayatKehamilanSebelumnyaFormData.data.created_at)}
       updated_at={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? 'Belum Ada' : formattedDateData(riwayatKehamilanSebelumnyaFormData.data.updated_at)}
-      //updated_at={pendaftaranData.data.updated_at}
+      //updated_at={pemeriksaanData.data.updated_at}
       modalVisible={modal}
       modalIsSuccess={isSuccess}
       modalHandleModal={handleModal}

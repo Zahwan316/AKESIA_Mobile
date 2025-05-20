@@ -269,7 +269,7 @@ const RiwayatKehamilanSekarangSection = (): JSX.Element => {
   const [page, setpage] = useState<number>(1);
   const navigate = useNavigation<any>();
   const router = useRoute();
-  const { pendaftaranData, pendaftaranId, pelayananPemeriksaanHamilId} = router.params as {pendaftaranData: apiResponse, pendaftaranId: number, pelayananPemeriksaanHamilId: number};
+  const { pemeriksaanData, pemeriksaanId, pelayananPemeriksaanHamilId} = router.params as {pemeriksaanData: apiResponse, pemeriksaanId: number, pelayananPemeriksaanHamilId: number};
   const {
     control,
     handleSubmit,
@@ -283,8 +283,8 @@ const RiwayatKehamilanSekarangSection = (): JSX.Element => {
     text: '',
   });
   const { data: riwayatKehamilanSekarangFormData } = useQuery({
-    queryKey: ['RiwayatKehamilanSekarangFormData', pendaftaranId],
-    queryFn: () => getForm(`form/riwayat_kehamilan_sekarang/show_by_pendaftaran/${pendaftaranId}`),
+    queryKey: ['RiwayatKehamilanSekarangFormData', pemeriksaanId],
+    queryFn: () => getForm(`form/riwayat_kehamilan_sekarang/show_by_pendaftaran/${pemeriksaanId}`),
   });
 
   const handlePage = (operator: string) => {
@@ -292,7 +292,7 @@ const RiwayatKehamilanSekarangSection = (): JSX.Element => {
       if (page === 1) {
         handleSubmit(() => setpage(2))(); // Pindah ke page 2
       } else if (page === 2) {
-        handleSubmit((data) => handlePostFormApi(data, 'form/riwayat_kehamilan_sekarang', pendaftaranId, riwayatKehamilanSekarangFormData, setSuccess, setModal, setModalInfo))(); // Submit form saat di page 2
+        handleSubmit((data) => handlePostFormApi(data, 'form/riwayat_kehamilan_sekarang', pemeriksaanId, riwayatKehamilanSekarangFormData, setSuccess, setModal, setModalInfo))(); // Submit form saat di page 2
       }
     } else {
       setpage(prev => Math.max(prev - 1, 1));
