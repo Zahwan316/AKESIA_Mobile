@@ -79,7 +79,7 @@ const BayiSaatLahirSection = (): JSX.Element => {
       created_at={checkIsDataNull(bayiSaatLahirFormData?.data) ? 'Belum Ada' : formattedDateData(bayiSaatLahirFormData?.data.created_at)}
       updated_at={checkIsDataNull(bayiSaatLahirFormData?.data) ? 'Belum Ada' : formattedDateData(bayiSaatLahirFormData?.data.updated_at)}
     >
-      <View>
+      <View style={{marginBottom: 44}}>
         <InputComponent
           height={'auto'}
           width={'100%'}

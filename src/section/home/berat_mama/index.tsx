@@ -91,8 +91,8 @@ const BeratMamaSection = (): JSX.Element => {
     console.log(ibuData);
     if(ibuData && ibuData?.data){
       reset({
-        berat_badan: ibuData?.data?.berat_badan.toString(),
-        tinggi_badan: ibuData?.data?.tinggi_badan.toString(),
+        berat_badan: ibuData?.data?.berat_badan?.toString(),
+        tinggi_badan: ibuData?.data?.tinggi_badan?.toString(),
       });
     }
   }, [ibuData]);

@@ -56,7 +56,7 @@ const PelayananLainnyaSection = (): JSX.Element => {
     if(layananIbuLainnyaFormData && layananIbuLainnyaFormData?.data){
       reset({
         nama_ibu: layananIbuLainnyaFormData?.data.nama_ibu,
-        umur_ibu: layananIbuLainnyaFormData?.data.umur_ibu,
+        umur_ibu: layananIbuLainnyaFormData?.data.umur_ibu.toString(),
         booking_layanan: layananIbuLainnyaFormData?.data.booking_layanan,
         catatan_soap: layananIbuLainnyaFormData?.data.catatan_soap,
         keterangan: layananIbuLainnyaFormData?.data.keterangan,

@@ -14,6 +14,12 @@ import { formattedDateData, formattedDateDataWithoutHour } from '../../../../uti
 import { MAIN_COLOR } from '../../../../constants/color';
 import { checkIsDataFormNull } from '../../../../utils/checkDataIsNull';
 import { getData } from '../../../../api/data/getData';
+import handleContentModal from '../../../../component/modal/function';
+import axios from '../../../../api/axios';
+import { Alert } from 'react-native';
+import { modalInfoType } from '../../../../type/modalInfo';
+import { modalInfo } from '../../../pemeriksaan/pelayanan_bayi/index';
+import ModalComponent from '../../../../component/modal';
 
 const ListJanjiSection = (): JSX.Element => {
   const [currMenu, setCurrMenu] = useState<string>('Menunggu Konfirmasi');
@@ -28,6 +34,12 @@ const ListJanjiSection = (): JSX.Element => {
     handleSubmit,
     formState: {errors},
   } = useForm();
+  const [modal, setModal] = useState<boolean>(false);
+  const [isSuccess, setSuccess] = useState<boolean>(false);
+  const [modalInfo, setModalInfo] = useState<modalInfoType>({
+    message: '',
+    text: '',
+  });
 
   const handleScreen = (screen: string, formId?: string | number, pemeriksaanId?: string | number, pemeriksaanData?: PemeriksaanApiResponse, pendaftaranId: number) => {
     navigation.navigate(screen, {formId: formId, pemeriksaanId: pemeriksaanId, pemeriksaanData: pemeriksaanData, pendaftaranId: pendaftaranId});
@@ -45,17 +57,54 @@ const ListJanjiSection = (): JSX.Element => {
     }
   };
 
+  const handleBatalkanJanji = async(pendaftaranId: number, pemeriksaanId: number) => {
+    const data = { status: 'Dibatalkan' };
+
+    try{
+      const response = await axios.put(`pendaftaran/${pendaftaranId}`, data);
+      const deletePemeriksaanResponse = await axios.delete(`pemeriksaan/${pemeriksaanId}`);
+      setSuccess(true);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: 'Pemeriksaan berhasil dibatalkan',
+        text: 'Tutup',
+      });
+    }
+    catch(e){
+      console.log(e.response);
+      setSuccess(false);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: e.response.data.message,
+        text: 'Tutup',
+      });
+    }
+  };
+
+  const handleModal = () => {
+    if(isSuccess){
+      navigation.replace('ListJanji');
+    }
+    setModal(!modal);
+  };
+
   useEffect(() => {
     console.log(pemeriksaanUserData);
-    if(pemeriksaanUserData?.data || pemeriksaanUserData?.data.length === 0){
-      console.log('belum ada data pemeriksaan hari ini');
-    }
   }, [pemeriksaanUserData]);
 
   return(
     <JanjiScreenLayout
       title="List Pemeriksaan"
     >
+      <ModalComponent
+        handleModal={handleModal}
+        message={modalInfo.message}
+        text={modalInfo.text}
+        isSuccess={isSuccess}
+        modalVisible={modal}
+      />
       <View>
         <View style={{flexDirection: 'column', marginBottom: 32}}>
           <View >
@@ -89,7 +138,7 @@ const ListJanjiSection = (): JSX.Element => {
             <QueueItemComponent
               description={item.pelayanan?.nama}
               handleClick={() => handleScreen('PemesananJanji', item.pelayanan_id, item.id)}
-              handleDelete={() => {}}
+              handleDelete={() => {handleBatalkanJanji(item.pendaftaran_id, item.id);}}
               img={require('../../../../assets/icon/baby.png')}
               time={item.pendaftaran?.jam_ditentukan === null ? 'Segera Diinformasikan' : item.pendaftaran?.jam_ditentukan}
               title={item.ibu?.user?.nama_lengkap}

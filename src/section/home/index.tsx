@@ -3,13 +3,15 @@ import { Image, ImageSourcePropType, ScrollView, StyleSheet, Text, TouchableOpac
 import { SafeAreaView, View } from 'react-native';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 import { BUTTON_COLOR, BUTTON_COLOR_2, SECONDARY_COLOR, THIRD_COLOR } from '../../constants/color';
-import ICON from '../../component/icon';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import CarouselComponent from '../../component/carousel';
 import { useQuery } from '@tanstack/react-query';
 import { getUserLogin } from '../../api/data/user';
 import useUserStore from '../../state/user';
+import ImageSlider from '../../component/img_slider';
+import { getData } from '../../api/data/getData';
+import useComponentStore from '../../state/component';
+import { BASE_URL } from '../../constants/baseurl';
 
 type menu = {
   name: string,
@@ -48,19 +50,38 @@ const menuList: menu[] = [
     screen: 'BeratMama',
     role: 'user',
   },
+  {
+    name: 'Ubah Data Ibu',
+    icon: require('../../assets/icon/data_ibu_icon.png'),
+    screen: 'DataIbu',
+    role: 'user',
+  },
 ];
 
 const HomeSection = (): JSX.Element => {
   const navigation = useNavigation<any>();
+  const popup = useComponentStore((state) => state.popup);
+  const popup_img = useComponentStore((state) => state.popup_img);
+  const setPopup = useComponentStore((state) => state.setPopup);
+  const setPopupImg = useComponentStore((state) => state.setPopupImg);
   const { data: userData} = useQuery({
     queryKey: ['user'],
     queryFn: getUserLogin,
+  });
+  const { data: bannerData} = useQuery({
+    queryKey: ['banner'],
+    queryFn: () => getData('banner'),
   });
   const user = useUserStore((state) => state.user);
   const handleUser = useUserStore((state) => state.handleUser);
 
   const handlePressButton = (screen: string, params?: object) => {
     navigation.navigate(screen, params);
+  };
+
+  const handleClosePopUp = () => {
+    setPopup(false);
+    setPopupImg('');
   };
 
   useEffect(() => {
@@ -76,13 +97,12 @@ const HomeSection = (): JSX.Element => {
   }, [userData, handleUser]);
 
   useEffect(() => {
-    console.log('Data API = ', userData);
-    console.log('Data User = ', user);
-  }, [userData]);
+    console.log(bannerData);
+  }, [bannerData]);
 
   return(
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView stickyHeaderIndices={[3]} style={{width: widthPercentageToDP(100)}}>
         <View style={Style.profileContainer}>
           <View style={Style.nameContainer}>
             <Text style={{fontSize: 18, color: "#fff"}}>Halo, {userData?.user?.nama_lengkap}</Text>
@@ -107,7 +127,7 @@ const HomeSection = (): JSX.Element => {
                   userData?.user?.role === 'user' ?
                   <>
                     <Text style={{fontSize: 14, color: '#fff', fontWeight: 'bold', marginBottom: 4}}>Babyku</Text>
-                    <Text style={{fontSize: 12, color: '#fff', fontWeight: 'bold'}}>7 Minggu</Text>          
+                    <Text style={{fontSize: 12, color: '#fff', fontWeight: 'bold'}}>7 Minggu</Text>
                   </>
                   :
                   <Text style={{fontSize: 16, color: '#fff', fontWeight: 'bold'}}>
@@ -124,7 +144,7 @@ const HomeSection = (): JSX.Element => {
         </View>
         <View style={Style.menuMainContainer}>
           <View style={Style.menuHeaderContainer}>
-            <Text style={{fontSize: 16}}>Fitur Rekomendasi</Text>
+            <Text style={{fontSize: 16, fontWeight: 'bold'}}>Fitur Rekomendasi</Text>
           </View>
           <View style={Style.menuContainer}>
             {
@@ -146,29 +166,21 @@ const HomeSection = (): JSX.Element => {
           </View>
         </View>
         <View style={Style.bannerContainer}>
-          <View style={Style.ctaContainer}>
-            <Text>Hubungi Kami</Text>
-            <Image
-              source={require("../../assets/icon/whatsappicon.png")}
+          <View style={Style.bannerItemContainer}>
+            <Text style={{fontSize: 16, marginBottom: 12}}>Informasi Terkini</Text>
+            <ImageSlider
+              images={bannerData?.data}
             />
           </View>
-          <View style={Style.bannerItemContainer}>
-            <View style={Style.bannerImgContainer}>
-              <Image
-                source={require('../../assets/img/banner.png')}
-                style={{width: '100%', height: '100%'}}
-                resizeMode='contain'
-              />
-            </View >
-            <View style={Style.bannerImgContainer}>
-              <Image
-                source={require('../../assets/img/banner2.png')}
-                style={{width: '100%', height: '100%'}}
-                resizeMode='contain'
-              />
-            </View>
-          </View>
         </View>
+        <TouchableOpacity style={[Style.popupContainer, {display: popup ? 'flex' : 'none'}]} onPress={handleClosePopUp}>
+          <Text style={{color: '#fff', fontSize: 16, textAlign: 'center', marginBottom: 42}}>Klik untuk menutup</Text>
+          <Image
+            source={{uri: `${BASE_URL}${popup_img}`}}
+            resizeMode="contain"
+            style={{width: '100%', height: '50%'}}
+          />
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -187,7 +199,7 @@ const Style = StyleSheet.create({
   },
   menuMainContainer: {
     width: widthPercentageToDP(100),
-    height: heightPercentageToDP(40),
+    height: heightPercentageToDP(45),
     padding: 16,
     borderWidth: 0,
   },
@@ -215,7 +227,7 @@ const Style = StyleSheet.create({
   },
   bannerContainer: {
     width: widthPercentageToDP(100),
-    height: heightPercentageToDP(40),
+    height: heightPercentageToDP(80),
     borderWidth: 0,
     padding: 15,
     marginBottom: 18,
@@ -259,7 +271,7 @@ const Style = StyleSheet.create({
     width: '100%',
     height: '90%',
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     gap: 12,
   },
   bannerImgContainer: {
@@ -271,7 +283,20 @@ const Style = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
+  popupContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    borderWidth: 1,
+    zIndex: 15,
+    backgroundColor: '#10101099',
+    padding: 16,
+    display: 'flex',
+    justifyContent: 'center',
+  },
 });
 
 export default HomeSection;

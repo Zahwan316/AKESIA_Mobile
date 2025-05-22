@@ -27,7 +27,7 @@ const QueueItemComponent = (props: props): JSX.Element => {
   const handleAlert = () => {
     Alert.alert(
       'Konfirmasi',
-      'Apakah anda yakin ingin menghapus janji ini?',
+      'Apakah anda yakin ingin menghapus data ini?',
       [
         {
           text: 'Batal',
@@ -87,7 +87,7 @@ const QueueItemComponent = (props: props): JSX.Element => {
             </TouchableOpacity>
             <TouchableOpacity>
               {
-                props.role === 'user' && props.status !== "Menunggu Konfirmasi" ?
+                (props.role === 'user' && props.status !== "Menunggu Konfirmasi") || (props.role === 'bidan' && props.status === 'Selesai') ?
                 null
                 :
                 <Icon name='trash' size={30} color='#ff000090' onPress={handleAlert}/>

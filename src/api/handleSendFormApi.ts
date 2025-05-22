@@ -9,9 +9,10 @@ export const handlePostFormApi = async(
   apiFormData: any,
   setSuccess: any,
   setModal: any,
-  setModalInfo: any
+  setModalInfo: any,
+  user_id?: number,
 ) => {
-  const mergedData = {...data, pemeriksaan_id: pemeriksaanId};
+  const mergedData = {...data, pemeriksaan_id: pemeriksaanId, user_id: user_id};
   try{
     console.log(mergedData);
     if(checkIsDataNull(apiFormData?.data)){

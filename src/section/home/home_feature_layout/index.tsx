@@ -75,6 +75,7 @@ const Style = StyleSheet.create({
   contentContainer: {
     width: '100%',
     height: '84%',
+    paddingVertical: 16,
   },
   buttonContainer: {
     width: '100%',

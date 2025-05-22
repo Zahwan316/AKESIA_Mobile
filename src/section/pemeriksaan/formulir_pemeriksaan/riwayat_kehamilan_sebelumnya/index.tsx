@@ -64,6 +64,10 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
     }
   }, [riwayatKehamilanSebelumnyaFormData]);
 
+  useEffect(() => {
+    console.log('Pemeriksaan Id = ',  pemeriksaanId)
+  }, [pemeriksaanId])
+
   return(
     <FormScreenLayout
       header="Riwayat Kehamilan Sebelumnya"

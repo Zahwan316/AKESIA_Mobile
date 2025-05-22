@@ -261,7 +261,7 @@ const LoginSection = (): JSX.Element => {
                   color: currSelect === 'login' && '#fff',
                   fontWeight: 'bold',
                 }}>
-                Sign In
+                Login
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -279,7 +279,7 @@ const LoginSection = (): JSX.Element => {
                   color: currSelect === 'register' && '#fff',
                   fontWeight: 'bold',
                 }}>
-                Sign Up
+                Registrasi
               </Text>
             </TouchableOpacity>
           </View>

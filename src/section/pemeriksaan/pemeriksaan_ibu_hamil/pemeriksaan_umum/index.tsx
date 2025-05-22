@@ -12,6 +12,7 @@ import handleContentModal from '../../../../component/modal/function';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { formattedDateData } from '../../../../utils/date';
 import InputDatePickerComponent from '../../../../component/input/datepicker';
+import { handlePostFormApi } from '../../../../api/handleSendFormApi';
 
 type pageProps = {
   formHandle: () => void,
@@ -232,7 +233,7 @@ const Page2 = ({ formHandle, data, control, errors }: pageProps) => {
           name="tinggi_badan"
           onChange={formHandle}
           placeholder=""
-          type="text"
+          type="number"
           backgroundColor={'#fff'}
           //labelColor={'#fff'}
           border={1}
@@ -249,7 +250,7 @@ const Page2 = ({ formHandle, data, control, errors }: pageProps) => {
           name="berat_badan"
           onChange={formHandle}
           placeholder=""
-          type="text"
+          type="number"
           backgroundColor={'#fff'}
           //labelColor={'#fff'}
           border={1}
@@ -319,7 +320,7 @@ const PemeriksaanUmumSection = (): JSX.Element => {
       if (page === 1) {
         handleSubmit(() => setpage(2))(); // Pindah ke page 2
       } else if (page === 2) {
-        handleSubmit(handleSubmitForm)(); // Submit form saat di page 2
+        handleSubmit((data) => handlePostFormApi(data, 'form/pemeriksaan_umum', pemeriksaanId, pemeriksaanUmumData, setSuccess, setModal, setModalInfo, PemeriksaanData.ibu.user_id))(); // Submit form saat di page 2
       }
     } else {
       setpage(prev => Math.max(prev - 1, 1));
@@ -395,7 +396,7 @@ const PemeriksaanUmumSection = (): JSX.Element => {
     }
   }, [pemeriksaanUmumData]);
 
-  useEffect(() => {console.log(pemeriksaanUmumData);}, [pemeriksaanUmumData]);
+  useEffect(() => {console.log('Pemeriksaan data = ',PemeriksaanData);}, [PemeriksaanData]);
 
   return (
     <FormScreenLayout

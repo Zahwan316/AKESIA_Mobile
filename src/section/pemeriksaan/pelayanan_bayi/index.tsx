@@ -89,7 +89,7 @@ const PelayananBayiSection = (): JSX.Element => {
       created_at={checkIsDataNull(pelayananBayiFormData?.data) ? 'Belum ada' : formattedDateData(pelayananBayiFormData?.data.created_at)}
       updated_at={checkIsDataNull(pelayananBayiFormData?.data) ? 'Belum ada' : formattedDateData(pelayananBayiFormData?.data.updated_at)}
     >
-      <ScrollView >
+      <ScrollView style={{marginBottom: 36}}>
         <InputComponent
           height={'auto'}
           width={'100%'}

@@ -11,6 +11,7 @@ import { getPendaftaranUser } from '../../../../api/data/pendaftaran';
 import handleContentModal from '../../../../component/modal/function';
 import axios from '../../../../api/axios';
 import ModalComponent from '../../../../component/modal';
+import { modalInfoType } from '../../../../type/modalInfo';
 
 type button = {
   title: string,

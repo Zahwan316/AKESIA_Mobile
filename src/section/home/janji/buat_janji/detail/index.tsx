@@ -85,6 +85,7 @@ const BuatJanjiDetailSection = (): JSX.Element => {
                         code={item.keterangan}
                         harga={ChangePrice(item.harga, item.nama, item.kuantitas)}
                         handlePress={() => handleToPemesanan(item.id)}
+                        jenis_layanan={item.jenis_layanan_id}
                       />
                     </View>
                 }

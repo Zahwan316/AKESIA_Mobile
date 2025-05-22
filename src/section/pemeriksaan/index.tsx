@@ -93,11 +93,13 @@ const PemeriksaanSection = (): React.JSX.Element => {
     screen: string,
     pemeriksaanId?: number,
     pelayananPemeriksaanIdParams?: number,
+    pemeriksaanData: PemeriksaanApiResponse,
   ) => {
     navigation.navigate(screen, {
       pemeriksaanId: pemeriksaanId,
       pemeriksaanData: pemeriksaanData,
       pelayananPemeriksaanId: pelayananPemeriksaanIdParams,
+      PemeriksaanData: pemeriksaanData,
     });
   };
 
@@ -162,7 +164,7 @@ const PemeriksaanSection = (): React.JSX.Element => {
 
   useEffect(() => {
     //console.table(getFormId);
-    console.log(pemeriksaanData);
+    console.log('pemeriksaan data index pemeriksaan = ', pemeriksaanData);
     console.log('data pelayanan periksa hamil id = ', pelayananPeriksaHamilId);
   }, [pemeriksaanData, pelayananPeriksaHamilId]);
 
@@ -283,6 +285,7 @@ const PemeriksaanSection = (): React.JSX.Element => {
                                     child.screen,
                                     pemeriksaanId,
                                     pelayananPeriksaHamilId,
+                                    pemeriksaanData
                                   )
                                 }>
                                 <Text style={{fontSize: 16}}>{child.name}</Text>

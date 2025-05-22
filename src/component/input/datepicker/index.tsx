@@ -35,11 +35,13 @@ const InputDatePickerComponent = (props: props): React.JSX.Element => {
           render={({field: {onChange, value}}) => (
             <>
               <TouchableOpacity onPress={() => setOpen(true)} style={style.formInput}>
-                <Text>{value ?
-                      formattedDateDataWithoutHour(value)
-                      
-                        :
-                      props.initialValue || 'Pilih tanggal'}
+                <Text>
+                  {
+                    value ?
+                    formattedDateDataWithoutHour(value)
+                      :
+                    props.initialValue || 'Pilih tanggal'
+                  }
                 </Text>
               </TouchableOpacity>
               {/* <TextInput
@@ -91,10 +93,10 @@ const style = StyleSheet.create({
     borderRadius: 8,
     padding: 8,
     //marginBottom: 12,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     display: 'flex',
     justifyContent: 'center',
-    borderColor: BORDER_COLOR
+    borderColor: BORDER_COLOR,
   },
   inputContainer: {
     flexDirection: 'row',

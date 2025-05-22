@@ -17,6 +17,7 @@ import handleContentModal from '../../../../component/modal/function';
 import { formattedDateData } from '../../../../utils/date';
 import { modalInfoType } from '../../../../type/modalInfo';
 import { handlePostFormApi } from '../../../../api/handleSendFormApi';
+import InputTimePickerComponent from '../../../../component/input/timepicker';
 
 const PelayananIbuBersalinSection = (): JSX.Element => {
   const navigate = useNavigation<any>();
@@ -52,7 +53,7 @@ const PelayananIbuBersalinSection = (): JSX.Element => {
   };
 
   useEffect(() => {
-    console.log(pendaftaranId);
+    console.log(pemeriksaanId);
     console.log(pelayananIbuBersalinData);
     if(pelayananIbuBersalinData && pelayananIbuBersalinData?.data){
       reset({
@@ -78,8 +79,8 @@ const PelayananIbuBersalinSection = (): JSX.Element => {
       modalIsSuccess={isSuccess}
       modalMessage={modalInfo.message}
       modalText={modalInfo.text}
-      created_at={checkIsDataNull(pelayananIbuBersalinData) ? 'Belum ada' : formattedDateData(pelayananIbuBersalinData?.data?.created_at)}
-      updated_at={checkIsDataNull(pelayananIbuBersalinData) ? 'Belum ada' : formattedDateData(pelayananIbuBersalinData?.data?.updated_at)}
+      created_at={checkIsDataNull(pelayananIbuBersalinData?.data) ? 'Belum ada' : formattedDateData(pelayananIbuBersalinData?.data?.created_at)}
+      updated_at={checkIsDataNull(pelayananIbuBersalinData?.data) ? 'Belum ada' : formattedDateData(pelayananIbuBersalinData?.data?.updated_at)}
     >
       <ScrollView>
         <InputDatePickerComponent
@@ -92,23 +93,15 @@ const PelayananIbuBersalinSection = (): JSX.Element => {
           message="Wajib diisi"
           initialValue={checkIsDataNull(pelayananIbuBersalinData?.data) ? null : pelayananIbuBersalinData?.data?.tanggal_persalinan}
         />
-        <InputComponent
-          height={'auto'}
-          width={'100%'}
-          label="Jam Lahir"
-          message="Harap diisi"
+        <InputTimePickerComponent
           name="jam_lahir"
-          onChange={() => {}}
-          placeholder="Contoh: 09:30"
-          type="number"
-          backgroundColor={'#fff'}
-          border={1}
-          //labelColor={'#fff'}
-          textColor={''}
           control={control}
           errors={errors}
-          borderColor={BORDER_COLOR}
+          label="Jam Lahir"
+          labelColor=""
           initialValue={checkIsDataNull(pelayananIbuBersalinData?.data) ? null : pelayananIbuBersalinData?.data?.jam_lahir}
+          message="Wajib diisi"
+          onChange={() => {}}
         />
         <InputComponent
           height={'auto'}

@@ -1,11 +1,9 @@
-
-
 export const ChangePrice = (harga: number, nameItem: string, age: number) => {
   if(nameItem === 'Healthy Massage'){
     if(age === 4 || age === 5){
       return harga + 10000;
     }
-    else if(age > 5 && age <= 7){
+    else if(age > 5 /* && age <= 7 */){
       return harga + 20000;
     }
   }

@@ -8,10 +8,18 @@ type props = {
   title: string;
   code: string,
   handlePress: () => void,
-  harga: number | string
+  harga: number | string,
+  jenis_layanan?: number,
 };
 
 const width = useDimension();
+
+enum JenisLayananId {
+  'BABY_SPA' = 1,
+  'BIDAN_BUNDA' = 2,
+  'PERIKSA_HAMIL' = 3,
+  'PERSALINAN' = 4,
+}
 
 const ChildDropdownComponent = (props: props) => {
   return (
@@ -36,7 +44,7 @@ const ChildDropdownComponent = (props: props) => {
       </View>
       <View style={style.priceContainer}>
         <Text style={{fontSize: 14, fontWeight: 'bold'}}>{
-          props.harga === 0 ? 'Chat Admin' : CurrencyFormat(props.harga)}
+          props.harga === 0 || props.jenis_layanan === JenisLayananId.PERSALINAN ? 'Chat Admin' : CurrencyFormat(props.harga)}
         </Text>
         <Text></Text>
       </View>

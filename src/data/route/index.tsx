@@ -27,6 +27,7 @@ import NotificationScreen from '../../screen/Notification';
 import Icon from 'react-native-vector-icons/Feather';
 import PelayananLainnyaScreen from '../../screen/pemeriksaan/pelayanan_lainnya';
 import BeratMamaScreen from '../../screen/BeratMama';
+import DataIbuScreen from '../../screen/DataIbu';
 
 type routesType = {
   name: string,
@@ -260,6 +261,15 @@ const routes: routesType[] = [
       tabBarButton: () => null,
     },
   },
+  {
+    name: 'DataIbu',
+    component: DataIbuScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
 ];
 
 export const routesBottom: routesType[] = [
@@ -268,7 +278,7 @@ export const routesBottom: routesType[] = [
     component: HomeScreen,
     options: {
       headerShown: false,
-      tabBarIcon: ({color, size, focused}) => (
+      tabBarIcon: ({}) => (
       <Icon name="home" size={22} color="#202020"/>
     ),
   },
@@ -278,7 +288,7 @@ export const routesBottom: routesType[] = [
     component: ProfileScreen,
     options: {
       headerShown: false,
-      tabBarIcon: ({color, size, focused}) => (
+      tabBarIcon: ({}) => (
         <Icon name="user" size={22} color="#202020"/>
       ),
     },
