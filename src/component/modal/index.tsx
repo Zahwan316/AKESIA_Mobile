@@ -1,8 +1,8 @@
-import { JSX, useState } from "react";
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { JSX, useState } from 'react';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Modal, View, Text, Button } from 'react-native';
-import ButtonComponent from "../button";
-import { BUTTON_COLOR, MAIN_COLOR } from "../../constants/color";
+import ButtonComponent from '../button';
+import { BUTTON_COLOR, MAIN_COLOR } from '../../constants/color';
 
 type props = {
   handleModal: () => void,

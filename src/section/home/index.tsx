@@ -56,6 +56,12 @@ const menuList: menu[] = [
     screen: 'DataIbu',
     role: 'user',
   },
+  {
+    name: 'Album Foto Kita',
+    icon: require('../../assets/icon/album_foto_icon.png'),
+    screen: 'AlbumFotoJanin',
+    role: 'user',
+  },
 ];
 
 const HomeSection = (): JSX.Element => {

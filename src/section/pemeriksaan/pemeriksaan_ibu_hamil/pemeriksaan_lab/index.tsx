@@ -13,6 +13,7 @@ import { checkIsDataNull } from '../../../../utils/checkDataIsNull';
 import axios from '../../../../api/axios';
 import handleContentModal from '../../../../component/modal/function';
 import { formattedDate, formattedDateData } from '../../../../utils/date';
+import InputTimePickerComponent from '../../../../component/input/timepicker';
 
 const Page1 = ({
   formHandle,
@@ -36,7 +37,16 @@ const Page1 = ({
         labelColor=''
         initialValue={data?.tanggal_pemeriksaan}
       />
-      <InputComponent
+      <InputTimePickerComponent
+        label="Jam Pemeriksaan"
+        onChange={formHandle}
+        control={control}
+        errors={errors}
+        name='jam_pemeriksaan'
+        labelColor=''
+        initialValue={data?.jam_pemeriksaan}
+      />
+      {/* <InputComponent
         height={'auto'}
         width={'100%'}
         label="Jam Pemeriksaan"
@@ -53,7 +63,7 @@ const Page1 = ({
         errors={errors}
         borderColor={BORDER_COLOR}
         initialValue={data?.jam_pemeriksaan}
-      />
+      /> */}
       <InputComponent
         height={'auto'}
         width={'100%'}
@@ -116,7 +126,16 @@ const Page2 = ({
         name='tanggal_pelayanan'
         labelColor='#000'
       />
-      <InputComponent
+      <InputTimePickerComponent
+        label="Jam Pelayanan"
+        onChange={formHandle}
+        control={control}
+        errors={errors}
+        initialValue={data?.jam_pelayanan}
+        name='jam_pelayanan'
+        labelColor='#000'
+      />
+      {/* <InputComponent
         height={'auto'}
         width={'100%'}
         label="Jam Pelayanan"
@@ -133,7 +152,7 @@ const Page2 = ({
         errors={errors}
         initialValue={data?.jam_pelayanan}
         borderColor={BORDER_COLOR}
-      />
+      /> */}
       <InputComponent
         height={'auto'}
         width={'100%'}

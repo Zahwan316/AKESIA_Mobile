@@ -84,7 +84,7 @@ type apiResponse = {
   'ibu': IbuType
 }
 const PemesananJanjiSection = (): JSX.Element => {
-  const {control, handleSubmit, formState: {errors}} = useForm();
+  const {control, handleSubmit, reset, formState: {errors}} = useForm();
   const route = useRoute();
   const { pelayananId, pendaftaranId = null, jenisPelayananId = null } = route.params as { pelayanId: number } || {};
   const { data: pelayananData} = useQuery({
@@ -135,6 +135,7 @@ const PemesananJanjiSection = (): JSX.Element => {
     }
   };
 
+  //fungsi tampilkan alert saat submit
   const handleAlert = () => {
     Alert.alert(
       'Konfirmasi',
@@ -149,7 +150,7 @@ const PemesananJanjiSection = (): JSX.Element => {
           onPress: () => handleSubmit(onSubmit)(),
         },
       ]
-    )
+    );
   };
 
   const handleModal = () => {
@@ -159,6 +160,7 @@ const PemesananJanjiSection = (): JSX.Element => {
     setModal(!modal);
   };
 
+  //fungsi memilih anak
   const handleChangeAnak = (id: number) => {
     setLoading(true);
     const findChildren = currUserAnakData?.data.find((item) => item.id === id);
@@ -168,6 +170,14 @@ const PemesananJanjiSection = (): JSX.Element => {
       setLoading(false);
     }, 1500);
   };
+
+  useEffect(() => {
+    if(pendaftaranUserData && pendaftaranUserData?.data){
+      reset({
+        keluhan: pendaftaranUserData?.data?.keluhan,
+      });
+    }
+  }, [pendaftaranUserData])
 
 
  /*  useEffect(() => {
@@ -188,7 +198,6 @@ const PemesananJanjiSection = (): JSX.Element => {
         modalVisible={modal}
         handleModal={handleModal}
       />
-      
       <View style={style.dateContainer}>
         <InputDatePickerComponent
           label="Tanggal Pertemuan"

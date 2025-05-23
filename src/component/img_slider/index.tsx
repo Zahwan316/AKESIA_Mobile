@@ -13,8 +13,10 @@ const ImageSlider = (props: props) => {
   useEffect(() => {
     let index = 0;
     const interval = setInterval(() => {
-      index = (index + 1) % props.images.length;
-      flatListRef.current?.scrollToIndex({ index, animated: true });
+      if(props.images){
+        index = (index + 1) % props.images?.length;
+        flatListRef.current?.scrollToIndex({ index, animated: true });
+      }
     }, 3000);
     return () => clearInterval(interval);
   }, []);

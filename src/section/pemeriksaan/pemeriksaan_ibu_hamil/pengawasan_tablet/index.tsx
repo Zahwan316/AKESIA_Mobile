@@ -15,6 +15,7 @@ import { checkIsDataNull } from '../../../../utils/checkDataIsNull';
 import axios from '../../../../api/axios';
 import handleContentModal from '../../../../component/modal/function';
 import { formattedDateData } from '../../../../utils/date';
+import InputTimePickerComponent from '../../../../component/input/timepicker';
 
 const PengawasanObatSection = (): JSX.Element => {
   const router = useRoute();
@@ -136,7 +137,16 @@ const PengawasanObatSection = (): JSX.Element => {
           message="Wajib diisi"
           initialValue={checkIsDataNull(pengawasanTabletData?.data) ? null : pengawasanTabletData?.data?.tanggal}
         />
-        <InputComponent
+        <InputTimePickerComponent
+          control={control}
+          errors={errors}
+          name="jam"
+          label="Jam"
+          labelColor=''
+          onChange={() => {}}
+          initialValue={checkIsDataNull(pengawasanTabletData?.data) ? null : pengawasanTabletData?.data?.jam.toString()}
+        />
+        {/* <InputComponent
           height={'auto'}
           width={'100%'}
           label="Jam"
@@ -149,11 +159,10 @@ const PengawasanObatSection = (): JSX.Element => {
           border={1}
           //labelColor={'#fff'}
           textColor={''}
-          control={control}
-          errors={errors}
+          
           borderColor={BORDER_COLOR}
           initialValue={checkIsDataNull(pengawasanTabletData?.data) ? null : pengawasanTabletData?.data?.jam.toString()}
-        />
+        /> */}
       </View>
     </FormScreenLayout>
   );

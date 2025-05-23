@@ -20,7 +20,12 @@ type Props = {
 };
 
 const InputTimePickerComponent = (props: Props): React.JSX.Element => {
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(() => {
+    if (props.initialValue && /^\d{2}:\d{2}$/.test(props.initialValue)) {
+      return new Date(`1970-01-01T${props.initialValue}:00`);
+    }
+    return new Date();
+  });
   const [open, setOpen] = useState(false);
 
   const formatTime = (time: Date) => {
@@ -58,12 +63,13 @@ const InputTimePickerComponent = (props: Props): React.JSX.Element => {
                 modal
                 open={!props.disabled && open}
                 mode="time"
-                is24hourSource="locale"
+                is24hourSource="device"
                 date={
-                  value && /^\d{2}:\d{2}$/.test(value) ?
-                  new Date(`1970-01-01T${value}:00`)
-                  :
-                  new Date()
+                  value && /^\d{2}:\d{2}:\d{2}$/.test(value)
+                  ? new Date(`1970-01-01T${value}`) // tetap valid
+                  : value && /^\d{2}:\d{2}$/.test(value)
+                  ? new Date(`1970-01-01T${value}:00`)
+                  : new Date()
                 }
                 onConfirm={(selectedTime) => {
                   setOpen(false);

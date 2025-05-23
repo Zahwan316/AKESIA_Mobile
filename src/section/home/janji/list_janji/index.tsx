@@ -137,7 +137,7 @@ const ListJanjiSection = (): JSX.Element => {
             item.pendaftaran.status !== statusPendaftaran.NOT_CONFIRM && item.pendaftaran.isVerif !== 0 ?
             <QueueItemComponent
               description={item.pelayanan?.nama}
-              handleClick={() => handleScreen('PemesananJanji', item.pelayanan_id, item.id)}
+              handleClick={() => handleScreen('PemesananJanji', item.pelayanan_id, item.id, '', item.pendaftaran_id)}
               handleDelete={() => {handleBatalkanJanji(item.pendaftaran_id, item.id);}}
               img={require('../../../../assets/icon/baby.png')}
               time={item.pendaftaran?.jam_ditentukan === null ? 'Segera Diinformasikan' : item.pendaftaran?.jam_ditentukan}
@@ -145,6 +145,7 @@ const ListJanjiSection = (): JSX.Element => {
               key={index}
               status={item.pendaftaran?.status}
               role="bidan"
+              pendaftaranId={item.pendaftaran_id}
               handlePeriksa={() => handleScreen('Pemeriksaan', item.pelayanan.form_id, item.id, item, item.pendaftaran_id)}
             />
             :

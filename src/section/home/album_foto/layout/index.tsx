@@ -1,18 +1,14 @@
-import { Text, TouchableOpacity } from 'react-native';
-import { StyleSheet } from 'react-native';
-import { View } from 'react-native';
-import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import ButtonComponent from '../../../component/button';
-import { MAIN_COLOR } from '../../../constants/color';
-import ModalComponent from '../../../component/modal';
 import { useNavigation } from '@react-navigation/native';
+import { JSX } from 'react';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import ModalComponent from '../../../../component/modal';
+import { View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
 
 type props = {
   title: string,
   children: React.ReactNode,
-  onPress: () => void,
   modalHandleModal: () => void,
   modalVisible: boolean,
   modalIsSuccess: boolean,
@@ -20,9 +16,7 @@ type props = {
   modalText: string
 }
 
-const HomeFeatureLayoutSection = (props: props) => {
-  const navigate = useNavigation<any>();
-
+const FotoScreenLayout = (props: props):JSX.Element => {
   return(
     <SafeAreaProvider>
       <SafeAreaView>
@@ -35,21 +29,14 @@ const HomeFeatureLayoutSection = (props: props) => {
         />
         <View style={Style.mainContainer}>
           <View style={Style.headerContainer}>
-            <TouchableOpacity onPress={() => navigate.goBack()}>
+            {/* <TouchableOpacity onPress={() => navigate.goBack()}>
               <Icon name='chevron-left' size={26}/>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <Text style={{fontSize: 24, fontWeight: 'bold'}}>{props.title}</Text>
-            <View></View>
+            {/* <View></View> */}
           </View>
           <View style={Style.contentContainer}>
             {props.children}
-          </View>
-          <View style={Style.buttonContainer}>
-            <ButtonComponent
-              onPress={props.onPress}
-              title="Simpan"
-              color={MAIN_COLOR}
-            />
           </View>
         </View>
       </SafeAreaView>
@@ -67,15 +54,18 @@ const Style = StyleSheet.create({
     width: '100%',
     height: '6%',
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0,
     flexDirection: 'row',
   },
   contentContainer: {
     width: '100%',
-    height: '84%',
+    height: '94%',
     paddingVertical: 16,
+   /*  display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row', */
   },
   buttonContainer: {
     width: '100%',
@@ -83,4 +73,4 @@ const Style = StyleSheet.create({
   },
 });
 
-export default HomeFeatureLayoutSection;
+export default FotoScreenLayout;

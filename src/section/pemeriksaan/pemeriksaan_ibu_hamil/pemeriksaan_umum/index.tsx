@@ -411,28 +411,31 @@ const PemeriksaanUmumSection = (): JSX.Element => {
       created_at={checkIsDataFormPemeriksaanUmumNull() ? 'Belum ada' : formattedDateData(pemeriksaanUmumData?.data?.created_at)}
       updated_at={checkIsDataFormPemeriksaanUmumNull() ? 'Belum ada' : formattedDateData(pemeriksaanUmumData?.data?.updated_at)}
     >
-      {page === 1 ?
-          <Page1
+      <View style={{marginBottom: 42}}>
+        {page === 1 ?
+            <Page1
+              formHandle={handleSubmit(() => {})}
+              data={{
+                bentuktubuh: bentukTubuhOption,
+                kesadaran: kesadaranData?.data || [],
+                pemeriksaanUmumData: checkIsDataFormPemeriksaanUmumNull() ? [] : pemeriksaanUmumData?.data,
+              }}
+              control={control}
+              errors={errors}
+            />
+          // page1(() => {}, [], control, errors)
+        :
+          <Page2
             formHandle={handleSubmit(() => {})}
-            data={{
-              bentuktubuh: bentukTubuhOption,
-              kesadaran: kesadaranData?.data || [],
-              pemeriksaanUmumData: checkIsDataFormPemeriksaanUmumNull() ? [] : pemeriksaanUmumData?.data,
-            }}
             control={control}
             errors={errors}
+            data={{
+              pemeriksaanUmumData: checkIsDataFormPemeriksaanUmumNull() ? [] : pemeriksaanUmumData?.data,
+            }}
           />
-        // page1(() => {}, [], control, errors)
-      :
-        <Page2
-          formHandle={handleSubmit(() => {})}
-          control={control}
-          errors={errors}
-          data={{
-            pemeriksaanUmumData: checkIsDataFormPemeriksaanUmumNull() ? [] : pemeriksaanUmumData?.data,
-          }}
-        />
-      }
+        }
+
+      </View>
     </FormScreenLayout>
   );
 };

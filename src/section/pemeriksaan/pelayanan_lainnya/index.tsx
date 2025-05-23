@@ -76,99 +76,99 @@ const PelayananLainnyaSection = (): JSX.Element => {
       created_at={checkIsDataNull(layananIbuLainnyaFormData?.data) ? 'Belum ada' : formattedDateData(layananIbuLainnyaFormData?.data.created_at)}
       updated_at={checkIsDataNull(layananIbuLainnyaFormData?.data) ? 'Belum ada' : formattedDateData(layananIbuLainnyaFormData?.data.updated_at)}
     >
-      <View>
-      <ScrollView >
-        <InputComponent
-          height={'auto'}
-          width={'100%'}
-          label="Nama Ibu"
-          message="Harap diisi"
-          name="nama_ibu"
-          onChange={() => {}}
-          placeholder=""
-          type="text"
-          backgroundColor={'#fff'}
-          border={1}
-          labelColor={''}
-          textColor={''}
-          control={control}
-          errors={errors}
-          borderColor={BORDER_COLOR}
-          initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? pemeriksaanData?.ibu?.user?.nama_lengkap : layananIbuLainnyaFormData?.data.nama_ibu}
-        />
-        <InputComponent
-          height={'auto'}
-          width={'100%'}
-          label="Umur Ibu"
-          message="Harap diisi"
-          name="umur_ibu"
-          onChange={() => {}}
-          placeholder=""
-          type="number"
-          backgroundColor={'#fff'}
-          border={1}
-          labelColor={''}
-          textColor={''}
-          control={control}
-          errors={errors}
-          borderColor={BORDER_COLOR}
-          initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? calculateAge(pemeriksaanData?.ibu?.tanggal_lahir).toString() : layananIbuLainnyaFormData?.data?.umur_ibu}
-        />
-        <InputComponent
-          height={'auto'}
-          width={'100%'}
-          label="Booking Layanan"
-          message="Harap diisi"
-          name="booking_layanan"
-          onChange={() => {}}
-          placeholder=""
-          type="text"
-          backgroundColor={''}
-          border={1}
-          labelColor={''}
-          textColor={''}
-          control={control}
-          errors={errors}
-          borderColor={BORDER_COLOR}
-          initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? pemeriksaanData?.pelayanan?.nama : layananIbuLainnyaFormData?.data.booking_layanan }
-        />
-        <InputComponent
-          height={'auto'}
-          width={'100%'}
-          label="Catatan Soap"
-          message="Harap diisi"
-          name="catatan_soap"
-          onChange={() => {}}
-          placeholder=""
-          type="textarea"
-          backgroundColor={''}
-          border={1}
-          labelColor={''}
-          textColor={''}
-          control={control}
-          errors={errors}
-          borderColor={BORDER_COLOR}
-          initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? null : layananIbuLainnyaFormData?.data.catatan_soap }
-        />
-        <InputComponent
-          height={'auto'}
-          width={'100%'}
-          label="Keterangan"
-          message="Harap diisi"
-          name="keterangan"
-          onChange={() => {}}
-          placeholder=""
-          type="textarea"
-          backgroundColor={''}
-          border={1}
-          labelColor={''}
-          textColor={''}
-          control={control}
-          errors={errors}
-          borderColor={BORDER_COLOR}
-          initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? null : layananIbuLainnyaFormData?.data.keterangan }
-        />
-      </ScrollView>
+      <View style={{marginBottom: 32}}>
+        <ScrollView >
+          <InputComponent
+            height={'auto'}
+            width={'100%'}
+            label="Nama Ibu"
+            message="Harap diisi"
+            name="nama_ibu"
+            onChange={() => {}}
+            placeholder=""
+            type="text"
+            backgroundColor={'#fff'}
+            border={1}
+            labelColor={''}
+            textColor={''}
+            control={control}
+            errors={errors}
+            borderColor={BORDER_COLOR}
+            initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? pemeriksaanData?.ibu?.user?.nama_lengkap : layananIbuLainnyaFormData?.data.nama_ibu}
+          />
+          <InputComponent
+            height={'auto'}
+            width={'100%'}
+            label="Umur Ibu"
+            message="Harap diisi"
+            name="umur_ibu"
+            onChange={() => {}}
+            placeholder=""
+            type="number"
+            backgroundColor={'#fff'}
+            border={1}
+            labelColor={''}
+            textColor={''}
+            control={control}
+            errors={errors}
+            borderColor={BORDER_COLOR}
+            initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? calculateAge(pemeriksaanData?.ibu?.tanggal_lahir).toString() : layananIbuLainnyaFormData?.data?.umur_ibu}
+          />
+          <InputComponent
+            height={'auto'}
+            width={'100%'}
+            label="Booking Layanan"
+            message="Harap diisi"
+            name="booking_layanan"
+            onChange={() => {}}
+            placeholder=""
+            type="text"
+            backgroundColor={''}
+            border={1}
+            labelColor={''}
+            textColor={''}
+            control={control}
+            errors={errors}
+            borderColor={BORDER_COLOR}
+            initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? pemeriksaanData?.pelayanan?.nama : layananIbuLainnyaFormData?.data.booking_layanan }
+          />
+          <InputComponent
+            height={'auto'}
+            width={'100%'}
+            label="Catatan Soap"
+            message="Harap diisi"
+            name="catatan_soap"
+            onChange={() => {}}
+            placeholder=""
+            type="textarea"
+            backgroundColor={''}
+            border={1}
+            labelColor={''}
+            textColor={''}
+            control={control}
+            errors={errors}
+            borderColor={BORDER_COLOR}
+            initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? null : layananIbuLainnyaFormData?.data.catatan_soap }
+          />
+          <InputComponent
+            height={'auto'}
+            width={'100%'}
+            label="Keterangan"
+            message="Harap diisi"
+            name="keterangan"
+            onChange={() => {}}
+            placeholder=""
+            type="textarea"
+            backgroundColor={''}
+            border={1}
+            labelColor={''}
+            textColor={''}
+            control={control}
+            errors={errors}
+            borderColor={BORDER_COLOR}
+            initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? null : layananIbuLainnyaFormData?.data.keterangan }
+          />
+        </ScrollView>
       </View>
     </FormScreenLayout>
   );

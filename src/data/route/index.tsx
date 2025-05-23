@@ -28,6 +28,10 @@ import Icon from 'react-native-vector-icons/Feather';
 import PelayananLainnyaScreen from '../../screen/pemeriksaan/pelayanan_lainnya';
 import BeratMamaScreen from '../../screen/BeratMama';
 import DataIbuScreen from '../../screen/DataIbu';
+import AlbumFotoScreen from '../../screen/album_foto';
+import AlbumFotoJaninScreen from '../../screen/album_foto/AlbumFotoJanin';
+import AlbumFotoUsgScreen from '../../screen/album_foto/AlbumFotoUsg';
+import AlbumFotoFormScreen from '../../screen/album_foto/AlbumFotoForm';
 
 type routesType = {
   name: string,
@@ -264,6 +268,42 @@ const routes: routesType[] = [
   {
     name: 'DataIbu',
     component: DataIbuScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
+  {
+    name: 'AlbumFoto',
+    component: AlbumFotoScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
+  {
+    name: 'AlbumFotoJanin',
+    component: AlbumFotoJaninScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
+  {
+    name: 'AlbumFotoUsg',
+    component: AlbumFotoUsgScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
+  {
+    name: 'AlbumFotoForm',
+    component: AlbumFotoFormScreen,
     options: {
       headerShown: false,
       tabBarStyle: { display: 'none' },

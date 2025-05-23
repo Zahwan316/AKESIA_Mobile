@@ -1,0 +1,111 @@
+import { JSX, useEffect } from 'react';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useQuery } from '@tanstack/react-query';
+
+import FotoScreenLayout from './layout';
+import AlbumItemComponent from './component/AlbumItem';
+import EmptyDataComponent from '../../../component/empty';
+import { checkIsDataFormNull } from '../../../utils/checkDataIsNull';
+import { getData } from '../../../api/data/getData';
+import FloatingIcon from '../../../component/floatingIcon';
+import AlbumImageItemComponent from './component/AlbumImgItem';
+
+const AlbumFotoSection = (): JSX.Element => {
+  const navigator = useNavigation<any>();
+  const router = useRoute();
+  const {
+    screenBeforeName,
+    janinId,
+    usgId,
+    usgTitleName,
+  } = router.params as {screenBeforeName: string, janinId: number, usgId: number, usgTitleName: string};
+  const handleScreen = (screen: string, screenBeforeName?: string, usgId?: number, usgTitleName?: string) => {
+    navigator.navigate(screen, {screenBeforeName: screenBeforeName, usgId: usgId, usgTitleName: usgTitleName});
+  };
+  const {data: AlbumFotoData} = useQuery({
+    queryKey: ['usgData'],
+    queryFn: () => getData(`album_foto/getByUsgId/${usgId}`),
+  });
+
+  useEffect(() => {
+    console.log(usgId);
+  }, [usgId]);
+
+  return(
+    <FotoScreenLayout
+      title="Album Foto Kita"
+      modalVisible={false}
+    >
+      <View style={Style.mainContainer}>
+        <View style={Style.headerContainer}>
+          <Text style={Style.headerText}>
+            {usgTitleName}
+          </Text>
+        </View>
+        <ScrollView style={Style.itemContainer}>
+          <View style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'space-between'}}>
+            {
+              AlbumFotoData?.data?.length === 0 ?
+              <View style={{width:'100%', borderWidth:0, display:'flex', justifyContent:'center', alignItems:'center'}}>
+                <Image
+                  source={require('../../../assets/icon/image_blank.png')}
+                  style={{width: 200, height: 200, marginBottom: 12}}
+                />
+                <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 8}}>
+                  Upload hasil usg Kita yuk..
+                </Text>
+                <Text style={{fontSize: 18, fontWeight: 'normal'}}>
+                  Album masih kosong nih
+                </Text>
+              </View>
+              :
+              AlbumFotoData?.data?.map((item: any, index: number) => {
+                return(
+                  <AlbumImageItemComponent
+                    key={index}
+                    title={item.judul}
+                    //onPress={() => handleScreen('AlbumFoto', 'AlbumFotoUsg', item.id)}
+                    img={item.uploads?.path}
+                  />
+                );
+              })
+            }
+
+          </View>
+        </ScrollView>
+        <FloatingIcon
+          handlePress={() => handleScreen('AlbumFotoForm', 'AlbumFoto', usgId, usgTitleName)}
+        />
+      </View>
+    </FotoScreenLayout>
+  );
+};
+
+const Style = StyleSheet.create({
+  mainContainer: {
+    width: '100%',
+    height: '100%',
+    paddingVertical: 16,
+  },
+  headerContainer: {
+    width: '100%',
+    height: '8%',
+    marginBottom: 12,
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  itemContainer: {
+    width: '100%',
+    height: '90%',
+    borderWidth: 0,
+    //position: 'relative',
+    //flexWrap: 'wrap',
+    //flexDirection: 'row',
+
+  },
+});
+
+export default AlbumFotoSection;

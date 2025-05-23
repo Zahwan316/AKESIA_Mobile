@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Button, Image, View, Text, StyleSheet} from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {BUTTON_COLOR_3, BUTTON_COLOR_4} from '../../../constants/color';
 import {useForm, Controller} from 'react-hook-form';
+import { MAIN_COLOR } from '../../../constants/color';
 
 type Props = {
   control: any;
@@ -38,7 +38,7 @@ const UploadSelfie = ({control, name, label, message, errors}: Props) => {
 
           return (
             <>
-              <Button title="Pilih Foto Selfie" onPress={handlePick} />
+              <Button title="Pilih Foto" onPress={handlePick} color={MAIN_COLOR} />
               {value?.uri && (
                 <Image source={{uri: value.uri}} style={styles.image} />
               )}
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     marginTop: 10,
-    borderRadius: 100,
+    //borderRadius: 100,
   },
   errorText: {
     color: 'red',
