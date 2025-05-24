@@ -6,11 +6,14 @@ import FloatingIcon from '../../../../component/floatingIcon';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import { getData } from '../../../../api/data/getData';
+import useAlbumFotoStore from '../../../../state/album_foto';
 
 const AlbumFotoJaninSection = (): JSX.Element => {
   const navigator = useNavigation<any>();
-  const handleScreen = (screen: string, screenBeforeName?: string, janinId?: number) => {
-    navigator.navigate(screen, {screenBeforeName: screenBeforeName, janinId: janinId});
+  const setJaninId = useAlbumFotoStore((state) => state.setJaninId);
+  const handleScreen = (screen: string, screenBeforeName: string, janinId: number) => {
+    setJaninId(janinId);
+    navigator.navigate(screen, {screenBeforeName: screenBeforeName});
   };
   const {data: janinData} = useQuery({
     queryKey: ['janinData'],

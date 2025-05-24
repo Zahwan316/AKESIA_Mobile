@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import FotoScreenLayout from '../layout';
+;
 import React, { useEffect, useState } from 'react';
 import InputComponent from '../../../../component/input/text';
 import { BORDER_COLOR, MAIN_COLOR } from '../../../../constants/color';
@@ -10,8 +10,9 @@ import { handlePostApi } from '../../../../api/handlePostApi';
 import { modalInfo } from '../../tambah_anak';
 import UploadSelfie from '../../../../component/input/upload/InputUpload';
 import useAlbumFotoStore from '../../../../state/album_foto';
+import FotoScreenLayout from '../../album_foto/layout';
 
-const FormJanin = ({control, errors}): React.ReactElement => {
+const FormRiwayatKehamilanGroup = ({control, errors}): React.ReactElement => {
   return(
     <>
       <InputComponent
@@ -31,13 +32,13 @@ const FormJanin = ({control, errors}): React.ReactElement => {
   );
 };
 
-const FormUploadAlbum = ({control, errors}): React.ReactElement => {
+const FormRiwayatKehamilanFoto = ({control, errors}): React.ReactElement => {
   return(
     <>
       <InputComponent
         control={control}
         errors={errors}
-        name="judul"
+        name="nama"
         width={"auto"}
         label="Judul"
         onChange={() => {}}
@@ -46,18 +47,6 @@ const FormUploadAlbum = ({control, errors}): React.ReactElement => {
         borderColor={BORDER_COLOR}
         message="Wajib Diisi"
 
-      />
-      <InputComponent
-        control={control}
-        errors={errors}
-        name="caption"
-        width={'auto'}
-        label="Caption"
-        onChange={() => {}}
-        type="textarea"
-        border={1}
-        borderColor={BORDER_COLOR}
-        message="Wajib Diisi"
       />
       <UploadSelfie
         control={control}
@@ -70,16 +59,15 @@ const FormUploadAlbum = ({control, errors}): React.ReactElement => {
   );
 };
 
-const AlbumFormSection = () => {
+const RiwayatKehamilanFormSection = () => {
    const {
     control,
     handleSubmit,
     reset,
     formState: {errors},
   } = useForm();
-  const janinId = useAlbumFotoStore((state) => state.janinId);
-  const usgId = useAlbumFotoStore((state) => state.usgId);
-  const usgTitleName = useAlbumFotoStore((state) => state.usgTitleName);
+  const riwayatKehamilanGroupId = useAlbumFotoStore((state) => state.riwayatKehamilanGroupId);
+  const riwayatKehamilanFotoId = useAlbumFotoStore((state) => state.riwayatKehamilanFotoId);
   const navigator = useNavigation<any>();
   const router = useRoute();
   const {screenBeforeName} = router.params as {screenBeforeName: string};
@@ -91,28 +79,21 @@ const AlbumFormSection = () => {
   });
 
   const handleSubmitForm = async(data: any) => {
-    if(screenBeforeName === 'AlbumFotoJanin'){
-      handleSubmitJanin(data);
+    if(screenBeforeName === 'RiwayatKehamilanGroup'){
+      handleSubmitRiwayatKehamilanGroup(data);
     }
-    else if(screenBeforeName === 'AlbumFotoUsg'){
-      handleSubmitUsg(data);
-    }
-    else if(screenBeforeName === 'AlbumFoto'){
-      handleSubmitAlbumFoto(data);
+    else if(screenBeforeName === 'RiwayatKehamilanFoto'){
+      handleSubmitRiwayatKehamilanFoto(data);
     }
   };
 
-  const handleSubmitJanin = async(data: any) => {
-    handlePostApi(data, 'album_foto_janin', setSuccess, setModal, setModalInfo);
+  const handleSubmitRiwayatKehamilanGroup = async(data: any) => {
+    handlePostApi(data, 'riwayat_kehamilan_group', setSuccess, setModal, setModalInfo);
   };
 
-  const handleSubmitUsg = async(data: any) => {
-    const mergedData = {...data, janin_id: janinId};
-    handlePostApi(mergedData, 'album_foto_usg', setSuccess, setModal, setModalInfo);
-  };
 
-  const handleSubmitAlbumFoto = async(data: any) => {
-    const mergedData = {...data, usg_id: usgId};
+  const handleSubmitRiwayatKehamilanFoto = async(data: any) => {
+    const mergedData = {...data, riwayat_kehamilan_group_id: riwayatKehamilanGroupId};
     const formData = new FormData();
 
     for (const key in mergedData) {
@@ -129,29 +110,21 @@ const AlbumFormSection = () => {
         formData.append(key, mergedData[key]);
       }
     }
-    handlePostApi(formData, 'album_foto', setSuccess, setModal, setModalInfo);
+    handlePostApi(formData, 'riwayat_kehamilan_foto', setSuccess, setModal, setModalInfo);
   };
 
   const handleModal = () => {
     if(isSuccess){
-      if(screenBeforeName === 'AlbumFotoJanin'){
-        navigator.navigate('AlbumFotoJanin');
+      if(screenBeforeName === 'RiwayatKehamilanGroup'){
+        navigator.goBack();
       }
-      else if(screenBeforeName === 'AlbumFotoUsg'){
-        navigator.navigate('AlbumFotoUsg', {screenBeforeName: 'AlbumFotoJanin'});
-      }
-      else if(screenBeforeName === 'AlbumFoto'){
-        navigator.navigate('AlbumFoto', {screenBeforeName: 'AlbumFotoUsg'});
+      else if(screenBeforeName === 'RiwayatKehamilanFoto'){
+        navigator.goBack();
       }
     }
 
     setModal(!modal);
   };
-
-  useEffect(() => {
-    console.log('usg id = ', usgId);
-    console.log('Janin Id', janinId);
-  }, [usgId,janinId]);
 
   return(
     <FotoScreenLayout
@@ -164,13 +137,10 @@ const AlbumFormSection = () => {
     >
       <View>
         {
-          screenBeforeName === 'AlbumFotoJanin' && <FormJanin control={control} errors={errors} />
+          screenBeforeName === 'RiwayatKehamilanGroup' && <FormRiwayatKehamilanGroup control={control} errors={errors} />
         }
         {
-          screenBeforeName === 'AlbumFotoUsg' && <FormJanin control={control} errors={errors} />
-        }
-        {
-          screenBeforeName === 'AlbumFoto' && <FormUploadAlbum control={control} errors={errors} />
+          screenBeforeName === 'RiwayatKehamilanFoto' && <FormRiwayatKehamilanFoto control={control} errors={errors} />
         }
       </View>
       <View>
@@ -184,4 +154,4 @@ const AlbumFormSection = () => {
   );
 };
 
-export default AlbumFormSection;
+export default RiwayatKehamilanFormSection;

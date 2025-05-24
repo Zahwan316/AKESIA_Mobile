@@ -25,6 +25,7 @@ import ProfileScreen from '../../screen/Profile';
 import ListJanjiScreen from '../../screen/ListJanji';
 import NotificationScreen from '../../screen/Notification';
 import Icon from 'react-native-vector-icons/Feather';
+import IconBrand from 'react-native-vector-icons/FontAwesome5'
 import PelayananLainnyaScreen from '../../screen/pemeriksaan/pelayanan_lainnya';
 import BeratMamaScreen from '../../screen/BeratMama';
 import DataIbuScreen from '../../screen/DataIbu';
@@ -32,11 +33,16 @@ import AlbumFotoScreen from '../../screen/album_foto';
 import AlbumFotoJaninScreen from '../../screen/album_foto/AlbumFotoJanin';
 import AlbumFotoUsgScreen from '../../screen/album_foto/AlbumFotoUsg';
 import AlbumFotoFormScreen from '../../screen/album_foto/AlbumFotoForm';
+import RiwayatKehamilanGroupScreen from '../../screen/riwayat_kehamilan_foto/RiwayatKehamilanGroup';
+import RiwayatKehamilanFotoScreen from '../../screen/riwayat_kehamilan_foto';
+import RiwayatKehamilanFormScreen from '../../screen/riwayat_kehamilan_foto/RiwayatKehamilanForm';
+import { openWhatsApp } from '../../function/whatsapp';
 
 type routesType = {
   name: string,
   component: () => React.JSX.Element,
-  options: BottomTabNavigationOptions
+  options: BottomTabNavigationOptions,
+  listeners?: any,
 }
 
 const routes: routesType[] = [
@@ -310,6 +316,33 @@ const routes: routesType[] = [
       tabBarButton: () => null,
     },
   },
+  {
+    name: 'RiwayatKehamilanGroup',
+    component: RiwayatKehamilanGroupScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
+  {
+    name: 'RiwayatKehamilanFoto',
+    component: RiwayatKehamilanFotoScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
+  {
+    name: 'RiwayatKehamilanForm',
+    component: RiwayatKehamilanFormScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
 ];
 
 export const routesBottom: routesType[] = [
@@ -320,8 +353,24 @@ export const routesBottom: routesType[] = [
       headerShown: false,
       tabBarIcon: ({}) => (
       <Icon name="home" size={22} color="#202020"/>
-    ),
+      ),
+    },
   },
+  {
+    name: 'Whatsapp Kami',
+    component: HomeScreen,
+    listeners: {
+      tabPress: (e) => {
+        e.preventDefault(); // Jangan navigasi
+        openWhatsApp();
+      },
+    },
+    options: {
+      headerShown: false,
+      tabBarIcon: ({}) => (
+      <IconBrand name="whatsapp" size={22} color="#202020"/>
+      ),
+    },
   },
   {
     name: 'Profile',

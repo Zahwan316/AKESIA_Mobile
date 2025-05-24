@@ -19,6 +19,7 @@ const BottomTabs = (): React.JSX.Element => {
             component={item.component}
             options={item.options}
             key={index}
+            listeners={item.listeners}
           />
         ))
       }
@@ -76,6 +77,7 @@ const RouteNavigation = (): React.JSX.Element => {
           name="BottomTabs"
           component={BottomTabs}
           options={{ headerShown: false }}
+          listeners={routesBottom.listeners}
         />
       </nativetab.Navigator>
     </NavigationContainer>

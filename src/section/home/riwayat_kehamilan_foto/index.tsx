@@ -1,73 +1,72 @@
-import { JSX, useEffect } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import AlbumImageItemComponent from '../album_foto/component/AlbumImgItem';
 import { useQuery } from '@tanstack/react-query';
-
-import FotoScreenLayout from './layout';
-import AlbumItemComponent from './component/AlbumItem';
-import EmptyDataComponent from '../../../component/empty';
-import { checkIsDataFormNull } from '../../../utils/checkDataIsNull';
-import { getData } from '../../../api/data/getData';
-import FloatingIcon from '../../../component/floatingIcon';
-import AlbumImageItemComponent from './component/AlbumImgItem';
 import useAlbumFotoStore from '../../../state/album_foto';
+import { getData } from '../../../api/data/getData';
+import FotoScreenLayout from '../album_foto/layout';
+import FloatingIcon from '../../../component/floatingIcon';
+import { useEffect } from 'react';
 
-const AlbumFotoSection = (): JSX.Element => {
+const RiwayatKehamilanFotoSection = () => {
   const navigator = useNavigation<any>();
   const router = useRoute();
-  const janinId = useAlbumFotoStore((state) => state.janinId);
-  const usgId = useAlbumFotoStore((state) => state.usgId);
-  const usgTitleName = useAlbumFotoStore((state) => state.usgTitleName);
+  const RiwayatKehamilanGroupId = useAlbumFotoStore((state) => state.riwayatKehamilanGroupId);
+  const RiwayatKehamilanTitleName = useAlbumFotoStore((state) => state.riwayatKehamilanTitleName);
   const {
     screenBeforeName,
   } = router.params as {screenBeforeName: string};
-  const handleScreen = (screen: string, screenBeforeName?: string, usgId?: number, usgTitleName?: string) => {
-    navigator.navigate(screen, {screenBeforeName: screenBeforeName, usgId: usgId, usgTitleName: usgTitleName});
-  };
-  const {data: AlbumFotoData} = useQuery({
-    queryKey: ['albumFoto'],
-    queryFn: () => getData(`album_foto/getByUsgId/${usgId}`),
+
+  const {data: RiwayatKehamilanFotoData} = useQuery({
+    queryKey: ['RiwayatKehamilanFotoData'],
+    queryFn: () => getData(`riwayat_kehamilan_foto/getByGroupId/${RiwayatKehamilanGroupId}`),
   });
 
-  useEffect(() => {
-    console.log(usgId);
-  }, [usgId]);
+  const handleScreen = (screen: string, screenBeforeName: string, id: number) => {
+    navigator.navigate(screen, {
+      screenBeforeName: screenBeforeName,
+    });
+  };
 
+  useEffect(() => {
+    console.log(RiwayatKehamilanFotoData?.data);
+    console.log(RiwayatKehamilanGroupId);
+  }, [RiwayatKehamilanFotoData]);
   return(
     <FotoScreenLayout
-      title="Album Foto Kita"
       modalVisible={false}
+      title='Riwayat Kehamilan'
     >
       <View style={Style.mainContainer}>
         <View style={Style.headerContainer}>
           <Text style={Style.headerText}>
-            {usgTitleName}
+            {RiwayatKehamilanTitleName}
           </Text>
         </View>
         <ScrollView style={Style.itemContainer}>
           <View style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'space-between'}}>
             {
-              AlbumFotoData?.data?.length === 0 ?
+              RiwayatKehamilanFotoData?.data?.length === 0 ?
               <View style={{width:'100%', borderWidth:0, display:'flex', justifyContent:'center', alignItems:'center'}}>
                 <Image
-                  source={require('../../../assets/icon/image_blank.png')}
+                  source={require('../../../assets/img/emptydata.png')}
                   style={{width: 200, height: 200, marginBottom: 12}}
                 />
                 <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 8}}>
-                  Upload hasil usg Kita yuk..
+                  Upload Rekam Jejak Yuk..
                 </Text>
                 <Text style={{fontSize: 18, fontWeight: 'normal'}}>
                   Album masih kosong nih
                 </Text>
               </View>
               :
-              AlbumFotoData?.data?.map((item: any, index: number) => {
+              RiwayatKehamilanFotoData?.data?.map((item: any, index: number) => {
                 return(
                   <AlbumImageItemComponent
                     key={index}
-                    title={item.judul}
+                    title={item.nama}
                     //onPress={() => handleScreen('AlbumFoto', 'AlbumFotoUsg', item.id)}
-                    img={item.uploads?.path}
+                    img={item.upload?.path}
                   />
                 );
               })
@@ -76,7 +75,7 @@ const AlbumFotoSection = (): JSX.Element => {
           </View>
         </ScrollView>
         <FloatingIcon
-          handlePress={() => handleScreen('AlbumFotoForm', 'AlbumFoto', usgId, usgTitleName)}
+          handlePress={() => handleScreen('RiwayatKehamilanForm', 'RiwayatKehamilanFoto')}
         />
       </View>
     </FotoScreenLayout>
@@ -109,4 +108,4 @@ const Style = StyleSheet.create({
   },
 });
 
-export default AlbumFotoSection;
+export default RiwayatKehamilanFotoSection;

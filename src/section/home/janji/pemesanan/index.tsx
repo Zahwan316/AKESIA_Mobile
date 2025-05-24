@@ -177,15 +177,14 @@ const PemesananJanjiSection = (): JSX.Element => {
         keluhan: pendaftaranUserData?.data?.keluhan,
       });
     }
-  }, [pendaftaranUserData])
+    const age = calculateAge(pendaftaranUserData?.data?.bayi?.tanggal_lahir);
+    console.log('Umur = ', age);
+    setChildrenAge(age);
+  }, [pendaftaranUserData]);
 
-
- /*  useEffect(() => {
-    console.table(pelayananData);
-    console.log(pendaftaranId);
-    console.log(ageChildren);
-    console.log(loading);
-  },[pelayananData, ageChildren, loading]); */
+  useEffect(() => {
+    console.table(pendaftaranUserData);
+  },[pendaftaranUserData]);
 
   return (
     <JanjiScreenLayout
@@ -215,41 +214,9 @@ const PemesananJanjiSection = (): JSX.Element => {
           <Text style={{fontWeight: 'bold', fontSize: 16}}>Detail Pasien</Text>
         </View>
         <ScrollView style={{height: '100%', marginBottom: 0}}>
-          {/* <View style={style.itemFormContainer}>
-            <InputComponent
-              height={'auto'}
-              width={'75%'}
-              label="Nama Lengkap Ibu"
-              name="nama_ibu"
-              message="Wajib Diisi"
-              onChange={() => {}}
-              placeholder=""
-              type="text"
-              control={control}
-              errors={errors}
-              backgroundColor={'#6B779A20'}
-              disabled={pendaftaranId != null}
-              initialValue={pendaftaranId != null && pendaftaranItem?.ibu?.user?.nama_lengkap}
-            />
-            <InputComponent
-              height={'auto'}
-              width={'20%'}
-              label="Umur"
-              name="umur_ibu"
-              message="Wajib Diisi"
-              onChange={() => {}}
-              placeholder=""
-              type="number"
-              control={control}
-              errors={errors}
-              backgroundColor={'#6B779A20'}
-              disabled={pendaftaranId != null}
-              initialValue={pendaftaranId != null && age.toString()}
-            />
-          </View> */}
           <View style={style.itemFormContainer}>
             {
-              jenisPelayananId === 1 ?
+              jenisPelayananId === 1 || (pendaftaranId != null && pendaftaranItem?.pelayanan?.jenis_layanan_id === 1) ?
               <DropdownInputComponent
                 height={'auto'}
                 width={'100%'}
@@ -264,7 +231,23 @@ const PemesananJanjiSection = (): JSX.Element => {
                 onSelect={handleChangeAnak}
                 backgroundColor={'#6B779A20'}
                 disabled={pendaftaranId != null}
-                initialValue={pendaftaranId != null && pendaftaranItem?.bayi?.id}
+                initialValue={pendaftaranId != null && pendaftaranItem?.bayi_id}
+              />
+              : null
+            }
+            {
+              jenisPelayananId !== 1 && pendaftaranId != null ?
+              <InputComponent
+                height={'auto'}
+                width={'100%'}
+                label="Nama Ibu"
+                name="bayi_id"
+                control={control}
+                errors={errors}
+                onChange={() => {}}
+                backgroundColor={'#6B779A20'}
+                disabled={pendaftaranId != null}
+                initialValue={pendaftaranId != null && pendaftaranItem?.ibu?.user?.nama_lengkap}
               />
               : null
             }

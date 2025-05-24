@@ -62,6 +62,12 @@ const menuList: menu[] = [
     screen: 'AlbumFotoJanin',
     role: 'user',
   },
+  {
+    name: 'Riwayat Kehamilan',
+    icon: require('../../assets/icon/riwayat_kehamilan_icon.png'),
+    screen: 'RiwayatKehamilanGroup',
+    role: 'user',
+  },
 ];
 
 const HomeSection = (): JSX.Element => {
@@ -165,7 +171,9 @@ const HomeSection = (): JSX.Element => {
                       resizeMode="contain"
                     />
                   </View>
-                  <Text style={{fontSize: 13}}>{item.name}</Text>
+                  <View style={{width: '100%', height: '30%'}}>
+                    <Text style={{fontSize: 13, textAlign: 'center'}}>{item.name}</Text>
+                  </View>
                 </TouchableOpacity>
               ))
             }
@@ -224,7 +232,7 @@ const Style = StyleSheet.create({
     borderWidth: 0,
   },
   menuItemContainer: {
-    width: '25%',
+    width: '22%',
     height: '40%',
     borderWidth: 0,
     display: 'flex',

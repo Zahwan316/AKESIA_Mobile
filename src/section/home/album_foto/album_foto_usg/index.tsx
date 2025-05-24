@@ -8,13 +8,19 @@ import { useQuery } from '@tanstack/react-query';
 import { getData } from '../../../../api/data/getData';
 import { checkIsDataFormNull } from '../../../../utils/checkDataIsNull';
 import EmptyDataComponent from '../../../../component/empty';
+import useAlbumFotoStore from '../../../../state/album_foto';
 
 const AlbumFotoUsgSection = (): JSX.Element => {
   const navigator = useNavigation<any>();
   const router = useRoute();
-  const {screenBeforeName, janinId} = router.params as {screenBeforeName: string, janinId: number};
-  const handleScreen = (screen: string, screenBeforeName?: string, usgId?: number, janinId?: number, UsgTitleName?: string) => {
-    navigator.navigate(screen, {screenBeforeName: screenBeforeName, usgId: usgId, janinId: janinId, usgTitleName: UsgTitleName});
+  const janinId = useAlbumFotoStore((state) => state.janinId);
+  const setUsgId = useAlbumFotoStore((state) => state.setUsgId);
+  const setUsgTitleName = useAlbumFotoStore((state) => state.setUsgTitleName);
+  const {screenBeforeName} = router.params as {screenBeforeName: string};
+  const handleScreen = (screen: string, screenBeforeName: string, usgId: number, UsgTitleName: string) => {
+    setUsgId(usgId);
+    setUsgTitleName(UsgTitleName);
+    navigator.navigate(screen, {screenBeforeName: screenBeforeName});
   };
   const {data: usgData} = useQuery({
     queryKey: ['usgData'],
@@ -22,7 +28,7 @@ const AlbumFotoUsgSection = (): JSX.Element => {
   });
 
   useEffect(() => {
-    console.log(usgData);
+    console.log(janinId);
     console.log(checkIsDataFormNull(usgData?.data))
   }, [usgData]);
 
@@ -47,14 +53,14 @@ const AlbumFotoUsgSection = (): JSX.Element => {
                 <AlbumItemComponent
                   key={index}
                   title={item.nama}
-                  onPress={() => handleScreen('AlbumFoto', 'AlbumFotoUsg', item.id, 0 , item.nama)}
+                  onPress={() => handleScreen('AlbumFoto', 'AlbumFotoUsg', item.id, item.nama)}
                 />
               );
             })
           }
         </ScrollView>
         <FloatingIcon
-          handlePress={() => handleScreen('AlbumFotoForm', 'AlbumFotoUsg', 0, janinId)}
+          handlePress={() => handleScreen('AlbumFotoForm', 'AlbumFotoUsg')}
         />
       </View>
     </FotoScreenLayout>
