@@ -12,6 +12,7 @@ import ImageSlider from '../../component/img_slider';
 import { getData } from '../../api/data/getData';
 import useComponentStore from '../../state/component';
 import { BASE_URL } from '../../constants/baseurl';
+import { sumHpht } from '../../utils/sumHpht';
 
 type menu = {
   name: string,
@@ -80,12 +81,18 @@ const HomeSection = (): JSX.Element => {
     queryKey: ['user'],
     queryFn: getUserLogin,
   });
+  const {data: ibuData} = useQuery({
+    queryKey: ['ibuData'],
+    queryFn: () => getData(`ibu/getCurrIbu`),
+  });
   const { data: bannerData} = useQuery({
     queryKey: ['banner'],
     queryFn: () => getData('banner'),
   });
   const user = useUserStore((state) => state.user);
   const handleUser = useUserStore((state) => state.handleUser);
+  const ibu = useUserStore((state) => state.ibu);
+  const handleIbu = useUserStore((state) => state.handleIbu);
 
   const handlePressButton = (screen: string, params?: object) => {
     navigation.navigate(screen, params);
@@ -94,6 +101,14 @@ const HomeSection = (): JSX.Element => {
   const handleClosePopUp = () => {
     setPopup(false);
     setPopupImg('');
+  };
+
+  const handleOpenHpht = (role: string) => {
+    if(role === 'bidan'){
+      return;
+    }
+
+    handlePressButton('HphtDetail');
   };
 
   useEffect(() => {
@@ -106,11 +121,21 @@ const HomeSection = (): JSX.Element => {
       }
     };
     setUser();
+    console.log(userData)
   }, [userData, handleUser]);
 
   useEffect(() => {
-    console.log(bannerData);
-  }, [bannerData]);
+    console.log(ibuData);
+    const setIbu = () => {
+      if(ibuData && ibuData?.ibu != null){
+        const data = ibuData?.ibu;
+        for(const key in data){
+          handleIbu(key, data[key]);
+        }
+      }
+    };
+    setIbu();
+  }, [ibuData, handleIbu]);
 
   return(
     <SafeAreaView>
@@ -127,19 +152,19 @@ const HomeSection = (): JSX.Element => {
             </TouchableOpacity>
           </View>
           <View style={Style.boxGroupContainer}>
-            <TouchableOpacity style={Style.boxContainer}>
+            <TouchableOpacity style={Style.boxContainer} onPress={() => handleOpenHpht(userData?.user?.role)}>
               <View style={{width: '30%', height: '100%', marginRight: 8, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <Image
                   source={require('../../assets/icon/baby.png')}
                   style={{width: "80%", height: "80%"}}
                 />
               </View>
-              <View>
+              <View >
                 {
                   userData?.user?.role === 'user' ?
                   <>
                     <Text style={{fontSize: 14, color: '#fff', fontWeight: 'bold', marginBottom: 4}}>Babyku</Text>
-                    <Text style={{fontSize: 12, color: '#fff', fontWeight: 'bold'}}>7 Minggu</Text>
+                    <Text style={{fontSize: 12, color: '#fff', fontWeight: 'bold'}}>{sumHpht(ibuData?.data?.hpht)} Minggu</Text>
                   </>
                   :
                   <Text style={{fontSize: 16, color: '#fff', fontWeight: 'bold'}}>
@@ -182,9 +207,14 @@ const HomeSection = (): JSX.Element => {
         <View style={Style.bannerContainer}>
           <View style={Style.bannerItemContainer}>
             <Text style={{fontSize: 16, marginBottom: 12}}>Informasi Terkini</Text>
-            <ImageSlider
-              images={bannerData?.data}
-            />
+            {
+              bannerData?.data?.length != 0 ?
+              <ImageSlider
+                images={bannerData?.data}
+              />
+              :
+              null
+            }
           </View>
         </View>
         <TouchableOpacity style={[Style.popupContainer, {display: popup ? 'flex' : 'none'}]} onPress={handleClosePopUp}>

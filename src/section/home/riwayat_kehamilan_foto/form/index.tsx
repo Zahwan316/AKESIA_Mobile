@@ -60,7 +60,7 @@ const FormRiwayatKehamilanFoto = ({control, errors}): React.ReactElement => {
 };
 
 const RiwayatKehamilanFormSection = () => {
-   const {
+  const {
     control,
     handleSubmit,
     reset,

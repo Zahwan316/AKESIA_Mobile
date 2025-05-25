@@ -37,6 +37,8 @@ import RiwayatKehamilanGroupScreen from '../../screen/riwayat_kehamilan_foto/Riw
 import RiwayatKehamilanFotoScreen from '../../screen/riwayat_kehamilan_foto';
 import RiwayatKehamilanFormScreen from '../../screen/riwayat_kehamilan_foto/RiwayatKehamilanForm';
 import { openWhatsApp } from '../../function/whatsapp';
+import HphtScreen from '../../screen/Hpht';
+import HphtDetailScreen from '../../screen/HphtDetail';
 
 type routesType = {
   name: string,
@@ -337,6 +339,24 @@ const routes: routesType[] = [
   {
     name: 'RiwayatKehamilanForm',
     component: RiwayatKehamilanFormScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
+  {
+    name: 'Hpht',
+    component: HphtScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
+  {
+    name: 'HphtDetail',
+    component: HphtDetailScreen,
     options: {
       headerShown: false,
       tabBarStyle: { display: 'none' },

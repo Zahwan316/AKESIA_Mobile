@@ -9,7 +9,7 @@ import { BORDER_COLOR } from "../../../constants/color";
 
 type props = {
   label: string,
-  onChange: () => void,
+  onChange: (value: any) => void,
   customStyle?: StyleSheet.NamedStyles<any>,
   labelColor?: string,
   control: any,
@@ -18,11 +18,17 @@ type props = {
   errors?: any,
   initialValue?: string,
   disabled: boolean,
+  maximum?: boolean,
+  minimum?: number,
 }
 
 const InputDatePickerComponent = (props: props): React.JSX.Element => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+
+  const minDate = new Date();
+  minDate.setDate(minDate.getDate() - (props.minimum * 7));
+
 
   return(
     <View style={[props.customStyle, { marginBottom: 12, }]}>
@@ -56,12 +62,14 @@ const InputDatePickerComponent = (props: props): React.JSX.Element => {
                 open={!props.disabled && open}
                 mode={'date'}
                 date={value ? new Date(value) : new Date()}
+                minimumDate={props.minimum ? minDate : undefined}
+                maximumDate={props.maximum ? new Date() : undefined}
                 onConfirm={(dates) => {
                   setOpen(false);
                   setDate(dates);
                   const formattedDates = formattedDateDataWithoutHour(dates);
                   onChange(formattedDates);
-                  props.onChange();
+                  props.onChange(formattedDates);
                 }}
                 onCancel={() => {
                   setOpen(false);

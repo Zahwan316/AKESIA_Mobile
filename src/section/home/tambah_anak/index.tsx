@@ -59,8 +59,6 @@ type pageProps = {
   disabled: boolean
 };
 
-
-
 const Page1 = ({
   onChange,
   control,
@@ -70,9 +68,6 @@ const Page1 = ({
 }: pageProps) => {
   return (
     <>
-      <Text>
-        {data?.nama_lengkap}
-      </Text>
       <InputComponent
         height={'auto'}
         width={'100%'}
@@ -100,14 +95,14 @@ const Page1 = ({
         name="jenis_kelamin"
         onSelect={() => {}}
         placeholder=""
-        type="text"
-        backgroundColor={'#fff'}       
+        backgroundColor={'#fff'}
         labelColor={'#000'}
         textColor={''}
         control={control}
         errors={errors}
         data={Jenis_Kelamin}
         disabled={disabled}
+        initialValue={data?.jenis_kelamin}
       />
       <View
         style={{
@@ -148,6 +143,7 @@ const Page1 = ({
           data={golongan_darah_data}
           getValue="name"
           disabled={disabled}
+          initialValue={data?.golongan_darah}
         />
       </View>
       <InputComponent
@@ -167,6 +163,7 @@ const Page1 = ({
         errors={errors}
         disabled={disabled}
         borderColor={BORDER_COLOR}
+        initialValue={data?.no_akta_kelahiran}
       />
       <InputComponent
         height={'auto'}
@@ -184,6 +181,7 @@ const Page1 = ({
         errors={errors}
         disabled={disabled}
         borderColor={BORDER_COLOR}
+        initialValue={data?.nik}
       />
       <View
         style={{
@@ -208,6 +206,7 @@ const Page1 = ({
           errors={errors}
           disabled={disabled}
           borderColor={BORDER_COLOR}
+          initialValue={data?.tempat_lahir}
         />
         <InputDatePickerComponent
           label="Tanggal Lahir"
@@ -219,6 +218,7 @@ const Page1 = ({
           errors={errors}
           message='Mohon diisi'
           disabled={disabled}
+          initialValue={data?.tanggal_lahir}
         />
       </View>
     </>
@@ -240,10 +240,10 @@ const Page2 = ({
           height={'auto'}
           width={'100%'}
           label="Nomor Registrasi Kohort Bayi"
-          name="nomor_registrasi_kohort"
+          name="no_registrasi_kohort_bayi"
           onChange={onChange}
           placeholder=""
-          type="text"
+          type="number"
           backgroundColor={'#fff'}
           border={1}
           labelColor={'#000'}
@@ -252,15 +252,16 @@ const Page2 = ({
           errors={errors}
           disabled={disabled}
           borderColor={BORDER_COLOR}
+          initialValue={data?.no_registrasi_kohort_bayi}
         />
         <InputComponent
           height={'auto'}
           width={'100%'}
           label="Nomor Registrasi Kohort Balita & Anak Pra-Sekolah"
-          name="nomor_registrasi_kohort_balita"
+          name="no_registrasi_kohort_balita"
           onChange={onChange}
           placeholder=""
-          type="text"
+          type="number"
           backgroundColor={'#fff'}
           border={1}
           labelColor={'#000'}
@@ -269,6 +270,28 @@ const Page2 = ({
           errors={errors}
           disabled={disabled}
           borderColor={BORDER_COLOR}
+          initialValue={data?.no_registrasi_kohort_balita}
+        />
+      </View>
+      <View>
+        <Text style={style.headerFormText}>Nomor Catatan Medik RS</Text>
+        <InputComponent
+          height={'auto'}
+          width={'100%'}
+          label="Nomor Catatan Medik Rs"
+          name="no_catatan_medik_rs"
+          onChange={onChange}
+          placeholder=""
+          type="number"
+          backgroundColor={'#fff'}
+          border={1}
+          labelColor={'#000'}
+          textColor={''}
+          control={control}
+          errors={errors}
+          disabled={disabled}
+          borderColor={BORDER_COLOR}
+          initialValue={data?.no_catatan_medik_rs}
         />
       </View>
       <View>
@@ -277,10 +300,10 @@ const Page2 = ({
           height={'auto'}
           width={'100%'}
           label="Nomor Registrasi Kohort Ibu"
-          name="nomor_registrasi_kohort_ibu"
+          name="no_registrasi_kohort_ibu"
           onChange={onChange}
           placeholder=""
-          type="text"
+          type="number"
           backgroundColor={'#fff'}
           border={1}
           labelColor={'#000'}
@@ -289,6 +312,7 @@ const Page2 = ({
           errors={errors}
           disabled={disabled}
           borderColor={BORDER_COLOR}
+          initialValue={data?.no_registrasi_kohort_ibu}
         />
       </View>
     </>
@@ -416,13 +440,14 @@ const TambahAnakSection = (): JSX.Element => {
     if (screenType === 'edit_anak' && selectedAnakId !== 0 && filteredAnak) {
       reset({
         nama_lengkap: filteredAnak.nama_lengkap,
-        jenis_kelamin: filteredAnak.jenis_kelamin,
+        jenis_kelamin: filteredAnak?.jenis_kelamin,
         golongan_darah: filteredAnak.golongan_darah,
         tempat_lahir: filteredAnak.tempat_lahir,
         tanggal_lahir: filteredAnak.tanggal_lahir,
         no_akta_kelahiran: filteredAnak.no_akta_kelahiran,
         no_registrasi_kohort_bayi: filteredAnak.no_registrasi_kohort_bayi,
         no_registrasi_kohort_balita: filteredAnak.no_registrasi_kohort_balita,
+        no_registrasi_kohort_ibu: filteredAnak.no_registrasi_kohort_ibu,
         no_catatan_medik_rs: filteredAnak.no_catatan_medik_rs,
         anak_ke: filteredAnak.anak_ke.toString(),
         nik: filteredAnak.nik,
@@ -510,6 +535,7 @@ const TambahAnakSection = (): JSX.Element => {
               color={MAIN_COLOR}
               title={page === 1 ? 'Selanjutnya' : 'Selesai'}
               onPress={handlePage.bind(null, 'next')}
+              customstyle={{width: '100%'}}
             />
           </View>
           <ModalComponent
@@ -543,7 +569,12 @@ const style = StyleSheet.create({
     width: '100%',
     height: '80%',
   },
-  buttonContainer: {},
+  buttonContainer: {
+    height: '10%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   headerFormText: {
     fontSize: 20,
     fontWeight: 'bold',
