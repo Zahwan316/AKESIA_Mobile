@@ -175,6 +175,7 @@ const PemesananJanjiSection = (): JSX.Element => {
     if(pendaftaranUserData && pendaftaranUserData?.data){
       reset({
         keluhan: pendaftaranUserData?.data?.keluhan,
+        nama_ibu: pendaftaranUserData?.data?.ibu?.user?.nama_lengkap,
       });
     }
     const age = calculateAge(pendaftaranUserData?.data?.bayi?.tanggal_lahir);

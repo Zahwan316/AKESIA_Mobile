@@ -568,6 +568,7 @@ const style = StyleSheet.create({
   formContainer: {
     width: '100%',
     height: '80%',
+    marginBottom: 16
   },
   buttonContainer: {
     height: '10%',
