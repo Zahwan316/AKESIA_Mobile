@@ -13,6 +13,8 @@ import { getData } from '../../api/data/getData';
 import useComponentStore from '../../state/component';
 import { BASE_URL } from '../../constants/baseurl';
 import { sumHpht } from '../../utils/sumHpht';
+import requestNotificationPermission from '../../function/request_notification';
+import { requestFCMToken } from '../../function/fcm_token';
 
 type menu = {
   name: string,
@@ -136,6 +138,11 @@ const HomeSection = (): JSX.Element => {
     };
     setIbu();
   }, [ibuData, handleIbu]);
+
+  useEffect(() => {
+    requestNotificationPermission();
+    requestFCMToken();
+  }, []);
 
   return(
     <SafeAreaView>

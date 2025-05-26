@@ -29,7 +29,7 @@ const dropdownItem: dropdownItem[] = [
         screen: 'PemeriksaanUmum',
       },
       {
-        name: 'Pemeriksaan Lab',
+        name: 'Pemeriksaan Lab & SOAP',
         screen: 'PemeriksaanLab',
       },
       {

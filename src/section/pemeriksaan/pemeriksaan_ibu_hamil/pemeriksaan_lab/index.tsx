@@ -299,7 +299,7 @@ const PemeriksaanLabSection = (): JSX.Element => {
     <FormScreenLayout
       handlePage={handlePage}
       page={page}
-      header="Pemeriksaan Lab"
+      header="Pemeriksaan Lab & SOAP"
       modalHandleModal={handleModal}
       modalIsSuccess={isSuccess}
       modalMessage={modalInfo.message}
@@ -308,7 +308,7 @@ const PemeriksaanLabSection = (): JSX.Element => {
       created_at={checkIsDataNull(pemeriksaanLabData?.data) ? 'Belum ada' : formattedDateData(pemeriksaanLabData?.data?.created_at)}
       updated_at={checkIsDataNull(pemeriksaanLabData?.data) ? 'Belum ada' : formattedDateData(pemeriksaanLabData?.data?.updated_at)}
     >
-        {page === 1 ?
+        {page === 2 ?
           <Page1
             formHandle={() => {}}
             control={control}

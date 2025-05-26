@@ -1,6 +1,7 @@
 import {JSX, memo, useEffect, useMemo, useState} from 'react';
 import {
   Alert,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -164,6 +165,7 @@ const Page1 = ({
         disabled={disabled}
         borderColor={BORDER_COLOR}
         initialValue={data?.no_akta_kelahiran}
+        maxLength={22}
       />
       <InputComponent
         height={'auto'}
@@ -182,6 +184,7 @@ const Page1 = ({
         disabled={disabled}
         borderColor={BORDER_COLOR}
         initialValue={data?.nik}
+        maxLength={16}
       />
       <View
         style={{
@@ -381,9 +384,8 @@ const TambahAnakSection = (): JSX.Element => {
       updateData(data);
       return;
     }
-    
     sendData(data);
-  }; 
+  };
 
   const sendData = async(data: any) => {
     try {
@@ -401,7 +403,7 @@ const TambahAnakSection = (): JSX.Element => {
       handleContentModal({
         setModal,
         setModalInfo,
-        message: 'Terjadi kesalahan saat menyimpan data. Coba lagi nanti.',
+        message: e.response.data.message,
         text: 'Tutup',
       });
     }
@@ -423,7 +425,7 @@ const TambahAnakSection = (): JSX.Element => {
       handleContentModal({
         setModal,
         setModalInfo,
-        message: 'Terjadi kesalahan saat menyimpan data. Coba lagi nanti.',
+        message: e.response.data.message,
         text: 'Tutup',
       });
     }
@@ -485,7 +487,9 @@ const TambahAnakSection = (): JSX.Element => {
           </View>
           <ScrollView
             showsVerticalScrollIndicator={true}
-            style={style.formContainer}>
+            style={[style.formContainer, {flex: 1}]}>
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 25}
             {
               screenType && screenType === 'edit_anak' ?
               <DropdownInputComponent
@@ -556,6 +560,7 @@ const style = StyleSheet.create({
     width: widthPercentageToDP(100),
     height: heightPercentageToDP(100),
     padding: 12,
+    //flex: 1,
   },
   headerContainer: {
     width: '100%',
@@ -568,7 +573,7 @@ const style = StyleSheet.create({
   formContainer: {
     width: '100%',
     height: '80%',
-    marginBottom: 16
+    marginBottom: 34,
   },
   buttonContainer: {
     height: '10%',

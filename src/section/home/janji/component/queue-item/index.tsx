@@ -7,6 +7,7 @@ import { BUTTON_COLOR, MAIN_COLOR } from '../../../../../constants/color';
 import axios from '../../../../../api/axios';
 import { modalInfoType } from '../../../../../type/modalInfo';
 import handleContentModal from '../../../../../component/modal/function';
+import { openWhatsApp } from '../../../../../function/whatsapp';
 
 const { width, height } = Dimensions.get('window');
 
@@ -82,7 +83,7 @@ const QueueItemComponent = (props: props): JSX.Element => {
         <View style={style.actionContainer}>
           
           <View style={style.buttonGroupContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={openWhatsApp}>
               <Icon name='whatsapp' size={30} color='#00ff0090'/>
             </TouchableOpacity>
             <TouchableOpacity>

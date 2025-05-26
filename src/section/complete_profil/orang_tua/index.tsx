@@ -29,7 +29,7 @@ type modalInfo = {
 
 const CompleteProfileOrangTuaSection = (): JSX.Element => {
   const navigation = useNavigation<any>();
-  const { control, handleSubmit, formState: { errors } } = useForm();
+  const { control, handleSubmit, formState: { errors } } = useForm({mode: 'onChange', reValidateMode:'onSubmit'});
   const [modal, setModal] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [modalInfo, setModalInfo] = useState<modalInfo>({ message: '', text: '' });
@@ -69,7 +69,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
       handleContentModal({
         setModal,
         setModalInfo,
-        message: 'Terjadi kesalahan saat menyimpan data. Coba lagi nanti.',
+        message: e.response.data.message,
         text: 'Tutup',
       });
     }
@@ -147,6 +147,8 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                 border={1}
                 control={control}
                 errors={errors}
+                maxLength={16}
+                //minLength={16}
               />
               <View
                 style={{
@@ -246,6 +248,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                   control={control}
                   errors={errors}
                   borderColor={BORDER_COLOR}
+                  maxLength={13}
                 />
               </View>
 

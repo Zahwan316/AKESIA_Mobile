@@ -17,7 +17,9 @@ interface textInputProps  {
   control: any,
   errors?: any,
   borderColor?: string,
-  disabled?: boolean
+  disabled?: boolean,
+  maxLength?: number,
+  minLength?: number,
 }
 
 export default textInputProps;

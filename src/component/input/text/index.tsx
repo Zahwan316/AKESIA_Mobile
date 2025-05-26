@@ -25,6 +25,8 @@ const InputComponent = ({
   disabled,
   initialValue,
   borderColor,
+  maxLength,
+  minLength,
 }: textInputProps): JSX.Element => {
   return (
     <View style={[style.container, {width: width, height: height}]}>
@@ -33,7 +35,7 @@ const InputComponent = ({
       </Text>
       <Controller
         control={control}
-        render={({field: {onChange, value}}) => (
+        render={({field: {onChange, value, onBlur}}) => (
           <TextInput
             style={[
               style.input,
@@ -51,13 +53,46 @@ const InputComponent = ({
             placeholder={placeholder}
             secureTextEntry={type === 'password' ? true : false}
             multiline={type === 'textarea'}
-            numberOfLines={type === 'textarea' ? 4 : 1}
+            numberOfLines={type === 'textarea' ? 6 : 1}
             keyboardType={type === 'number' ? 'numeric' : 'default'}
             editable={!disabled}
+            maxLength={maxLength}
+            onBlur={onBlur}
           />
         )}
         name={name}
-        rules={message ? { required: message } : {}}
+        //rules={message ? { required: message, maxLength: maxLength || 0, minLength: minLength || 0 } : {}}
+       /*  rules={{
+          required: message,
+          maxLength: maxLength && {
+            value: maxLength || 16,
+            message: `Maksimal ${maxLength || 16} karakter`,
+          },
+          minLength: minLength
+            && {
+                value: minLength,
+                message: `Minimal ${minLength} karakter`,
+              },
+        }} */
+        rules={{
+          required: message || '',
+          /* minLength: {
+            value: minLength,
+            message: `Minimal ${minLength} karakter`,
+          },
+          ...(maxLength && {
+            maxLength: {
+              value: maxLength,
+              message: `Maksimal ${maxLength} karakter`,
+            },
+          }), */
+          /* ...(minLength && {
+            minLength: {
+              value: minLength,
+              message: `Minimal ${minLength} karakter`,
+            },
+          }), */
+        }}
         defaultValue={initialValue || ''}
       />
       {errors && errors[name] && (
