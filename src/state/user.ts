@@ -59,17 +59,30 @@ export type action = {
       created_at: string,
       updated_at: string
     }
+  },
+  bidan: {
+    id: number,
+    user_id: number,
+    provinsi_id: number,
+    kota_id: number,
+    image_id: number,
+    tempat_bekerja: string,
+    status_keanggotaan_ibi: string,
+    no_STR: string,
+    no_SIP: string
   }
 }
 
 type handler = {
   handleUser: (name: string, value: any) => void,
   handleIbu: (name: string, value: any) => void
+  handleBidan: (name: string, value: any) => void
 }
 
 const useUserStore = create<action & handler>((set) => ({
   user: null,
   ibu: null,
+  bidan: null,
   handleUser: (name, value) =>
     set((state) => ({
       user: {
@@ -81,6 +94,13 @@ const useUserStore = create<action & handler>((set) => ({
     set((state) => ({
       ibu: {
         ...state.ibu,
+        [name]: value,
+      },
+    })),
+  handleBidan: (name, value) =>
+    set((state) => ({
+      bidan: {
+        ...state.bidan,
         [name]: value,
       },
     })),

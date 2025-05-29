@@ -20,6 +20,8 @@ import { Alert } from 'react-native';
 import { modalInfoType } from '../../../../type/modalInfo';
 import { modalInfo } from '../../../pemeriksaan/pelayanan_bayi/index';
 import ModalComponent from '../../../../component/modal';
+import useUserStore from '../../../../state/user';
+import EmptyDataComponent from '../../../../component/empty';
 
 const ListJanjiSection = (): JSX.Element => {
   const [currMenu, setCurrMenu] = useState<string>('Menunggu Konfirmasi');
@@ -40,15 +42,16 @@ const ListJanjiSection = (): JSX.Element => {
     message: '',
     text: '',
   });
+  const currBidanData = useUserStore((state) => state.bidan);
+  const [filteredPemeriksaanData, setFilteredPemeriksaanData] = useState<PemeriksaanApiResponse[]>([]);
 
+  /* Function Initiation */
   const handleScreen = (screen: string, formId?: string | number, pemeriksaanId?: string | number, pemeriksaanData?: PemeriksaanApiResponse, pendaftaranId: number) => {
     navigation.navigate(screen, {formId: formId, pemeriksaanId: pemeriksaanId, pemeriksaanData: pemeriksaanData, pendaftaranId: pendaftaranId});
   };
 
   const handleSearchPendaftaranByDate = async(data: any) => {
     try{
-      //const formattedDate = formattedDateData(data.tanggal);
-      console.log('Tanggal = ', data);
       setTanggalFilter(data.tanggal);
       refetch();
     }
@@ -91,8 +94,10 @@ const ListJanjiSection = (): JSX.Element => {
   };
 
   useEffect(() => {
-    console.log(pemeriksaanUserData);
-  }, [pemeriksaanUserData]);
+    let filterPemeriksaanData: PemeriksaanApiResponse[] = pemeriksaanUserData?.data.filter((item: PemeriksaanApiResponse) => item.bidan_id === currBidanData?.id);
+    setFilteredPemeriksaanData(filterPemeriksaanData);
+    console.log(filterPemeriksaanData)
+  }, [tanggalFilter, pemeriksaanUserData, currBidanData?.id]);
 
   return(
     <JanjiScreenLayout
@@ -107,7 +112,7 @@ const ListJanjiSection = (): JSX.Element => {
       />
       <View>
         <View style={{flexDirection: 'column', marginBottom: 32}}>
-          <View >
+          <View>
             <InputDatePickerComponent 
               control={control}
               errors={errors}
@@ -127,14 +132,30 @@ const ListJanjiSection = (): JSX.Element => {
         </View>
         <ScrollView style={{position: 'relative', height: '80%'}}>
         {
-          !pemeriksaanUserData?.data || pemeriksaanUserData.data.length === 0 ? (
+          filteredPemeriksaanData && filteredPemeriksaanData?.length === 0 ? (
             <View>
               <Text style={{fontSize: 18, textAlign: 'center'}}>Belum ada data pemeriksaan hari ini</Text>
             </View>
           )
           :
-          pemeriksaanUserData?.data.map((item: PemeriksaanApiResponse, index: number) => (
-            item.pendaftaran.status !== statusPendaftaran.NOT_CONFIRM && item.pendaftaran.isVerif !== 0 ?
+          filteredPemeriksaanData?.map((item: PemeriksaanApiResponse, index: number) => (
+            <QueueItemComponent
+              description={item.pelayanan?.nama}
+              handleClick={() => handleScreen('PemesananJanji', item.pelayanan_id, item.id, '', item.pendaftaran_id)}
+              handleDelete={() => {handleBatalkanJanji(item.pendaftaran_id, item.id);}}
+              img={require('../../../../assets/icon/baby.png')}
+              time={item.pendaftaran?.jam_ditentukan === null ? 'Segera Diinformasikan' : item.pendaftaran?.jam_ditentukan}
+              title={item.ibu?.user?.nama_lengkap}
+              key={index}
+              status={item.pendaftaran?.status}
+              role="bidan"
+              pendaftaranId={item.pendaftaran_id}
+              handlePeriksa={() => handleScreen('Pemeriksaan', item.pelayanan.form_id, item.id, item, item.pendaftaran_id)}
+            />
+          ))
+
+          /* pemeriksaanUserData?.data.map((item: PemeriksaanApiResponse, index: number) => (
+            item.pendaftaran.status !== statusPendaftaran.NOT_CONFIRM && item.pendaftaran.isVerif !== 0 && item.bidan_id === currUserData.id ?
             <QueueItemComponent
               description={item.pelayanan?.nama}
               handleClick={() => handleScreen('PemesananJanji', item.pelayanan_id, item.id, '', item.pendaftaran_id)}
@@ -149,9 +170,10 @@ const ListJanjiSection = (): JSX.Element => {
               handlePeriksa={() => handleScreen('Pemeriksaan', item.pelayanan.form_id, item.id, item, item.pendaftaran_id)}
             />
             :
-            null
+            <EmptyDataComponent
 
-          ))
+            />
+          )) */
         }
       </ScrollView>
       </View>

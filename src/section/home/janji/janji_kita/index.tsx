@@ -12,6 +12,7 @@ import handleContentModal from '../../../../component/modal/function';
 import axios from '../../../../api/axios';
 import ModalComponent from '../../../../component/modal';
 import { modalInfoType } from '../../../../type/modalInfo';
+import EmptyDataComponent from '../../../../component/empty';
 
 type button = {
   title: string,
@@ -157,6 +158,11 @@ const JanjiKitaSection = (): JSX.Element => {
       </View>
       <ScrollView style={{position: 'relative', height: '50%'}}>
         {
+          pendaftaranUserData?.data.length === 0 ?
+          <EmptyDataComponent
+            customTextDescription="Belum ada janji nih, tambah yuk!"
+          />
+          :
           pendaftaranUserData?.data.map((item: apiResponse, index: number) => (
             (currMenu === 'Semua' || currMenu === item.status) &&
             <QueueItemComponent

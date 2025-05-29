@@ -21,6 +21,7 @@ import DropdownInputComponent from '../../../../component/input/dropdown';
 import { getAllAnak } from '../../../../api/data/allAnak';
 import useComponentStore from '../../../../state/component';
 import { ChangePrice } from '../../../../utils/changePrice';
+import InputTimePickerComponent from '../../../../component/input/timepicker';
 
 type modalInfo = {
   message: string;
@@ -198,90 +199,102 @@ const PemesananJanjiSection = (): JSX.Element => {
         modalVisible={modal}
         handleModal={handleModal}
       />
-      <View style={style.dateContainer}>
-        <InputDatePickerComponent
-          label="Tanggal Pertemuan"
-          onChange={() => {}}
-          labelColor="#000"
-          control={control}
-          name="tanggal_pendaftaran"
-          message="Tanggal harus diisi"
-          disabled={pendaftaranId != null}
-          initialValue={pendaftaranId != null && pendaftaranItem?.tanggal_pendaftaran}
-        />
-      </View>
-      <View style={style.formContainer}>
-        <View style={style.headerFormContainer}>
-          <Text style={{fontWeight: 'bold', fontSize: 16}}>Detail Pasien</Text>
+      <ScrollView>
+        <View style={style.dateContainer}>
+          <InputDatePickerComponent
+            label="Tanggal Pertemuan"
+            onChange={() => {}}
+            labelColor="#000"
+            control={control}
+            name="tanggal_pendaftaran"
+            message="Tanggal harus diisi"
+            disabled={pendaftaranId != null}
+            initialValue={pendaftaranId != null && pendaftaranItem?.tanggal_pendaftaran}
+          />
+          <InputTimePickerComponent
+            control={control}
+            name="jam_ditentukan"
+            label="Jam Pertemuan"
+            onChange={() => {}}
+            labelColor="#000"
+            message="Jam harus diisi"
+            disabled={pendaftaranId != null}
+            initialValue={pendaftaranId != null && pendaftaranItem?.jam_pendaftaran}
+          />
         </View>
-        <ScrollView style={{height: '100%', marginBottom: 0}}>
-          <View style={style.itemFormContainer}>
-            {
-              jenisPelayananId === 1 || (pendaftaranId != null && pendaftaranItem?.pelayanan?.jenis_layanan_id === 1) ?
-              <DropdownInputComponent
-                height={'auto'}
-                width={'100%'}
-                label="Anak"
-                name="bayi_id"
-                control={control}
-                errors={errors}
-                data={currUserAnakData?.data?.map((anak: any) => ({
-                  name: anak.nama_lengkap,
-                  id: anak.id,
-                }))}
-                onSelect={handleChangeAnak}
-                backgroundColor={'#6B779A20'}
-                disabled={pendaftaranId != null}
-                initialValue={pendaftaranId != null && pendaftaranItem?.bayi_id}
-              />
-              : null
-            }
-            {
-              jenisPelayananId !== 1 && pendaftaranId != null ?
-              <InputComponent
-                height={'auto'}
-                width={'100%'}
-                label="Nama Ibu"
-                name="bayi_id"
-                control={control}
-                errors={errors}
-                onChange={() => {}}
-                backgroundColor={'#6B779A20'}
-                disabled={pendaftaranId != null}
-                initialValue={pendaftaranId != null && pendaftaranItem?.ibu?.user?.nama_lengkap}
-              />
-              : null
-            }
+        <View style={style.formContainer}>
+          <View style={style.headerFormContainer}>
+            <Text style={{fontWeight: 'bold', fontSize: 16}}>Detail Pasien</Text>
           </View>
-          <InputComponent
-              height={'auto'}
-              width={'100%'}
-              label="Tulis Keluhan anda"
-              name="keluhan"
-              //message="Wajib Diisi"
-              onChange={() => {}}
-              placeholder=""
-              type="textarea"
-              backgroundColor={'#fff'}
-              control={control}
-              errors={errors}
-              disabled={pendaftaranId != null}
-              border={1}
-              borderColor={BORDER_COLOR}
-              initialValue={pendaftaranId != null && pendaftaranItem?.keluhan}
-            />
-        </ScrollView>
-      </View>
-      <View style={style.pesananContainer}>
-        <View style={{marginBottom: 12}}>
-          <Text style={{fontWeight: 'bold', fontSize: 16}}>Pesanan: </Text>
+          <ScrollView style={{height: '100%', marginBottom: 0}}>
+            <View style={style.itemFormContainer}>
+              {
+                jenisPelayananId === 1 || (pendaftaranId != null && pendaftaranItem?.pelayanan?.jenis_layanan_id === 1) ?
+                <DropdownInputComponent
+                  height={'auto'}
+                  width={'100%'}
+                  label="Anak"
+                  name="bayi_id"
+                  control={control}
+                  errors={errors}
+                  data={currUserAnakData?.data?.map((anak: any) => ({
+                    name: anak.nama_lengkap,
+                    id: anak.id,
+                  }))}
+                  onSelect={handleChangeAnak}
+                  backgroundColor={'#6B779A20'}
+                  disabled={pendaftaranId != null}
+                  initialValue={pendaftaranId != null && pendaftaranItem?.bayi_id}
+                />
+                : null
+              }
+              {
+                jenisPelayananId !== 1 && pendaftaranId != null ?
+                <InputComponent
+                  height={'auto'}
+                  width={'100%'}
+                  label="Nama Ibu"
+                  name="bayi_id"
+                  control={control}
+                  errors={errors}
+                  onChange={() => {}}
+                  backgroundColor={'#6B779A20'}
+                  disabled={pendaftaranId != null}
+                  initialValue={pendaftaranId != null && pendaftaranItem?.ibu?.user?.nama_lengkap}
+                />
+                : null
+              }
+            </View>
+            <InputComponent
+                height={'auto'}
+                width={'100%'}
+                label="Tulis Keluhan anda"
+                name="keluhan"
+                //message="Wajib Diisi"
+                onChange={() => {}}
+                placeholder=""
+                type="textarea"
+                backgroundColor={'#fff'}
+                control={control}
+                errors={errors}
+                disabled={pendaftaranId != null}
+                border={1}
+                borderColor={BORDER_COLOR}
+                initialValue={pendaftaranId != null && pendaftaranItem?.keluhan}
+              />
+          </ScrollView>
         </View>
-        <ChildDropdownComponent
-          title={pelayananId ? pelayananData?.data?.nama : pendaftaranUserData?.data?.pelayanan?.nama}
-          harga={pelayananId ? ChangePrice(pelayananData?.data?.harga, pelayananData?.data?.nama, ageChildren) : ChangePrice(pendaftaranUserData?.data?.pelayanan?.harga, pendaftaranUserData?.data?.pelayanan?.nama, ageChildren)}
-          code={pelayananId ? pelayananData?.data?.keterangan : pendaftaranUserData?.data?.pelayanan?.keterangan}
-        />
-      </View>
+        <View style={style.pesananContainer}>
+          <View style={{marginBottom: 12}}>
+            <Text style={{fontWeight: 'bold', fontSize: 16}}>Pesanan: </Text>
+          </View>
+          <ChildDropdownComponent
+            title={pelayananId ? pelayananData?.data?.nama : pendaftaranUserData?.data?.pelayanan?.nama}
+            harga={pelayananId ? ChangePrice(pelayananData?.data?.harga, pelayananData?.data?.nama, ageChildren) : ChangePrice(pendaftaranUserData?.data?.pelayanan?.harga, pendaftaranUserData?.data?.pelayanan?.nama, ageChildren)}
+            code={pelayananId ? pelayananData?.data?.keterangan : pendaftaranUserData?.data?.pelayanan?.keterangan}
+          />
+        </View>
+      </ScrollView>
       <View style={style.buttonContainer}>
         <ButtonComponent
           color={MAIN_COLOR}
@@ -307,7 +320,7 @@ const style = StyleSheet.create({
   },
   formContainer: {
     width: '100%',
-    height: '45%',
+    height: '40%',
     marginBottom: 12,
     borderWidth: 0,
   },
@@ -325,7 +338,7 @@ const style = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
-    height: '8%',
+    height: '17%',
     borderWidth: 0,
     display: 'flex',
     justifyContent: 'center',

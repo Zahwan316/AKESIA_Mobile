@@ -87,6 +87,10 @@ const HomeSection = (): JSX.Element => {
     queryKey: ['ibuData'],
     queryFn: () => getData(`ibu/getCurrIbu`),
   });
+  const {data: bidanData} = useQuery({
+    queryKey: ['bidanData'],
+    queryFn: () => getData(`getCurrBidan`),
+  });
   const { data: bannerData} = useQuery({
     queryKey: ['banner'],
     queryFn: () => getData('banner'),
@@ -95,6 +99,8 @@ const HomeSection = (): JSX.Element => {
   const handleUser = useUserStore((state) => state.handleUser);
   const ibu = useUserStore((state) => state.ibu);
   const handleIbu = useUserStore((state) => state.handleIbu);
+  const bidan = useUserStore((state) => state.bidan);
+  const handleBidan = useUserStore((state) => state.handleBidan);
 
   const handlePressButton = (screen: string, params?: object) => {
     navigation.navigate(screen, params);
@@ -127,10 +133,9 @@ const HomeSection = (): JSX.Element => {
   }, [userData, handleUser]);
 
   useEffect(() => {
-    console.log(ibuData);
     const setIbu = () => {
-      if(ibuData && ibuData?.ibu != null){
-        const data = ibuData?.ibu;
+      if(ibuData && ibuData?.data != null){
+        const data = ibuData?.data;
         for(const key in data){
           handleIbu(key, data[key]);
         }
@@ -138,6 +143,18 @@ const HomeSection = (): JSX.Element => {
     };
     setIbu();
   }, [ibuData, handleIbu]);
+
+  useEffect(() => {
+    const setBidan = () => {
+      if(bidanData && bidanData?.data != null){
+        const data = bidanData?.data;
+        for(const key in data){
+          handleBidan(key, data[key]);
+        }
+      }
+    };
+    setBidan();
+  }, [bidanData, handleBidan]);
 
   useEffect(() => {
     requestNotificationPermission();

@@ -32,6 +32,7 @@ import {useQuery} from '@tanstack/react-query';
 import {getForm} from '../../api/data/form';
 import ChildDropdownComponent from '../home/janji/buat_janji/detail/component/childDropdown';
 import usePelayananStore from '../../state/pelayanan';
+import useUserStore from '../../state/user';
 
 enum JenisLayananId {
   'BABY_SPA' = 1,
@@ -51,6 +52,7 @@ const PemeriksaanSection = (): React.JSX.Element => {
   const setPelayananPeriksaHamilId = usePelayananStore(
     state => state.setPelayananPeriksaHamilId,
   );
+  const currUserData = useUserStore((state) => state.user);
   const {formId, pemeriksaanId, pemeriksaanData, pendaftaranId} =
     route.params as {
       formId: number;
@@ -164,9 +166,8 @@ const PemeriksaanSection = (): React.JSX.Element => {
 
   useEffect(() => {
     //console.table(getFormId);
-    console.log('pemeriksaan data index pemeriksaan = ', pemeriksaanData);
-    console.log('data pelayanan periksa hamil id = ', pelayananPeriksaHamilId);
-  }, [pemeriksaanData, pelayananPeriksaHamilId]);
+    console.log('curr user', currUserData);
+  }, [currUserData]);
 
   //tambahkan pengecekan jika pendaftaraData.pelayanan.harga = 0, maka pelayananPeriksaHamilId(0), jika harga != 0 maka set pelayananPeriksaHamilId dengan data yang sudah terupdate
 

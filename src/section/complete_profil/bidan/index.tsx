@@ -34,6 +34,7 @@ import { opacity } from 'react-native-reanimated/lib/typescript/Colors';
 import UploadSelfie from '../../../component/input/upload/InputUpload';
 import axios from '../../../api/axios';
 import handleContentModal from '../../../component/modal/function';
+import LoadingIndicator from '../../../component/loading';
 
 interface formBidanAdittion extends textInputProps {
   //typeForm: 'select' | 'text' | 'upload'
@@ -186,7 +187,7 @@ const CompleteProfileBidanSection = (): JSX.Element => {
     text: '',
   });
   const [isAccept, setIsAccept] = useState<boolean>(false);
-  const {data: provinsiData} = useQuery({
+  const {data: provinsiData, isLoading} = useQuery({
     queryKey: ['provinsi'],
     queryFn: () => getProvinsi(),
   });
@@ -199,9 +200,11 @@ const CompleteProfileBidanSection = (): JSX.Element => {
     queryFn: () => getJenisPraktik(),
   });
 
-  const filteredKotaOptions = kotaData?.data?.filter((item: any) => item.provinsi_id === selectedProvinsiId).map((item: any) => ({
-        name: item.name,
-        id: item.id,
+
+  const filteredKotaOptions = kotaData?.data?.filter((item: any) => item.provinsi_id === selectedProvinsiId)
+  .map((item: any) => ({
+    name: item.name,
+    id: item.id,
   })) || [];
 
   const mergedBidanForm = formBidan.map(item => {
@@ -286,13 +289,14 @@ const CompleteProfileBidanSection = (): JSX.Element => {
       handleContentModal({
         setModal,
         setModalInfo,
-        message: 'Terjadi kesalahan saat menyimpan data. Coba lagi nanti.',
+        message: e.response.data.message,
         text: 'Tutup',
       });
     }
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+  }, [isLoading]);
 
   const handleModal = () => {
     if(isSuccess){
@@ -305,93 +309,98 @@ const CompleteProfileBidanSection = (): JSX.Element => {
   return (
     <SafeAreaView>
       <ScrollView>
-        <View style={style.mainContainer}>
-          <ModalComponent
-            isSuccess={isSuccess}
-            message={modalInfo.message}
-            text={modalInfo.text}
-            modalVisible={modal}
-            handleModal={handleModal}
-          />
-          <View style={style.headerContainer}>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 20,
-                color: BUTTON_COLOR_2,
-                textAlign: 'center',
-              }}>
-              Lengkapi data bidan
-            </Text>
-          </View>
-          <View style={style.formContainer}>
-            {mergedBidanForm.map((item, index) => {
-              if (item.type === 'text') {
-                return (
-                  <InputComponent
-                    width={item.width}
-                    height={item.height}
-                    label={item.label}
-                    message={item.message}
-                    name={item.name}
-                    onSelect={item.onChange}
-                    placeholder={item.placeholder}
-                    type={item.type}
-                    backgroundColor={'#fff'}
-                    borderColor={BORDER_COLOR}
-                    key={index}
-                    border={item.border}
-                    errors={item.errors}
-                    control={item.control}
-                    data={item.options}                
-                    initialValue={item.name === 'tempat_bekerja' ? 'Praktek Bidan Mandiri' : null}
-                  />
-                );
-              } else if (item.type === 'dropdown') {
-                return (
-                  <DropdownInputComponent
-                    width={item.width}
-                    height={item.height}
-                    label={item.label}
-                    message={item.message}
-                    name={item.name}
-                    onSelect={item.onChange}
-                    disabled={item.name === 'kota_id' && item.disabled}
-                    placeholder={item.placeholder}
-                    type={item.type}
-                    key={index}
-                    errors={item.errors}
-                    control={item.control}
-                    data={item.options}
-                    getValue={item.getValue}
-                  />
-                );
-              } else if (item.type === 'upload'){
-                return(
-                  <UploadSelfie
-                    key={index}
-                    control={item.control}
-                    name='img'
-                    label={item.label}
-                    errors={item.errors}
-                    message={item.message}
-                  />
-                );
-              }
-            })}
-            <View style={style.checkboxContainer}>
-              <BouncyCheckbox fillColor="#000" onPress={() => setIsAccept(!isAccept)} />
-              <Text>Saya setuju data yang saya isikan benar</Text>
+        {
+          isLoading ?
+          <LoadingIndicator />
+          :
+          <View style={style.mainContainer}>
+            <ModalComponent
+              isSuccess={isSuccess}
+              message={modalInfo.message}
+              text={modalInfo.text}
+              modalVisible={modal}
+              handleModal={handleModal}
+            />
+            <View style={style.headerContainer}>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: 20,
+                  color: BUTTON_COLOR_2,
+                  textAlign: 'center',
+                }}>
+                Lengkapi data bidan
+              </Text>
             </View>
+            <View style={style.formContainer}>
+              {mergedBidanForm.map((item, index) => {
+                if (item.type === 'text') {
+                  return (
+                    <InputComponent
+                      width={item.width}
+                      height={item.height}
+                      label={item.label}
+                      message={item.message}
+                      name={item.name}
+                      onSelect={item.onChange}
+                      placeholder={item.placeholder}
+                      type={item.type}
+                      backgroundColor={'#fff'}
+                      borderColor={BORDER_COLOR}
+                      key={index}
+                      border={item.border}
+                      errors={item.errors}
+                      control={item.control}
+                      data={item.options}                
+                      initialValue={item.name === 'tempat_bekerja' ? 'Praktek Bidan Mandiri' : null}
+                    />
+                  );
+                } else if (item.type === 'dropdown') {
+                  return (
+                    <DropdownInputComponent
+                      width={item.width}
+                      height={item.height}
+                      label={item.label}
+                      message={item.message}
+                      name={item.name}
+                      onSelect={item.onChange}
+                      disabled={item.name === 'kota_id' && item.disabled}
+                      placeholder={item.placeholder}
+                      type={item.type}
+                      key={index}
+                      errors={item.errors}
+                      control={item.control}
+                      data={item.options}
+                      getValue={item.getValue}
+                    />
+                  );
+                } else if (item.type === 'upload'){
+                  return(
+                    <UploadSelfie
+                      key={index}
+                      control={item.control}
+                      name='img'
+                      label={item.label}
+                      errors={item.errors}
+                      message={item.message}
+                    />
+                  );
+                }
+              })}
+              <View style={style.checkboxContainer}>
+                <BouncyCheckbox fillColor="#000" onPress={() => setIsAccept(!isAccept)} />
+                <Text>Saya setuju data yang saya isikan benar</Text>
+              </View>
+            </View>
+            <ButtonComponent
+              color={MAIN_COLOR}
+              onPress={handleSubmit(onSubmit)}
+              title="Daftar"
+              disabled={!isAccept}
+              customstyle={{opacity: isAccept ? 1 : 0.5}}
+            />
           </View>
-          <ButtonComponent
-            color={MAIN_COLOR}
-            onPress={handleSubmit(onSubmit)}
-            title="Daftar"
-            disabled={!isAccept}
-            customstyle={{opacity: isAccept ? 1 : 0.5}}
-          />
-        </View>
+        }
       </ScrollView>
     </SafeAreaView>
   );

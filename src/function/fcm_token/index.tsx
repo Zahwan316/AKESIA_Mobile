@@ -15,7 +15,7 @@ export async function requestFCMToken() {
 
   if (enabled) {
     const token = await messaging().getToken();
-    console.log('FCM Token:', token);
+    //console.log('FCM Token:', token);
     try{
       await axios.post('/fcm-token', {
         fcm_token: token,
@@ -32,7 +32,7 @@ export async function getFcmToken() {
   try{
 
     const token = await messaging().getToken();
-    console.log(token);
+    //console.log(token);
   }
   catch(e){
     console.log(e);

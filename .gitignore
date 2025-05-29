@@ -81,3 +81,9 @@ yarn-error.log
 /src/firebase
 src/firebase
 /src/firebase/index.tsx
+
+# Keystore
+/android/app/my-release-key.jks
+android/app/my-release-key.jks
+/android/app/google-service.json
+android/app/google-service.json

@@ -80,7 +80,7 @@ const BuatJanjiDetailSection = (): JSX.Element => {
                 {
                     <View>
                       <ChildDropdownComponent
-                        key={index}
+                        key={index + item.id}
                         title={item.nama}
                         code={item.keterangan}
                         harga={ChangePrice(item.harga, item.nama, item.kuantitas)}

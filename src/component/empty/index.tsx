@@ -2,7 +2,12 @@ import { Text } from 'react-native';
 import { Image } from 'react-native';
 import { View } from 'react-native';
 
-const EmptyDataComponent = () => {
+type Props = {
+  customTextDescription?: string,
+  customTextHeader?: string,
+}
+
+const EmptyDataComponent = (props: Props) => {
   return(
     <View style={{width:'100%', borderWidth:0, display:'flex', justifyContent:'center', alignItems:'center'}}>
       <Image
@@ -10,10 +15,10 @@ const EmptyDataComponent = () => {
         style={{width: 200, height: 200, marginBottom: 12}}
       />
       <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 8}}>
-        Oops!! Data masih kosong
+        {props.customTextHeader ?? 'Oops!! Data masih kosong'}
       </Text>
       <Text style={{fontSize: 18, fontWeight: 'normal'}}>
-        Belum ada data nih tambah yuk!
+        {props.customTextDescription ?? 'Belum ada data nih tambah yuk!'}
       </Text>
   </View>
   );
