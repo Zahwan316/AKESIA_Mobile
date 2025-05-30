@@ -185,7 +185,7 @@ const HomeSection = (): JSX.Element => {
                     style={{width: "80%", height: "80%"}}
                   />
                 </View>
-                <View >
+                <View style={{height: '100%', width: '70%', display: 'flex', justifyContent: 'center'}}>
                   {
                     userData?.user?.role === 'user' ?
                     <>
@@ -265,6 +265,7 @@ const Style = StyleSheet.create({
     borderBottomLeftRadius: 8,
     borderBottomRightRadius: 8,
     padding: 16,
+    paddingVertical: 24,
     display: 'flex',
     justifyContent: 'space-between',
   },
@@ -311,6 +312,7 @@ const Style = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    top: 10,
   },
   boxGroupContainer: {
     width: '100%',

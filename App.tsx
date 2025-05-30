@@ -11,21 +11,21 @@ import messaging from '@react-native-firebase/messaging';
 import { Alert } from 'react-native';
 import { createChannel } from './src/function/notifee/create_channel';
 import notifee, { AndroidImportance } from '@notifee/react-native';
-
-
-//console.log('Firebase App: ', firebase.app());
+import Config from 'react-native-config';
 
 const queryClient = new QueryClient();
 
 function App(): React.JSX.Element {
   const loading = useComponentStore((state) => state.loading);
 
+  
   useEffect(() => {
     requestNotificationPermission();
     requestFCMToken();
   }, []);
 
   useEffect(() => {
+    console.log('api url',Config.API_URL);
     // Minta izin
     messaging().requestPermission();
     // Buat channel notifikasi

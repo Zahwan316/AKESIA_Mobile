@@ -33,6 +33,7 @@ import ModalComponent from '../../component/modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import handleContentModal from '../../component/modal/function';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import Config from 'react-native-config';
 
 type registerProps = {
   onChange: (name: string, value: any) => void;
@@ -219,6 +220,7 @@ const LoginSection = (): JSX.Element => {
   const handleAcceptTerm = () => {
     setIsAcceptTerm(!isAcceptTerm);
   };
+
 
   return (
     <SafeAreaView>
