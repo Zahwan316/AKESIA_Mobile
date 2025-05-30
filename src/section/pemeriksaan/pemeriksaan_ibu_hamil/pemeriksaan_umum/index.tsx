@@ -209,6 +209,20 @@ const Page2 = ({ formHandle, data, control, errors }: pageProps) => {
         initialValue={data?.pemeriksaanUmumData?.tanggal_kontrol_kembali}
         onChange={() => {}}
       />
+      <InputComponent
+          control={control}
+          errors={errors}
+          name={'soap'}
+          width={'auto'}
+          label="SOAP"
+          onChange={() => {}}
+          type="textarea"
+          border={1}
+          textColor={'#000'}
+          borderColor={BORDER_COLOR}
+          message="Wajib Diisi"
+          initialValue={data?.pemeriksaanUmumData?.soap}
+        />
       <Text
         style={{
           textAlign: 'center',
@@ -223,7 +237,7 @@ const Page2 = ({ formHandle, data, control, errors }: pageProps) => {
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
-          height: '100%',
+          height: 150,
         }}>
         <InputComponent
           height={'auto'}
@@ -260,7 +274,9 @@ const Page2 = ({ formHandle, data, control, errors }: pageProps) => {
           initialValue={data?.pemeriksaanUmumData?.berat_badan}
         />
       </View>
-      
+      <View>
+        
+      </View>
     </>
   );
 };
@@ -327,43 +343,6 @@ const PemeriksaanUmumSection = (): JSX.Element => {
     }
   };
 
-  const handleSubmitForm = async(data: any) => {
-    console.table(data);
-    const mergedData = {...data, pemeriksaan_id: pemeriksaanId, user_id: PemeriksaanData.ibu.user_id ,};
-
-    try{
-      if(!checkIsDataFormPemeriksaanUmumNull()){
-        const response = await axios.put(`form/pemeriksaan_umum/${pemeriksaanUmumData?.data.id}`, mergedData);
-        setSuccess(true);
-        handleContentModal({
-          setModal,
-          setModalInfo,
-          message: response.data.message,
-          text: 'Tutup',
-        });
-      }
-      else{
-        const response = await axios.post('form/pemeriksaan_umum', mergedData);
-        setSuccess(true);
-        handleContentModal({
-          setModal,
-          setModalInfo,
-          message: response.data.message,
-          text: 'Tutup',
-        });
-      }
-    }
-    catch(e){
-      console.log(e.response)
-      setSuccess(false);
-      handleContentModal({
-        setModal,
-        setModalInfo,
-        message: e.response.data.message,
-        text: 'Tutup',
-      });
-    }
-  };
 
   const handleModal = () => {
     if(isSuccess){
@@ -380,6 +359,7 @@ const PemeriksaanUmumSection = (): JSX.Element => {
     if (pemeriksaanUmumData && pemeriksaanUmumData.data) {
       reset({
         bentuk_tubuh: pemeriksaanUmumData?.data.bentuk_tubuh,
+        soap: pemeriksaanUmumData?.data.soap,
         kesadaran_id: pemeriksaanUmumData?.data.kesadaran_id,
         mata: pemeriksaanUmumData?.data.mata,
         leher: pemeriksaanUmumData?.data.leher,
@@ -411,7 +391,7 @@ const PemeriksaanUmumSection = (): JSX.Element => {
       created_at={checkIsDataFormPemeriksaanUmumNull() ? 'Belum ada' : formattedDateData(pemeriksaanUmumData?.data?.created_at)}
       updated_at={checkIsDataFormPemeriksaanUmumNull() ? 'Belum ada' : formattedDateData(pemeriksaanUmumData?.data?.updated_at)}
     >
-      <View style={{marginBottom: 42}}>
+      <View style={{marginBottom: 62}}>
         {page === 1 ?
             <Page1
               formHandle={handleSubmit(() => {})}

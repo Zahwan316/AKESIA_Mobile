@@ -84,6 +84,10 @@ type apiResponse = {
   },
   'ibu': IbuType
 }
+
+const searchPijatRegex = /^Pijat/i;
+const jenisLayananRegex = /Baby Spa dan Massage/i;
+
 const PemesananJanjiSection = (): JSX.Element => {
   const {control, handleSubmit, reset, formState: {errors}} = useForm();
   const route = useRoute();
@@ -177,6 +181,7 @@ const PemesananJanjiSection = (): JSX.Element => {
       reset({
         keluhan: pendaftaranUserData?.data?.keluhan,
         nama_ibu: pendaftaranUserData?.data?.ibu?.user?.nama_lengkap,
+        jam_pendaftaran: pendaftaranUserData?.data?.jam_ditentukan,
       });
     }
     const age = calculateAge(pendaftaranUserData?.data?.bayi?.tanggal_lahir);
@@ -219,17 +224,22 @@ const PemesananJanjiSection = (): JSX.Element => {
             labelColor="#000"
             message="Jam harus diisi"
             disabled={pendaftaranId != null}
-            initialValue={pendaftaranId != null && pendaftaranItem?.jam_pendaftaran}
+            initialValue={pendaftaranId != null && pendaftaranItem?.jam_ditentukan}
           />
         </View>
         <View style={style.formContainer}>
           <View style={style.headerFormContainer}>
-            <Text style={{fontWeight: 'bold', fontSize: 16}}>Detail Pasien</Text>
+            {
+              (!searchPijatRegex.test(pelayananData?.data?.nama) && jenisLayananRegex.test(pelayananData?.data?.jenis_layanan?.nama)) ?
+              <Text style={{fontWeight: 'bold', fontSize: 16}}>Detail Pasien</Text>
+              :
+              null
+            }
           </View>
           <ScrollView style={{height: '100%', marginBottom: 0}}>
             <View style={style.itemFormContainer}>
               {
-                jenisPelayananId === 1 || (pendaftaranId != null && pendaftaranItem?.pelayanan?.jenis_layanan_id === 1) ?
+                (!searchPijatRegex.test(pelayananData?.data?.nama) && jenisLayananRegex.test(pelayananData?.data?.jenis_layanan?.nama)) || (pendaftaranId != null && pendaftaranItem?.pelayanan?.jenis_layanan_id === 1) ?
                 <DropdownInputComponent
                   height={'auto'}
                   width={'100%'}

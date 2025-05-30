@@ -170,3 +170,14 @@ export const NafsuMakanDropdownData = [
   },
 ];
 
+export const MuntahDropdownData = [
+  {
+    id: 1,
+    name: 'Biasa',
+  },
+  {
+    id: 2,
+    name: 'Terus Menerus',
+  },
+];
+

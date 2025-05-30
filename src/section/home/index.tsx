@@ -15,6 +15,7 @@ import { BASE_URL } from '../../constants/baseurl';
 import { sumHpht } from '../../utils/sumHpht';
 import requestNotificationPermission from '../../function/request_notification';
 import { requestFCMToken } from '../../function/fcm_token';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 type menu = {
   name: string,
@@ -162,95 +163,97 @@ const HomeSection = (): JSX.Element => {
   }, []);
 
   return(
-    <SafeAreaView>
-      <ScrollView stickyHeaderIndices={[3]} style={{width: widthPercentageToDP(100)}}>
-        <View style={Style.profileContainer}>
-          <View style={Style.nameContainer}>
-            <Text style={{fontSize: 18, color: "#fff"}}>Halo, {userData?.user?.nama_lengkap}</Text>
-            <TouchableOpacity onPress={() => handlePressButton('Notifikasi')}>
-              <Image
-                source={require('../../assets/icon/bell.png')}
-                style={{width: 28, height: 28}}
-                resizeMode='contain'
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={Style.boxGroupContainer}>
-            <TouchableOpacity style={Style.boxContainer} onPress={() => handleOpenHpht(userData?.user?.role)}>
-              <View style={{width: '30%', height: '100%', marginRight: 8, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+    <SafeAreaProvider>
+      <SafeAreaView>
+        <ScrollView stickyHeaderIndices={[3]} style={{width: widthPercentageToDP(100)}}>
+          <View style={Style.profileContainer}>
+            <View style={Style.nameContainer}>
+              <Text style={{fontSize: 18, color: "#fff"}}>Halo, {userData?.user?.nama_lengkap}</Text>
+              <TouchableOpacity onPress={() => handlePressButton('Notifikasi')}>
                 <Image
-                  source={require('../../assets/icon/baby.png')}
-                  style={{width: "80%", height: "80%"}}
+                  source={require('../../assets/icon/bell.png')}
+                  style={{width: 28, height: 28}}
+                  resizeMode='contain'
                 />
-              </View>
-              <View >
-                {
-                  userData?.user?.role === 'user' ?
-                  <>
-                    <Text style={{fontSize: 14, color: '#fff', fontWeight: 'bold', marginBottom: 4}}>Babyku</Text>
-                    <Text style={{fontSize: 12, color: '#fff', fontWeight: 'bold'}}>{sumHpht(ibuData?.data?.hpht)} Minggu</Text>
-                  </>
-                  :
-                  <Text style={{fontSize: 16, color: '#fff', fontWeight: 'bold'}}>
-                    Bidan
-                  </Text>
-                }
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handlePressButton('TambahAnak')} style={[Style.boxContainer, {justifyContent: 'center', alignItems: 'center', gap: 4, backgroundColor: BUTTON_COLOR, display: userData?.user?.role === 'bidan' ? 'none' : 'flex'}]}>
-              <Icon name='plus-circle' size={26} color='#fff' />
-              <Text style={{fontSize: 14, color: '#fff', fontWeight: 'bold',}}>Tambah Anak</Text>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+            <View style={Style.boxGroupContainer}>
+              <TouchableOpacity style={Style.boxContainer} onPress={() => handleOpenHpht(userData?.user?.role)}>
+                <View style={{width: '30%', height: '100%', marginRight: 8, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                  <Image
+                    source={require('../../assets/icon/baby.png')}
+                    style={{width: "80%", height: "80%"}}
+                  />
+                </View>
+                <View >
+                  {
+                    userData?.user?.role === 'user' ?
+                    <>
+                      <Text style={{fontSize: 14, color: '#fff', fontWeight: 'bold', marginBottom: 4}}>Babyku</Text>
+                      <Text style={{fontSize: 12, color: '#fff', fontWeight: 'bold'}}>{sumHpht(ibuData?.data?.hpht)} Minggu</Text>
+                    </>
+                    :
+                    <Text style={{fontSize: 16, color: '#fff', fontWeight: 'bold'}}>
+                      Bidan
+                    </Text>
+                  }
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handlePressButton('TambahAnak')} style={[Style.boxContainer, {justifyContent: 'center', alignItems: 'center', gap: 4, backgroundColor: BUTTON_COLOR, display: userData?.user?.role === 'bidan' ? 'none' : 'flex'}]}>
+                <Icon name='plus-circle' size={26} color='#fff' />
+                <Text style={{fontSize: 14, color: '#fff', fontWeight: 'bold',}}>Tambah Anak</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        <View style={Style.menuMainContainer}>
-          <View style={Style.menuHeaderContainer}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}>Fitur Rekomendasi</Text>
+          <View style={Style.menuMainContainer}>
+            <View style={Style.menuHeaderContainer}>
+              <Text style={{fontSize: 16, fontWeight: 'bold'}}>Fitur Rekomendasi</Text>
+            </View>
+            <View style={Style.menuContainer}>
+              {
+                menuList.map((item, index) => (
+                  item.role === userData?.user?.role &&
+                  <TouchableOpacity style={Style.menuItemContainer} key={index} onPress={() => handlePressButton(item.screen, item.params)}>
+                    <View style={{width: "100%", height: "50%", display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 4}}>
+                      <Image
+                        source={item.icon}
+                        style={{width: "100%", height: "100%"}}
+                        resizeMethod="auto"
+                        resizeMode="contain"
+                      />
+                    </View>
+                    <View style={{width: '100%', height: '30%'}}>
+                      <Text style={{fontSize: 13, textAlign: 'center'}}>{item.name}</Text>
+                    </View>
+                  </TouchableOpacity>
+                ))
+              }
+            </View>
           </View>
-          <View style={Style.menuContainer}>
-            {
-              menuList.map((item, index) => (
-                item.role === userData?.user?.role &&
-                <TouchableOpacity style={Style.menuItemContainer} key={index} onPress={() => handlePressButton(item.screen, item.params)}>
-                  <View style={{width: "100%", height: "50%", display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 4}}>
-                    <Image
-                      source={item.icon}
-                      style={{width: "100%", height: "100%"}}
-                      resizeMethod="auto"
-                      resizeMode="contain"
-                    />
-                  </View>
-                  <View style={{width: '100%', height: '30%'}}>
-                    <Text style={{fontSize: 13, textAlign: 'center'}}>{item.name}</Text>
-                  </View>
-                </TouchableOpacity>
-              ))
-            }
+          <View style={Style.bannerContainer}>
+            <View style={Style.bannerItemContainer}>
+              <Text style={{fontSize: 16, marginBottom: 12}}>Informasi Terkini</Text>
+              {
+                bannerData?.data?.length != 0 ?
+                <ImageSlider
+                  images={bannerData?.data}
+                />
+                :
+                null
+              }
+            </View>
           </View>
-        </View>
-        <View style={Style.bannerContainer}>
-          <View style={Style.bannerItemContainer}>
-            <Text style={{fontSize: 16, marginBottom: 12}}>Informasi Terkini</Text>
-            {
-              bannerData?.data?.length != 0 ?
-              <ImageSlider
-                images={bannerData?.data}
-              />
-              :
-              null
-            }
-          </View>
-        </View>
-        <TouchableOpacity style={[Style.popupContainer, {display: popup ? 'flex' : 'none'}]} onPress={handleClosePopUp}>
-          <Text style={{color: '#fff', fontSize: 16, textAlign: 'center', marginBottom: 42}}>Klik untuk menutup</Text>
-          <Image
-            source={{uri: `${BASE_URL}${popup_img}`}}
-            resizeMode="contain"
-            style={{width: '100%', height: '50%'}}
-          />
-        </TouchableOpacity>
-      </ScrollView>
-    </SafeAreaView>
+          <TouchableOpacity style={[Style.popupContainer, {display: popup ? 'flex' : 'none'}]} onPress={handleClosePopUp}>
+            <Text style={{color: '#fff', fontSize: 16, textAlign: 'center', marginBottom: 42}}>Klik untuk menutup</Text>
+            <Image
+              source={{uri: `${BASE_URL}${popup_img}`}}
+              resizeMode="contain"
+              style={{width: '100%', height: '50%'}}
+            />
+          </TouchableOpacity>
+        </ScrollView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 

@@ -1,20 +1,21 @@
-import { JSX, useEffect, useState } from "react";
-import FormScreenLayout from "../../screen_layout";
-import { ScrollView, View } from "react-native";
-import InputComponent from "../../../../component/input/text";
-import DropdownInputComponent from "../../../../component/input/dropdown";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { useForm } from "react-hook-form";
-import { modalInfoType } from "../../../../type/modalInfo";
-import { apiResponse } from "../../../../type/pendaftaran/pendaftaran";
-import { useQuery } from "@tanstack/react-query";
-import { getForm } from "../../../../api/data/form";
-import { handlePostFormApi } from "../../../../api/handleSendFormApi";
-import { BORDER_COLOR } from "../../../../constants/color";
-import { checkIsDataNull } from "../../../../utils/checkDataIsNull";
-import { formattedDate, formattedDateData } from "../../../../utils/date";
-import InputDatePickerComponent from "../../../../component/input/datepicker";
-import { AdaTidakDropdownData, BiasaDropdownData, KebiasaanDropdownData, KeluhanDropdownData, NafsuMakanDropdownData, RiwayatPenyakitDropdownData, RiwayatPenyakitKeluargaDropdownData, SatuDropdonwData } from "../../../../data/pemeriksaan/riwayat_kehamilan_sekarang/DropdownData";
+import { JSX, useEffect, useState } from 'react';
+import FormScreenLayout from '../../screen_layout';
+import { ScrollView, View } from 'react-native';
+import InputComponent from '../../../../component/input/text';
+import DropdownInputComponent from '../../../../component/input/dropdown';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useForm } from 'react-hook-form';
+import { modalInfoType } from '../../../../type/modalInfo';
+import { apiResponse } from '../../../../type/pendaftaran/pendaftaran';
+import { useQuery } from '@tanstack/react-query';
+import { getForm } from '../../../../api/data/form';
+import { handlePostFormApi } from '../../../../api/handleSendFormApi';
+import { BORDER_COLOR } from '../../../../constants/color';
+import { checkIsDataNull } from '../../../../utils/checkDataIsNull';
+import { formattedDate, formattedDateData } from '../../../../utils/date';
+import InputDatePickerComponent from '../../../../component/input/datepicker';
+import { AdaTidakDropdownData, BiasaDropdownData, KebiasaanDropdownData, KeluhanDropdownData, MuntahDropdownData, NafsuMakanDropdownData, RiwayatPenyakitDropdownData, RiwayatPenyakitKeluargaDropdownData, SatuDropdonwData } from '../../../../data/pemeriksaan/riwayat_kehamilan_sekarang/DropdownData';
+import { getData } from '../../../../api/data/getData';
 
 type pageProps = {
   OnChange: () => void,
@@ -108,7 +109,7 @@ const Page2 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
       <DropdownInputComponent
           width={'100%'}
           backgroundColor={''}
-          data={BiasaDropdownData}
+          data={MuntahDropdownData}
           height={'auto'}
           onSelect={() => {}}
           label={'Muntah Muntah'}
@@ -127,7 +128,7 @@ const Page2 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           label={'Pusing'}
           control={control}
           errors={errors}
-          name='pusing'
+          name="pusing"
           initialValue={initialValue.pusing}
           getValue="name"
         />
@@ -286,6 +287,10 @@ const RiwayatKehamilanSekarangSection = (): JSX.Element => {
     queryKey: ['RiwayatKehamilanSekarangFormData', pemeriksaanId],
     queryFn: () => getForm(`form/riwayat_kehamilan_sekarang/show_by_pendaftaran/${pemeriksaanId}`),
   });
+  const {data: currIbuPeriksaData} = useQuery({
+    queryKey: ['currIbuPeriksaData', pemeriksaanData?.ibu?.user_id],
+    queryFn: () => getData(`ibu/getdataibu/${pemeriksaanData?.ibu?.user_id}`),
+  });
 
   const handlePage = (operator: string) => {
     if (operator === 'next') {
@@ -315,13 +320,18 @@ const RiwayatKehamilanSekarangSection = (): JSX.Element => {
   }, [page]);
 
   useEffect(() => {
-    console.log(riwayatKehamilanSekarangFormData);
+    //console.log('riwayat kehamilan sekarang form = ',riwayatKehamilanSekarangFormData);
     if(riwayatKehamilanSekarangFormData && riwayatKehamilanSekarangFormData?.data){
       reset({
         ...riwayatKehamilanSekarangFormData?.data,
       });
     }
   }, [riwayatKehamilanSekarangFormData]);
+
+  useEffect(() => {
+    console.log('pemeriksaan id = ', pemeriksaanId);
+    console.log('pemeriksaan form data id = ', riwayatKehamilanSekarangFormData);
+  }, [pemeriksaanId, riwayatKehamilanSekarangFormData]);
 
   return (
     <FormScreenLayout

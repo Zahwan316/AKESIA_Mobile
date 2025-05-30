@@ -12,15 +12,29 @@ import { getPelayanan } from '../../../../../api/data/pelayanan';
 import { useQuery } from '@tanstack/react-query';
 import { ChangePrice } from '../../../../../utils/changePrice';
 import LoadingIndicator from '../../../../../component/loading';
+import { getData } from '../../../../../api/data/getData';
 
-type apiResponse = {
-  'id': number,
-  'jenis_layanan_id': number,
-  'nama': string,
-  'harga': number,
-  'kuantitas': number,
-  'keterangan': string,
-}
+export type PelayananResponse = {
+  id: number;
+  jenis_layanan_id: number;
+  nama: string;
+  harga: number;
+  keterangan: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  jenis_layanan: {
+    id: number;
+    imgId: number;
+    nama: string;
+    keterangan: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
+  };
+};
+
+const searchItemRegex = /Periksa Hamil Nyaman/i;
 
 const BuatJanjiDetailSection = (): JSX.Element => {
   const route = useRoute();
@@ -29,9 +43,15 @@ const BuatJanjiDetailSection = (): JSX.Element => {
     queryKey: ['getPelayanan'],
     queryFn: () => getPelayanan('layanan/pelayanan'),
   });
+  const {data: jenisPelayananData} = useQuery({
+    queryKey: ['getJenisPelayananData', jenisPelayananId],
+    queryFn: () => getData(`layanan/jenis_pelayanan/${jenisPelayananId}`),
+  });
   const navigation = useNavigation<any>();
-  const filteredPelayananData = pelayananData?.data.filter((item) => {
-    if(item.jenis_layanan_id === 3){
+
+  //filter data per kategori
+  const filteredPelayananData = pelayananData?.data.filter((item: PelayananResponse) => {
+    if(searchItemRegex.test(item.jenis_layanan?.nama)){
       return item.harga === 0 && item.jenis_layanan_id === jenisPelayananId;
     }
     else{

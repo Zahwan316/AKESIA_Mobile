@@ -138,8 +138,8 @@ const PelayananBayiSection = (): JSX.Element => {
           errors={errors}
           name="jenis_kelamin_bayi"
           message="Harap diisi"
-          getValue="name"
-          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? (pemeriksaanData?.pendaftaran?.bayi?.jenis_kelamin === 'L' ? 'Laki Laki' : 'Perempuan') : pelayananBayiFormData?.data.jenis_kelamin_bayi }
+          //getValue="name"
+          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? pemeriksaanData?.pendaftaran?.bayi?.jenis_kelamin : pelayananBayiFormData?.data.jenis_kelamin_bayi }
         />
         <InputComponent
           height={'auto'}

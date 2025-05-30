@@ -59,14 +59,14 @@ const LandingSection = (): React.JSX.Element => {
               <TouchableOpacity style={style.formSelection} id='orangtua' onPress={() => handleSelected('orangtua')}>
                 <Image
                   source={require('../../assets/img/OrangTua.png')}
-                  style={style.formSelectionImage}
+                  style={[style.formSelectionImage, {opacity: selected === 'orangtua' ? 1 : 0.4}]}
                 />
                 <Text style={{color: selected === 'orangtua' ? TEXT_HEADER_COLOR_2 : "#000"}}>Orang Tua</Text>
               </TouchableOpacity>
               <TouchableOpacity style={style.formSelection} id='bidan' onPress={() => handleSelected('bidan')}>
                 <Image
-                  source= {require('../../assets/img/Bidan.png')}
-                  style={style.formSelectionImage}
+                  source= {require('../../assets/img/bidan.png')}
+                  style={[style.formSelectionImage, {opacity: selected === 'bidan' ? 1 : 0.4}]}
                 />
                 <Text style={{color: selected === 'bidan' ? TEXT_HEADER_COLOR_2 : "#000"}}>Bidan</Text>
               </TouchableOpacity>

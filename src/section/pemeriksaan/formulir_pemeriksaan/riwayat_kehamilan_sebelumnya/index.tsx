@@ -12,6 +12,9 @@ import { getForm } from '../../../../api/data/form';
 import { useQuery } from '@tanstack/react-query';
 import { checkIsDataNull } from '../../../../utils/checkDataIsNull';
 import { formattedDateData } from '../../../../utils/date';
+import DropdownInputComponent from '../../../../component/input/dropdown';
+import Jenis_Kelamin from '../../../../data/jenis_kelamin';
+import { CaraPesalinanDropdownData, PenolongPersalinanDropdownData } from '../../../../data/pemeriksaan/pelayanan_bersalin/DropdownOption';
 
 const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
   const navigate = useNavigation<any>();
@@ -65,7 +68,7 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
   }, [riwayatKehamilanSebelumnyaFormData]);
 
   useEffect(() => {
-    console.log('Pemeriksaan Id = ',  pemeriksaanId)
+    console.log('form riwayat kehamilan sebelumnya', riwayatKehamilanSebelumnyaFormData);
   }, [pemeriksaanId])
 
   return(
@@ -97,7 +100,7 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
-          initialValue={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? '' : riwayatKehamilanSebelumnyaFormData.data.anak_ke.toString()}
+          initialValue={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? '' : riwayatKehamilanSebelumnyaFormData?.data?.anak_ke?.toString()}
         />
         <InputComponent
           height={'auto'}
@@ -133,23 +136,21 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
           borderColor={BORDER_COLOR}
           initialValue={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? '' : riwayatKehamilanSebelumnyaFormData.data.umur_anak.toString()}
         />
-        <InputComponent
+        <DropdownInputComponent
           height={'auto'}
           width={'100%'}
           label="Jenis Kelamin"
           message="Harap diisi"
           name="p_l"
-          onChange={() => {}}
+          onSelect={() => {}}
           placeholder=""
-          type="text"
           backgroundColor={'#fff'}
-          border={1}
           textColor={''}
           control={control}
           errors={errors}
-          borderColor={BORDER_COLOR}
+          data={Jenis_Kelamin}
           initialValue={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? '' : riwayatKehamilanSebelumnyaFormData.data.p_l}
-        />
+        />      
         <InputComponent
           height={'auto'}
           width={'100%'}
@@ -167,38 +168,36 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
           borderColor={BORDER_COLOR}
           initialValue={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? '' : riwayatKehamilanSebelumnyaFormData.data.bbl}
         />
-        <InputComponent
+        <DropdownInputComponent
           height={'auto'}
           width={'100%'}
           label="Cara Persalinan"
           message="Harap diisi"
           name="cara_persalinan"
-          onChange={() => {}}
+          onSelect={() => {}}
           placeholder=""
-          type="text"
           backgroundColor={'#fff'}
-          border={1}
           textColor={''}
           control={control}
           errors={errors}
-          borderColor={BORDER_COLOR}
+          data={CaraPesalinanDropdownData}
+          getValue='name'
           initialValue={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? '' : riwayatKehamilanSebelumnyaFormData.data.cara_persalinan}
         />
-        <InputComponent
+        <DropdownInputComponent
           height={'auto'}
           width={'100%'}
           label="Penolong"
           message="Harap diisi"
           name="penolong"
-          onChange={() => {}}
+          onSelect={() => {}}
           placeholder=""
-          type="text"
           backgroundColor={'#fff'}
-          border={1}
           textColor={''}
           control={control}
           errors={errors}
-          borderColor={BORDER_COLOR}
+          data={PenolongPersalinanDropdownData}
+          getValue='name'
           initialValue={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? '' : riwayatKehamilanSebelumnyaFormData.data.penolong}
         />
         <InputComponent

@@ -12,10 +12,12 @@ export const handlePostFormApi = async(
   setModalInfo: any,
   user_id?: number,
 ) => {
+  const isSamePemeriksaan = apiFormData?.data?.pemeriksaan_id === pemeriksaanId;
   const mergedData = {...data, pemeriksaan_id: pemeriksaanId, user_id: user_id};
+
   try{
     console.log(mergedData);
-    if(checkIsDataNull(apiFormData?.data)){
+    if(checkIsDataNull(apiFormData?.data ) || !isSamePemeriksaan){
       await axios.post(`${url}`, mergedData).then(response => {
         setSuccess(true);
         handleContentModal({

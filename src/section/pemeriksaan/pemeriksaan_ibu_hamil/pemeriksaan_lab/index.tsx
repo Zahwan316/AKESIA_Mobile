@@ -117,42 +117,6 @@ const Page2 = ({
 }): JSX.Element => {
   return (
     <>
-      <InputDatePickerComponent
-        label="Tanggal Pelayanan"
-        onChange={formHandle}
-        control={control}
-        errors={errors}
-        initialValue={data?.tanggal_pelayanan}
-        name='tanggal_pelayanan'
-        labelColor='#000'
-      />
-      <InputTimePickerComponent
-        label="Jam Pelayanan"
-        onChange={formHandle}
-        control={control}
-        errors={errors}
-        initialValue={data?.jam_pelayanan}
-        name='jam_pelayanan'
-        labelColor='#000'
-      />
-      {/* <InputComponent
-        height={'auto'}
-        width={'100%'}
-        label="Jam Pelayanan"
-        message="Harap diisi"
-        name="jam_pelayanan"
-        onChange={formHandle}
-        placeholder="Contoh: 09:30"
-        type="number"
-        backgroundColor={'#fff'}
-        border={1}
-        //labelColor={'#fff'}
-        textColor={''}
-        control={control}
-        errors={errors}
-        initialValue={data?.jam_pelayanan}
-        borderColor={BORDER_COLOR}
-      /> */}
       <InputComponent
         height={'auto'}
         width={'100%'}
@@ -189,6 +153,44 @@ const Page2 = ({
         initialValue={data?.penatalaksanaan}
         borderColor={BORDER_COLOR}
       />
+      <InputDatePickerComponent
+        label="Tanggal Pelayanan"
+        onChange={formHandle}
+        control={control}
+        errors={errors}
+        initialValue={data?.tanggal_pelayanan}
+        name='tanggal_pelayanan'
+        labelColor='#000'
+      />
+      <InputTimePickerComponent
+        label="Jam Pelayanan"
+        onChange={formHandle}
+        control={control}
+        errors={errors}
+        initialValue={data?.jam_pelayanan}
+        name='jam_pelayanan'
+        labelColor='#000'
+      />
+      {/* <InputComponent
+        height={'auto'}
+        width={'100%'}
+        label="Jam Pelayanan"
+        message="Harap diisi"
+        name="jam_pelayanan"
+        onChange={formHandle}
+        placeholder="Contoh: 09:30"
+        type="number"
+        backgroundColor={'#fff'}
+        border={1}
+        //labelColor={'#fff'}
+        textColor={''}
+        control={control}
+        errors={errors}
+        initialValue={data?.jam_pelayanan}
+        borderColor={BORDER_COLOR}
+      /> */}
+      
+      
     </>
   );
 };

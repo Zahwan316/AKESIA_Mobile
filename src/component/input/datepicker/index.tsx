@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { Controller } from "react-hook-form";
-import { Text, TouchableOpacity } from "react-native";
-import { Button, StyleSheet, TextInput, View } from "react-native";
-import DatePicker from "react-native-date-picker";
+import { useState } from 'react';
+import { Controller } from 'react-hook-form';
+import { Text, TouchableOpacity } from 'react-native';
+import { Button, StyleSheet, TextInput, View } from 'react-native';
+import DatePicker from 'react-native-date-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { formattedDateData, formattedDateDataWithoutHour } from "../../../utils/date";
-import { BORDER_COLOR } from "../../../constants/color";
+import { formattedDateData, formattedDateDataWithoutHour } from '../../../utils/date';
+import { BORDER_COLOR } from '../../../constants/color';
+
 
 type props = {
   label: string,
@@ -64,6 +65,7 @@ const InputDatePickerComponent = (props: props): React.JSX.Element => {
                 date={value ? new Date(value) : new Date()}
                 minimumDate={props.minimum ? minDate : undefined}
                 maximumDate={props.maximum ? new Date() : undefined}
+                locale="id"
                 onConfirm={(dates) => {
                   setOpen(false);
                   setDate(dates);

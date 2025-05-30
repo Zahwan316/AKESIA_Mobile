@@ -2,6 +2,7 @@ import {
   Alert,
   Image,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -41,6 +42,8 @@ enum JenisLayananId {
   'PERSALINAN' = 4,
 }
 
+const periksaHamilRegex = /Periksa Hamil Nyaman/i;
+
 const PemeriksaanSection = (): React.JSX.Element => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const navigation = useNavigation<any>();
@@ -75,7 +78,7 @@ const PemeriksaanSection = (): React.JSX.Element => {
   });
   const {data: periksaHamilLayananData} = useQuery({
     queryKey: ['periksaHamilLayananData'],
-    queryFn: () => getForm(`layanan/pelayanan?jenis_layanan_id=3`),
+    queryFn: () => getForm(`layanan/pelayanan?jenis_layanan_id=${pemeriksaanData?.pelayanan?.jenis_layanan_id}`),
   });
 
   const getFormId = formData?.data?.map((item, index) => {
@@ -109,8 +112,7 @@ const PemeriksaanSection = (): React.JSX.Element => {
     let data;
     if (
       pelayananPeriksaHamilId !== 0 &&
-      pemeriksaanData?.pelayanan?.jenis_layanan_id ===
-        JenisLayananId.PERIKSA_HAMIL
+      periksaHamilRegex.test(pemeriksaanData?.pelayanan?.jenis_layanan?.nama)
     ) {
         data = {status: 'Selesai', pelayanan_id: pelayananPeriksaHamilId, pelayanan: pemeriksaanData?.pelayanan};
     } else {
@@ -166,15 +168,13 @@ const PemeriksaanSection = (): React.JSX.Element => {
 
   useEffect(() => {
     //console.table(getFormId);
-    console.log('curr user', currUserData);
-  }, [currUserData]);
+  }, [pemeriksaanData]);
 
   //tambahkan pengecekan jika pendaftaraData.pelayanan.harga = 0, maka pelayananPeriksaHamilId(0), jika harga != 0 maka set pelayananPeriksaHamilId dengan data yang sudah terupdate
 
   useEffect(() => {
     if (
-      pemeriksaanData?.pelayanan?.jenis_layanan_id ===
-        JenisLayananId.PERIKSA_HAMIL &&
+      periksaHamilRegex.test(pemeriksaanData?.pelayanan?.jenis_layanan?.nama) &&
       pemeriksaanData?.pelayanan?.harga !== 0
     ) {
       setPelayananPeriksaHamilId(pemeriksaanData?.pelayanan?.id);
@@ -204,99 +204,99 @@ const PemeriksaanSection = (): React.JSX.Element => {
           </View>
         </View>
         <View style={style.mainDropdownContainer}>
-          {pelayananPeriksaHamilId === 0 &&
-            pemeriksaanData?.pelayanan.jenis_layanan_id ===
-              JenisLayananId.PERIKSA_HAMIL && (
+          {pelayananPeriksaHamilId === 0 && periksaHamilRegex.test(pemeriksaanData?.pelayanan?.jenis_layanan?.nama)
+            && (
               <View style={style.titleItemContainer}>
                 <Text style={{fontWeight: 'bold', fontSize: 16}}>
                   Periksa Hamil Nyaman
                 </Text>
               </View>
             )}
-          {pemeriksaanData?.pelayanan.jenis_layanan_id ===
-            JenisLayananId.PERIKSA_HAMIL && pelayananPeriksaHamilId === 0
-            ? periksaHamilLayananData?.data.map(
-                (item, index) =>
-                  item.harga !== 0 && (
-                    <React.Fragment key={index}>
-                      <ChildDropdownComponent
-                        title={item.nama}
-                        handlePress={() => setPelayananPeriksaHamilId(item.id)}
-                        code={item.keterangan}
-                        harga={item.harga}
-                        key={index}
-                      />
-                    </React.Fragment>
-                  ),
-              )
-            : dropdownItem.map((item, index) =>
-                getFormId?.map(
-                  (itemFormId: number) =>
-                    item.formId === itemFormId && (
-                      <React.Fragment key={index}>
-                        <TouchableOpacity
-                          style={style.mainDropdown}
-                          key={index + item.id}
-                          onPress={handleActiveIndex.bind(this, index)}>
-                          <Text
-                            style={{
-                              color: BUTTON_COLOR,
-                              fontWeight: 'bold',
-                              fontSize: 16,
-                            }}>
-                            {item.title}
-                          </Text>
-                          {activeIndex === index ? (
-                            <Icon
-                              name="angle-up"
-                              size={20}
-                              color={BUTTON_COLOR}
-                            />
-                          ) : (
-                            <Icon
-                              name="angle-down"
-                              size={20}
-                              color={BUTTON_COLOR}
-                            />
-                          )}
-                        </TouchableOpacity>
-                        <View
-                          style={[
-                            style.childDropdown,
-                            {
-                              display:
-                                activeIndex != index ? 'none' : 'contents',
-                            },
-                          ]}>
-                          {activeIndex === index &&
-                            Array.isArray(item?.child) &&
-                            item?.child.map((child, indexChild) => (
-                              <TouchableOpacity
-                                key={indexChild}
-                                style={[
-                                  style.childDropdown,
-                                  {
-                                    padding: 8,
-                                    height: 48,
-                                    justifyContent: 'center',
-                                  },
-                                ]}
-                                onPress={() =>
-                                  handleChangeScreen(
-                                    child.screen,
-                                    pemeriksaanId,
-                                    pelayananPeriksaHamilId,
-                                    pemeriksaanData
-                                  )
-                                }>
-                                <Text style={{fontSize: 16}}>{child.name}</Text>
-                              </TouchableOpacity>
-                            ))}
-                        </View>
-                      </React.Fragment>
+            <ScrollView>
+              { periksaHamilRegex.test(pemeriksaanData?.pelayanan?.jenis_layanan?.nama) && pelayananPeriksaHamilId === 0
+                ? periksaHamilLayananData?.data.map(
+                    (item, index) =>
+                      item.harga !== 0 && (
+                        <React.Fragment key={index}>
+                          <ChildDropdownComponent
+                            title={item.nama}
+                            handlePress={() => setPelayananPeriksaHamilId(item.id)}
+                            code={item.keterangan}
+                            harga={item.harga}
+                            key={index}
+                          />
+                        </React.Fragment>
+                      ),
+                  )
+                : dropdownItem.map((item, index) =>
+                    getFormId?.map(
+                      (itemFormId: number) =>
+                        item.formId === itemFormId && (
+                          <React.Fragment key={index}>
+                            <TouchableOpacity
+                              style={style.mainDropdown}
+                              key={index + item.id}
+                              onPress={handleActiveIndex.bind(this, index)}>
+                              <Text
+                                style={{
+                                  color: BUTTON_COLOR,
+                                  fontWeight: 'bold',
+                                  fontSize: 16,
+                                }}>
+                                {item.title}
+                              </Text>
+                              {activeIndex === index ? (
+                                <Icon
+                                  name="angle-up"
+                                  size={20}
+                                  color={BUTTON_COLOR}
+                                />
+                              ) : (
+                                <Icon
+                                  name="angle-down"
+                                  size={20}
+                                  color={BUTTON_COLOR}
+                                />
+                              )}
+                            </TouchableOpacity>
+                            <View
+                              style={[
+                                style.childDropdown,
+                                {
+                                  display:
+                                    activeIndex != index ? 'none' : 'contents',
+                                },
+                              ]}>
+                              {activeIndex === index &&
+                                Array.isArray(item?.child) &&
+                                item?.child.map((child, indexChild) => (
+                                  <TouchableOpacity
+                                    key={indexChild}
+                                    style={[
+                                      style.childDropdown,
+                                      {
+                                        padding: 8,
+                                        height: 48,
+                                        justifyContent: 'center',
+                                      },
+                                    ]}
+                                    onPress={() =>
+                                      handleChangeScreen(
+                                        child.screen,
+                                        pemeriksaanId,
+                                        pelayananPeriksaHamilId,
+                                        pemeriksaanData
+                                      )
+                                    }>
+                                    <Text style={{fontSize: 16}}>{child.name}</Text>
+                                  </TouchableOpacity>
+                                ))}
+                            </View>
+                          </React.Fragment>
+                        ),
                     ),
-                ),
-              )}
+                  )}
+            </ScrollView>
         </View>
         <View style={style.buttonContainer}>
           <ButtonComponent
