@@ -22,6 +22,8 @@ import { getAllAnak } from '../../../../api/data/allAnak';
 import useComponentStore from '../../../../state/component';
 import { ChangePrice } from '../../../../utils/changePrice';
 import InputTimePickerComponent from '../../../../component/input/timepicker';
+import JamPicker from '../../../../component/input/jadwalPicker';
+import { useWatch } from 'react-hook-form';
 
 type modalInfo = {
   message: string;
@@ -85,8 +87,13 @@ type apiResponse = {
   'ibu': IbuType
 }
 
+//regex
 const searchPijatRegex = /^Pijat/i;
 const jenisLayananRegex = /Baby Spa dan Massage/i;
+const persalinanRegex = /Persalinan/i;
+const BidanBundaRegex = /Bidan Bunda/i;
+const PeriksaHamilNyamanRegex = /Periksa Hamil Nyaman/i;
+
 
 const PemesananJanjiSection = (): JSX.Element => {
   const {control, handleSubmit, reset, formState: {errors}} = useForm();
@@ -113,7 +120,9 @@ const PemesananJanjiSection = (): JSX.Element => {
   const navigate = useNavigation<any>();
   const [ ageChildren, setChildrenAge ] = useState<number>(0);
   const setLoading = useComponentStore((state) => state.setLoading);
-  const loading = useComponentStore((state) => state.loading);
+  const tanggalPertemuan = useWatch({ control, name: 'tanggal_pendaftaran' });
+  const parsedTanggal = tanggalPertemuan ? new Date(tanggalPertemuan) : undefined;
+  const dayFromDate = parsedTanggal?.getDay() ?? new Date().getDay();
 
   const onSubmit = async(data: any) => {
     const dataForm = {...data, pelayanan_id: pelayananId};
@@ -181,7 +190,7 @@ const PemesananJanjiSection = (): JSX.Element => {
       reset({
         keluhan: pendaftaranUserData?.data?.keluhan,
         nama_ibu: pendaftaranUserData?.data?.ibu?.user?.nama_lengkap,
-        jam_pendaftaran: pendaftaranUserData?.data?.jam_ditentukan,
+        jam_ditentukan: pendaftaranUserData?.data?.jam_ditentukan,
       });
     }
     const age = calculateAge(pendaftaranUserData?.data?.bayi?.tanggal_lahir);
@@ -190,8 +199,15 @@ const PemesananJanjiSection = (): JSX.Element => {
   }, [pendaftaranUserData]);
 
   useEffect(() => {
-    console.table(pendaftaranUserData);
-  },[pendaftaranUserData]);
+    console.table(tanggalPertemuan);
+    console.table(parsedTanggal);
+  },[tanggalPertemuan, parsedTanggal]);
+
+  useEffect(() => {
+    if(dayFromDate === 0 && (BidanBundaRegex.test(pelayananData?.data?.jenis_layanan?.nama) || PeriksaHamilNyamanRegex.test(pelayananData?.data?.jenis_layanan?.nama))){
+      Alert.alert('Info', 'Layanan ini ditutup pada hari minggu, mohon untuk mengganti dengan hari yang lain');
+    }
+  }, [dayFromDate])
 
   return (
     <JanjiScreenLayout
@@ -213,19 +229,37 @@ const PemesananJanjiSection = (): JSX.Element => {
             control={control}
             name="tanggal_pendaftaran"
             message="Tanggal harus diisi"
-            disabled={pendaftaranId != null}
-            initialValue={pendaftaranId != null && pendaftaranItem?.tanggal_pendaftaran}
+            disabled={pendaftaranId != null || tanggalPertemuan === null}
+            initialValue={pendaftaranId != null ? pendaftaranItem?.tanggal_pendaftaran : null}
+            errors={errors}
           />
-          <InputTimePickerComponent
-            control={control}
-            name="jam_ditentukan"
-            label="Jam Pertemuan"
-            onChange={() => {}}
-            labelColor="#000"
-            message="Jam harus diisi"
-            disabled={pendaftaranId != null}
-            initialValue={pendaftaranId != null && pendaftaranItem?.jam_ditentukan}
-          />
+          {
+            persalinanRegex.test(pelayananData?.data?.jenis_layanan?.nama) ?
+            <InputTimePickerComponent
+              control={control}
+              name="jam_ditentukan"
+              label="Jam Pertemuan"
+              onChange={() => {}}
+              labelColor="#000"
+              message="Jam harus diisi"
+              disabled={pendaftaranId != null}
+              initialValue={pendaftaranId != null ? pendaftaranItem?.jam_ditentukan : null}
+              errors={errors}
+            />
+            :
+            <JamPicker
+              control={control}
+              jenisLayanan={pelayananData?.data?.jenis_layanan?.nama}
+              label="Jam Pertemuan"
+              name="jam_ditentukan"
+              errors={errors}
+              message='Wajib Diisi'
+              initialValue={pendaftaranId != null ? pendaftaranItem?.jam_ditentukan : null}
+              disabled={pendaftaranId != null}
+              tanggal_pertemuan={parsedTanggal}
+            />
+
+          }
         </View>
         <View style={style.formContainer}>
           <View style={style.headerFormContainer}>
@@ -247,6 +281,7 @@ const PemesananJanjiSection = (): JSX.Element => {
                   name="bayi_id"
                   control={control}
                   errors={errors}
+                  message="Wajib Diisi"
                   data={currUserAnakData?.data?.map((anak: any) => ({
                     name: anak.nama_lengkap,
                     id: anak.id,
@@ -254,7 +289,7 @@ const PemesananJanjiSection = (): JSX.Element => {
                   onSelect={handleChangeAnak}
                   backgroundColor={'#6B779A20'}
                   disabled={pendaftaranId != null}
-                  initialValue={pendaftaranId != null && pendaftaranItem?.bayi_id}
+                  initialValue={pendaftaranId != null ? pendaftaranItem?.bayi_id : null}
                 />
                 : null
               }
@@ -280,9 +315,9 @@ const PemesananJanjiSection = (): JSX.Element => {
                 width={'100%'}
                 label="Tulis Keluhan anda"
                 name="keluhan"
-                //message="Wajib Diisi"
+                message="Wajib Diisi"
                 onChange={() => {}}
-                placeholder=""
+                placeholder="Contoh: Tidak ada keluhan"
                 type="textarea"
                 backgroundColor={'#fff'}
                 control={control}
@@ -290,7 +325,7 @@ const PemesananJanjiSection = (): JSX.Element => {
                 disabled={pendaftaranId != null}
                 border={1}
                 borderColor={BORDER_COLOR}
-                initialValue={pendaftaranId != null && pendaftaranItem?.keluhan}
+                initialValue={pendaftaranId != null ? pendaftaranItem?.keluhan : null}
               />
           </ScrollView>
         </View>
@@ -306,12 +341,18 @@ const PemesananJanjiSection = (): JSX.Element => {
         </View>
       </ScrollView>
       <View style={style.buttonContainer}>
-        <ButtonComponent
-          color={MAIN_COLOR}
-          onPress={handleAlert}
-          title="Tentukan Janji Temu"
-          customstyle={{width: '100%', display: pendaftaranId != null ? 'none' : 'flex'}}
-        />
+        {
+          dayFromDate === 0 && (BidanBundaRegex.test(pelayananData?.data?.jenis_layanan?.nama) || PeriksaHamilNyamanRegex.test(pelayananData?.data?.jenis_layanan?.nama)) ?
+          null
+          :
+          <ButtonComponent
+            color={MAIN_COLOR}
+            onPress={handleAlert}
+            title="Tentukan Janji Temu"
+            customstyle={{width: '100%', display: pendaftaranId != null ? 'none' : 'flex'}}
+          />
+
+        }
       </View>
     </JanjiScreenLayout>
   );
@@ -333,6 +374,7 @@ const style = StyleSheet.create({
     height: '40%',
     marginBottom: 12,
     borderWidth: 0,
+    position: 'relative',
   },
   headerFormContainer: {
     width: '100%',

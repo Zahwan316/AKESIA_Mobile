@@ -13,12 +13,13 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {
   BUTTON_COLOR,
   BUTTON_COLOR_2,
   BUTTON_COLOR_3,
   MAIN_COLOR,
+  SECONDARY_COLOR,
   TEXT_HEADER_COLOR,
 } from '../../constants/color';
 import InputComponent from '../../component/input/text';
@@ -223,112 +224,114 @@ const LoginSection = (): JSX.Element => {
 
 
   return (
-    <SafeAreaView>
-      <ModalComponent
-        isSuccess={successLogin}
-        handleModal={handleSplashScreen}
-        modalVisible={modal}
-        message={modalInfo.message}
-        text={modalInfo.text}
-      />
-      <View style={style.mainContainer}>
-        <View style={style.imgContainer}>
-          <View style={style.imgWrapper}>
-            <Image
-              source={require('../../assets/img/LogoBidanBunda.png')}
-              style={style.imgLogo}
-              resizeMethod="resize"
-              resizeMode="contain"
-            />
+    <SafeAreaProvider>
+      <SafeAreaView>
+        <ModalComponent
+          isSuccess={successLogin}
+          handleModal={handleSplashScreen}
+          modalVisible={modal}
+          message={modalInfo.message}
+          text={modalInfo.text}
+        />
+        <View style={style.mainContainer}>
+          <View style={style.imgContainer}>
+            <View style={style.imgWrapper}>
+              <Image
+                source={require('../../assets/img/LogoBidanBunda.png')}
+                style={style.imgLogo}
+                resizeMethod="resize"
+                resizeMode="contain"
+              />
+            </View>
+            <View style={style.headingContainer}>
+              <Text style={style.heading1}>Lahir dengan cinta,</Text>
+              <Text style={style.heading1}>Tumbuh dengan bahagia</Text>
+            </View>
           </View>
-          <View style={style.headingContainer}>
-            <Text style={style.heading1}>Lahir dengan cinta,</Text>
-            <Text style={style.heading1}>Tumbuh dengan bahagia</Text>
-          </View>
-        </View>
-        {/*  */}
-        <View style={style.formContainer}>
+          {/*  */}
           <View style={style.buttonGroup}>
             <TouchableOpacity
-              style={[
-                style.buttonRadio,
-                {
-                  backgroundColor:
-                    currSelect === 'login' ? BUTTON_COLOR_3 : '#fff',
-                },
-              ]}
-              onPress={() => handleSelected('login')}>
-              <Text
-                style={{
-                  color: currSelect === 'login' && '#fff',
-                  fontWeight: 'bold',
-                }}>
-                Login
-              </Text>
+                style={[
+                  style.buttonRadio,
+                  {
+                    backgroundColor:
+                      currSelect === 'login' ? BUTTON_COLOR_3 : '#fff',
+                  },
+                ]}
+                onPress={() => handleSelected('login')}>
+                <Text
+                  style={{
+                    color: currSelect === 'login' && '#fff',
+                    fontWeight: 'bold',
+                  }}>
+                  Login
+                </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[
-                style.buttonRadio,
-                {
-                  backgroundColor:
-                    currSelect === 'register' ? BUTTON_COLOR_3 : '#fff',
-                  display: selectedUser === 'bidan' ? 'none' : 'flex'
-                },
-              ]}
-              onPress={() => handleSelected('register')}>
-              <Text
-                style={{
-                  color: currSelect === 'register' && '#fff',
-                  fontWeight: 'bold',
-                }}>
-                Registrasi
-              </Text>
+                style={[
+                  style.buttonRadio,
+                  {
+                    backgroundColor:
+                      currSelect === 'register' ? BUTTON_COLOR_3 : '#fff',
+                    display: selectedUser === 'bidan' ? 'none' : 'flex'
+                  },
+                ]}
+                onPress={() => handleSelected('register')}>
+                <Text
+                  style={{
+                    color: currSelect === 'register' && '#fff',
+                    fontWeight: 'bold',
+                  }}>
+                  Registrasi
+                </Text>
             </TouchableOpacity>
           </View>
-          <View style={style.formGroup}>
-              {currSelect === 'login' ? (
-                <LoginLayout onChange={setForm} control={control} errors={errors}/>
-              ) : (
-                <RegisterLayout onChange={setForm} control={control} errors={errors}/>
-              )}
-          </View>
-          <View style={[style.agreeTermContainer]}>
-            <RadioInputComponent
-              customstyle={{borderColor: '#606060', marginRight: 8}}
-              innerstyle={{backgroundColor: MAIN_COLOR}}
-              onPress={handleAcceptTerm}
-            />
-            <Text style={{fontSize: 12}}>
-              Saya setuju dengan Ketentuan Layanan & Kebijakan Privasi
-            </Text>
-          </View>
-          <View style={[style.agreeTermContainer]}>
-            <ButtonComponent
-              title={currSelect === 'login' ? 'Sign In' : 'Sign Up'}
-              color={isAcceptTerm ? BUTTON_COLOR : '#A3A9DC'}
-              onPress={isAcceptTerm ? handleSubmit(onSubmit) : () => {}}
-              customstyle={{width: '100%'}}
-              disabled={!isAcceptTerm}
-            />
-          </View>
-        </View>
-        <View style={style.bottomContainer}>
-            <View style={{marginBottom: 8}}>
-              <TouchableOpacity>
-                <Image
-                  source={require('../../assets/icon/google.png')}
-                  style={{width: 44, height: 44}}
-                />
-              </TouchableOpacity>
+          <ScrollView style={style.formContainer}>
+            <View style={style.formGroup}>
+                {currSelect === 'login' ? (
+                  <LoginLayout onChange={setForm} control={control} errors={errors}/>
+                ) : (
+                  <RegisterLayout onChange={setForm} control={control} errors={errors}/>
+                )}
             </View>
-            <View style={{width: '90%'}}>
-              <Text style={{ textAlign: 'center', color:'#20202095', fontSize: 12 }}>
-                Dengan melanjutkan, Anda menyetujui Persyaratan Layanan dan Kebijakan Privasi kami.
+            <View style={[style.agreeTermContainer]}>
+              <RadioInputComponent
+                customstyle={{borderColor: '#606060', marginRight: 8}}
+                innerstyle={{backgroundColor: MAIN_COLOR}}
+                onPress={handleAcceptTerm}
+              />
+              <Text style={{fontSize: 12}}>
+                Saya setuju dengan Ketentuan Layanan & Kebijakan Privasi
               </Text>
             </View>
+            <View style={[style.agreeTermContainer]}>
+              <ButtonComponent
+                title={currSelect === 'login' ? 'Login' : 'Registrasi'}
+                color={isAcceptTerm ? BUTTON_COLOR_3 : '#ed95b8'}
+                onPress={isAcceptTerm ? handleSubmit(onSubmit) : () => {}}
+                customstyle={{width: '100%'}}
+                disabled={!isAcceptTerm}
+              />
+            </View>
+          </ScrollView>
+          {/* <View style={style.bottomContainer}>
+              <View style={{marginBottom: 8}}>
+                <TouchableOpacity>
+                  <Image
+                    source={require('../../assets/icon/google.png')}
+                    style={{width: 44, height: 44}}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={{width: '90%'}}>
+                <Text style={{ textAlign: 'center', color:'#20202095', fontSize: 12 }}>
+                  Dengan melanjutkan, Anda menyetujui Persyaratan Layanan dan Kebijakan Privasi kami.
+                </Text>
+              </View>
+          </View> */}
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 
@@ -374,13 +377,9 @@ const style = StyleSheet.create({
   formContainer: {
     borderWidth: 0,
     width: '100%',
-    height: '65%',
+    height: '25%',
     paddingHorizontal: 12,
-    /* width: '100%',
-    height: '75%', */
     display: 'flex',
-    /* alignItems: 'center',
-    justifyContent: 'center', */
   },
   scrollContainer: {
     width: '100%',
@@ -391,7 +390,7 @@ const style = StyleSheet.create({
   },
   buttonGroup: {
     width: '100%',
-    height: '7%',
+    height: '8%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -401,6 +400,7 @@ const style = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 12,
     position: 'relative',
+    padding: 12,
   },
   buttonRadio: {
     backgroundColor: '#fff',
@@ -438,14 +438,14 @@ const style = StyleSheet.create({
   },
   bottomContainer: {
     width: '100%',
-    height: '30%',
+    height: '15%',
     backgroundColor: MAIN_COLOR,
     borderWidth: 0,
     display: 'flex',
     bottom: 0,
-    top: 26,
+    //top: 12,
     alignItems: 'center',
-    padding: 36,
+    padding: 8,
   },
 });
 

@@ -1,4 +1,4 @@
-import {ScrollView, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import FormScreenLayout from '../../screen_layout';
 import InputDatePickerComponent from '../../../../component/input/datepicker';
 import InputComponent from '../../../../component/input/text';
@@ -14,6 +14,8 @@ import axios from '../../../../api/axios';
 import handleContentModal from '../../../../component/modal/function';
 import { formattedDate, formattedDateData } from '../../../../utils/date';
 import InputTimePickerComponent from '../../../../component/input/timepicker';
+import RadioInputComponent from '../../../../component/input/radio';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
 const Page1 = ({
   formHandle,
@@ -33,8 +35,8 @@ const Page1 = ({
         onChange={formHandle}
         control={control}
         errors={errors}
-        name='tanggal_pemeriksaan'
-        labelColor=''
+        name="tanggal_pemeriksaan"
+        labelColor=""
         initialValue={data?.tanggal_pemeriksaan}
       />
       <InputTimePickerComponent
@@ -42,8 +44,8 @@ const Page1 = ({
         onChange={formHandle}
         control={control}
         errors={errors}
-        name='jam_pemeriksaan'
-        labelColor=''
+        name="jam_pemeriksaan"
+        labelColor=""
         initialValue={data?.jam_pemeriksaan}
       />
       {/* <InputComponent
@@ -68,7 +70,7 @@ const Page1 = ({
         height={'auto'}
         width={'100%'}
         label="Nama Pemeriksaan"
-        message="Harap diisi"
+        //message="Harap diisi"
         name="nama"
         onChange={formHandle}
         placeholder=""
@@ -86,7 +88,7 @@ const Page1 = ({
         height={'50%'}
         width={'100%'}
         label="Hasil Pemeriksaan"
-        message="Harap diisi"
+        //message="Harap diisi"
         name="hasil"
         onChange={formHandle}
         placeholder=""
@@ -215,6 +217,7 @@ const PemeriksaanLabSection = (): JSX.Element => {
     queryFn: () => getForm(`form/pemeriksaan_lab/show_by_pendaftaran/${pemeriksaanId}`),
     enabled: !!pemeriksaanId,
   });
+  const [isAccepted, setIsAccepted] = useState<boolean>(false);
 
   useEffect(() => {
     if (page <= 1) {
@@ -225,7 +228,7 @@ const PemeriksaanLabSection = (): JSX.Element => {
   }, [page]);
 
   const handlePage = (operator: string) => {
-    if (operator === 'next') {
+    /* if (operator === 'next') {
       if (page === 1) {
         handleSubmit(() => setpage(2))(); // Pindah ke page 2
       } else if (page === 2) {
@@ -233,7 +236,8 @@ const PemeriksaanLabSection = (): JSX.Element => {
       }
     } else {
       setpage(prev => Math.max(prev - 1, 1));
-    }
+    } */
+      handleSubmit(handleSubmitForm)();
   };
 
   const handleSubmitForm = async(data: any) => {
@@ -300,7 +304,7 @@ const PemeriksaanLabSection = (): JSX.Element => {
   return (
     <FormScreenLayout
       handlePage={handlePage}
-      page={page}
+      //page={page}
       header="Pemeriksaan Lab & SOAP"
       modalHandleModal={handleModal}
       modalIsSuccess={isSuccess}
@@ -310,23 +314,47 @@ const PemeriksaanLabSection = (): JSX.Element => {
       created_at={checkIsDataNull(pemeriksaanLabData?.data) ? 'Belum ada' : formattedDateData(pemeriksaanLabData?.data?.created_at)}
       updated_at={checkIsDataNull(pemeriksaanLabData?.data) ? 'Belum ada' : formattedDateData(pemeriksaanLabData?.data?.updated_at)}
     >
-        {page === 2 ?
+      <View style={{marginBottom: 32}}>
+        <Page2
+          control={control}
+          data={checkIsDataNull(pemeriksaanLabData?.data) ? [] : pemeriksaanLabData?.data}
+          errors={errors}
+          formHandle={() => {}}
+        />
+        <View style={Style.checkboxContainer}>
+          <BouncyCheckbox
+            fillColor="#000"
+            onPress={() => setIsAccepted(!isAccepted)}
+          />
+          <Text>
+            Ingin Mengisi Pemeriksaan Lab?
+          </Text>
+        </View>
+        {
+          isAccepted ?
           <Page1
             formHandle={() => {}}
             control={control}
             errors={errors}
             data={checkIsDataNull(pemeriksaanLabData?.data) ? [] : pemeriksaanLabData?.data}
           />
-          :
-          <Page2
-            control={control}
-            data={checkIsDataNull(pemeriksaanLabData?.data) ? [] : pemeriksaanLabData?.data}
-            errors={errors}
-            formHandle={() => {}}
-          />
+          : null
         }
+      </View>  
     </FormScreenLayout>
   );
 };
+
+const Style = StyleSheet.create({
+  checkboxContainer: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 8,
+    marginBottom: 16,
+    //alignItems: 'center',
+    //justifyContent: 'center'
+  },
+});
 
 export default PemeriksaanLabSection;

@@ -34,7 +34,33 @@ export type PelayananResponse = {
   };
 };
 
+const iconData = [
+  {
+    jenis_layanan: 'Baby Spa dan Message',
+    img: '../../../../../assets/icon/babyspa.png',
+  },
+  {
+    jenis_layanan: 'Persalinan',
+    img: '../../../../../assets/icon/persalinan.png',
+  },
+  {
+    jenis_layanan: 'Bidan Bunda',
+    img: '../../../../../assets/icon/bunda.png',
+  },
+  {
+    jenis_layanan: 'Periksa Hamil Nyaman',
+    img: '../../../../../assets/icon/bunda.png',
+  },
+];
+
 const searchItemRegex = /Periksa Hamil Nyaman/i;
+
+const imgMap: {[key: string]: ImageSourcePropType} = {
+  'Baby Spa dan Massage': require('../../../../../assets/icon/babyspa.png'),
+  'Persalinan': require('../../../../../assets/icon/persalinan.png'),
+  'Bidan Bunda': require('../../../../../assets/icon/bunda.png'),
+  'Periksa Hamil Nyaman': require('../../../../../assets/icon/bunda.png'),
+}
 
 const BuatJanjiDetailSection = (): JSX.Element => {
   const route = useRoute();
@@ -74,9 +100,9 @@ const BuatJanjiDetailSection = (): JSX.Element => {
         <View style={style.mainHeaderContainer}>
           <View style={style.imgContainer}>
             <Image
-              source={require('../../../../../assets/icon/bell-gray.png')}
+              source={imgMap[subItem]}
               style={{width: '80%', height: '80%', borderTopLeftRadius: 12, borderTopRightRadius: 12}}
-              resizeMode="contain"
+              resizeMode="cover"
             />
           </View>
           <View style={style.textContainer}>
@@ -106,6 +132,7 @@ const BuatJanjiDetailSection = (): JSX.Element => {
                         harga={ChangePrice(item.harga, item.nama, item.kuantitas)}
                         handlePress={() => handleToPemesanan(item.id)}
                         jenis_layanan={item.jenis_layanan_id}
+                        img={imgMap[subItem]}
                       />
                     </View>
                 }

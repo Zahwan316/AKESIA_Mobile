@@ -167,8 +167,8 @@ const PemeriksaanSection = (): React.JSX.Element => {
   };
 
   useEffect(() => {
-    //console.table(getFormId);
-  }, [pemeriksaanData]);
+    console.table(pelayananPeriksaHamilId);
+  }, [pelayananPeriksaHamilId]);
 
   //tambahkan pengecekan jika pendaftaraData.pelayanan.harga = 0, maka pelayananPeriksaHamilId(0), jika harga != 0 maka set pelayananPeriksaHamilId dengan data yang sudah terupdate
 
@@ -180,6 +180,8 @@ const PemeriksaanSection = (): React.JSX.Element => {
       setPelayananPeriksaHamilId(pemeriksaanData?.pelayanan?.id);
       return;
     }
+
+    console.log(pemeriksaanData);
     setPelayananPeriksaHamilId(0);
   }, []);
 

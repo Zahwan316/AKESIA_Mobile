@@ -5,6 +5,7 @@ import { StyleSheet, Text } from 'react-native';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { CommonActions } from '@react-navigation/native';
 
 type props = {
   children: React.ReactNode,
@@ -19,7 +20,7 @@ const JanjiScreenLayout = (props: props): JSX.Element => {
       <SafeAreaView>
         <View style={style.mainContainer}>
           <View style={style.headerContainer}>
-            <Icon name="angle-left" size={42} onPress={() => navigation.goBack()}/>
+            <Icon name="angle-left" size={42} onPress={() => {navigation.dispatch(CommonActions.goBack());}}/>
             <Text style={{fontWeight: 'bold', fontSize: 24}}>{props.title}</Text>
             <View />
           </View>

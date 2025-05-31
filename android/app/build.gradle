@@ -95,7 +95,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        resValue "string", "API_URL", "\"${System.getenv("API_URL")}\""
+        resValue "string", "API_URL", project.env.get("API_URL")
     }
     signingConfigs {
         debug {

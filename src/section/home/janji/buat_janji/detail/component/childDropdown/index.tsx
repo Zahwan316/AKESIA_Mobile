@@ -10,6 +10,7 @@ type props = {
   handlePress: () => void,
   harga: number | string,
   jenis_layanan?: number,
+  img?: any,
 };
 
 const width = useDimension();
@@ -26,7 +27,7 @@ const ChildDropdownComponent = (props: props) => {
     <TouchableOpacity style={style.mainHeaderContainer} onPress={props.handlePress}>
       <View style={style.imgContainer}>
         <Image
-          source={require('../../../../../../../assets/icon/note.png')}
+          source={props.img || require('../../../../../../../assets/icon/note.png')}
           style={{
             width: '80%',
             height: '80%',

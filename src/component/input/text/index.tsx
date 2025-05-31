@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import textInputProps from '../../../type/input/text';
 
+
+
 const InputComponent = ({
   width,
   height,
@@ -28,6 +30,14 @@ const InputComponent = ({
   maxLength,
   minLength,
 }: textInputProps): JSX.Element => {
+  const sanitizeInput = (value: string) => {
+    return value
+      .replace(/[<>]/g, '')         // Hilangkan tag HTML/script
+      .replace(/["']/g, '')         // Hilangkan kutip
+      .replace(/\s{2,}/g, ' ')      // Hapus spasi berlebih
+      /* .trim() */;                      // Hapus spasi awal/akhir
+  };
+
   return (
     <View style={[style.container, {width: width, height: height}]}>
       <Text style={[style.label, {color: labelColor, fontWeight: 'bold'}]}>
@@ -48,7 +58,7 @@ const InputComponent = ({
                 height: type === 'textarea' ? 150 : 'auto',
                 opacity: disabled ? 0.45 : 1,
               }]}
-            onChangeText={onChange}
+            onChangeText={(text) => onChange(sanitizeInput(text))}
             value={value}
             placeholder={placeholder}
             secureTextEntry={type === 'password' ? true : false}

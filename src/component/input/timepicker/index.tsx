@@ -5,6 +5,7 @@ import DatePicker from 'react-native-date-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { formattedDateDataWithoutHour } from '../../../utils/date';
 import { BORDER_COLOR } from '../../../constants/color';
+import { jadwalPelayananTime } from '../../../utils/jadwal';
 
 type Props = {
   label: string;
@@ -33,6 +34,7 @@ const InputTimePickerComponent = (props: Props): React.JSX.Element => {
     const minutes = time.getMinutes().toString().padStart(2, '0');
     return `${hours}:${minutes}`;
   };
+
 
   return (
     <View style={[props.customStyle, { marginBottom: 12 }]}>
@@ -72,11 +74,11 @@ const InputTimePickerComponent = (props: Props): React.JSX.Element => {
                   : new Date()
                 }
                 onConfirm={(selectedTime) => {
-                  setOpen(false);
-                  setDate(selectedTime);
-                  const formatted = formatTime(selectedTime);
-                  onChange(formatted);
-                  props.onChange();
+                    setOpen(false);
+                    setDate(selectedTime);
+                    const formatted = formatTime(selectedTime);
+                    onChange(formatted);
+                    props.onChange();
                 }}
                 onCancel={() => setOpen(false)}
               />
@@ -86,11 +88,15 @@ const InputTimePickerComponent = (props: Props): React.JSX.Element => {
         <Icon name="clock" size={20} style={style.calendarIcon} />
       </View>
 
-      {props.errors?.[props.name]?.message && (
+      {props.errors && props.errors[props.name] && (
+        <Text style={style.errorText}>{props.errors[props.name]?.message}</Text>
+      )} ;
+
+      {/* {props.errors?.[props.name]?.message && (
         <Text style={style.errorText}>
           {props.errors[props.name]?.message}
         </Text>
-      )}
+      )} */}
     </View>
   );
 };

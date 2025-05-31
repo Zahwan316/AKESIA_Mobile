@@ -7,7 +7,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { formattedDateData, formattedDateDataWithoutHour } from '../../../utils/date';
 import { BORDER_COLOR } from '../../../constants/color';
 
-
 type props = {
   label: string,
   onChange: (value: any) => void,
@@ -82,9 +81,15 @@ const InputDatePickerComponent = (props: props): React.JSX.Element => {
         />
         <Icon name="calendar" size={20} style={{position: 'absolute', right: 12, top: 10}} />
       </View>
+
       {props.errors && props.errors[props.name] && (
         <Text style={{ color: 'red' }}>{props.errors[props.name]?.message}</Text>
-      )}
+      )};
+
+      {/*  {props.errors && props.errors[props.name] && (
+        <Text style={{ color: 'red' }}>{props.errors[props.name]?.message}</Text>
+      )} */}
+
     </View>
   );
 };

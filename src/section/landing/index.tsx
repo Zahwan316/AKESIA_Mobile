@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { BUTTON_COLOR, MAIN_COLOR, SECONDARY_COLOR, TEXT_HEADER_COLOR, TEXT_HEADER_COLOR_2 } from '../../constants/color';
 import ButtonComponent from '../../component/button';
 import { useNavigation } from '@react-navigation/native';
+import { Config } from 'react-native-config'
 
 const LandingSection = (): React.JSX.Element => {
   const[selected, setSelected] = useState('orangtua');
@@ -53,6 +54,7 @@ const LandingSection = (): React.JSX.Element => {
               <Text style={style.formTitle}>
                 Masuk sebagai pengguna berikut:
               </Text>
+              {/* <Text style={{fontSize: 10}}>{Config.API_URL}</Text> */}
             </View>
             {/* FORM SELECTION */}
             <View style={style.formSelectionContainer}>
