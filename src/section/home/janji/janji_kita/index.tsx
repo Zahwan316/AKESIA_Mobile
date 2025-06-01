@@ -1,11 +1,11 @@
-import { JSX, useEffect, useState } from 'react';
-import { Alert, Text, View } from 'react-native';
+import React, { JSX, useState } from 'react';
+import { View } from 'react-native';
 import JanjiScreenLayout from '../layout';
 import ButtonComponent from '../../../../component/button';
-import QueueItemComponent, { style } from '../component/queue-item';
+import QueueItemComponent from '../component/queue-item';
 import { ScrollView } from 'react-native';
 import FloatingIcon from '../../../../component/floatingIcon';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import { getPendaftaranUser } from '../../../../api/data/pendaftaran';
 import handleContentModal from '../../../../component/modal/function';
@@ -78,7 +78,7 @@ const ButtonMenu: button[] = [
 const JanjiKitaSection = (): JSX.Element => {
   const [currMenu, setCurrMenu] = useState<string>('Semua');
   const navigation = useNavigation<any>();
-  const { data: pendaftaranUserData} = useQuery({
+  const { data: pendaftaranUserData, refetch} = useQuery({
     queryKey: ['getCurrUserPendaftaran'],
     queryFn: () => getPendaftaranUser('getCurrUserPendaftaran'),
   });
@@ -128,6 +128,12 @@ const JanjiKitaSection = (): JSX.Element => {
     }
     setModal(!modal);
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+    }, [refetch])
+  );
 
   /* useEffect(() => {
     console.log(pendaftaranUserData);

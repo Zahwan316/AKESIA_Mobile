@@ -1,12 +1,12 @@
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import AlbumImageItemComponent from '../album_foto/component/AlbumImgItem';
 import { useQuery } from '@tanstack/react-query';
 import useAlbumFotoStore from '../../../state/album_foto';
 import { getData } from '../../../api/data/getData';
 import FotoScreenLayout from '../album_foto/layout';
 import FloatingIcon from '../../../component/floatingIcon';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 const RiwayatKehamilanFotoSection = () => {
   const navigator = useNavigation<any>();
@@ -17,7 +17,7 @@ const RiwayatKehamilanFotoSection = () => {
     screenBeforeName,
   } = router.params as {screenBeforeName: string};
 
-  const {data: RiwayatKehamilanFotoData} = useQuery({
+  const {data: RiwayatKehamilanFotoData, refetch} = useQuery({
     queryKey: ['RiwayatKehamilanFotoData'],
     queryFn: () => getData(`riwayat_kehamilan_foto/getByGroupId/${RiwayatKehamilanGroupId}`),
   });
@@ -32,6 +32,11 @@ const RiwayatKehamilanFotoSection = () => {
     console.log(RiwayatKehamilanFotoData?.data);
     console.log(RiwayatKehamilanGroupId);
   }, [RiwayatKehamilanFotoData]);
+
+  useFocusEffect(
+    useCallback(() => {refetch();},[refetch])
+  );
+
   return(
     <FotoScreenLayout
       modalVisible={false}

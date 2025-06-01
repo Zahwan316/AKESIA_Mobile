@@ -458,7 +458,7 @@ const TambahAnakSection = (): JSX.Element => {
   }, [selectedAnakId]);
 
   useEffect(() => {
-    if(screenType === 'edit_anak' && allAnakData?.data?.length === 0 || allAnakData?.data === null){
+    if(screenType === 'edit_anak' && allAnakData?.data?.length === 0 ){
       Alert.alert('Mohon maaf anda belum bisa mengakes bagian ini', 'Silahkan ke bagian tambah anak terlebih dahulu untuk menggunakan fitur ini', [{text: 'OK', onPress: () => navigation.navigate('BottomTabs')}]);
     }
   }, [screenType, allAnakData]);
@@ -508,7 +508,7 @@ const TambahAnakSection = (): JSX.Element => {
               :
               null
             }
-            <View style={{}} >
+            <View style={{marginBottom: 128}} >
               {page === 1 && (
                 screenType === 'edit_anak' ? (
                   <Page1

@@ -1,9 +1,9 @@
-import { JSX, useEffect } from 'react';
+import { JSX, useCallback, useEffect } from 'react';
 import FotoScreenLayout from '../layout';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import AlbumItemComponent from '../component/AlbumItem';
 import FloatingIcon from '../../../../component/floatingIcon';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import { getData } from '../../../../api/data/getData';
 import { checkIsDataFormNull } from '../../../../utils/checkDataIsNull';
@@ -22,7 +22,7 @@ const AlbumFotoUsgSection = (): JSX.Element => {
     setUsgTitleName(UsgTitleName);
     navigator.navigate(screen, {screenBeforeName: screenBeforeName});
   };
-  const {data: usgData} = useQuery({
+  const {data: usgData, refetch} = useQuery({
     queryKey: ['usgData'],
     queryFn: () => getData(`album_foto_usg/getByJaninId/${janinId}`),
   });
@@ -31,6 +31,10 @@ const AlbumFotoUsgSection = (): JSX.Element => {
     console.log(janinId);
     console.log(checkIsDataFormNull(usgData?.data))
   }, [usgData]);
+
+   useFocusEffect(
+    useCallback(() => {refetch();},[refetch])
+  );
 
   return(
     <FotoScreenLayout

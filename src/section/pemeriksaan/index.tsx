@@ -144,7 +144,8 @@ const PemeriksaanSection = (): React.JSX.Element => {
 
   const handleModal = () => {
     if (isSuccess) {
-      navigation.navigate('ListJanji');
+      //navigation.navigate('ListJanji');
+      navigation.pop(1);
     }
     setModal(!modal);
   };

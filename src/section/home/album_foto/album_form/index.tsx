@@ -135,13 +135,16 @@ const AlbumFormSection = () => {
   const handleModal = () => {
     if(isSuccess){
       if(screenBeforeName === 'AlbumFotoJanin'){
-        navigator.navigate('AlbumFotoJanin');
+        //navigator.navigate('AlbumFotoJanin');
+        navigator.pop(1);
       }
       else if(screenBeforeName === 'AlbumFotoUsg'){
-        navigator.navigate('AlbumFotoUsg', {screenBeforeName: 'AlbumFotoJanin'});
+        //navigator.navigate('AlbumFotoUsg', {screenBeforeName: 'AlbumFotoJanin'});
+        navigator.pop(1);
       }
       else if(screenBeforeName === 'AlbumFoto'){
-        navigator.navigate('AlbumFoto', {screenBeforeName: 'AlbumFotoUsg'});
+        //navigator.navigate('AlbumFoto', {screenBeforeName: 'AlbumFotoUsg'});
+        navigator.pop(1);
       }
     }
 

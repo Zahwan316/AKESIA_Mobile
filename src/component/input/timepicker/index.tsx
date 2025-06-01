@@ -3,9 +3,7 @@ import { Controller } from 'react-hook-form';
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { formattedDateDataWithoutHour } from '../../../utils/date';
 import { BORDER_COLOR } from '../../../constants/color';
-import { jadwalPelayananTime } from '../../../utils/jadwal';
 
 type Props = {
   label: string;
@@ -90,7 +88,7 @@ const InputTimePickerComponent = (props: Props): React.JSX.Element => {
 
       {props.errors && props.errors[props.name] && (
         <Text style={style.errorText}>{props.errors[props.name]?.message}</Text>
-      )} ;
+      )}
 
       {/* {props.errors?.[props.name]?.message && (
         <Text style={style.errorText}>

@@ -116,10 +116,10 @@ const RiwayatKehamilanFormSection = () => {
   const handleModal = () => {
     if(isSuccess){
       if(screenBeforeName === 'RiwayatKehamilanGroup'){
-        navigator.goBack();
+        navigator.pop(1);
       }
       else if(screenBeforeName === 'RiwayatKehamilanFoto'){
-        navigator.goBack();
+        navigator.pop(1);
       }
     }
 

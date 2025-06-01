@@ -39,6 +39,14 @@ const jadwalLayanan: Record<string, { days: number[]; jam: [string, string][] }>
     days: [6],
     jam: [['10:00', '19:00']],
   },
+  Persalinan: {
+    days: [1, 2, 3, 4, 5],
+    jam: [['13:00', '19:00']],
+  },
+  PersalinanSabtu: {
+    days: [6],
+    jam: [['10:00', '19:00']],
+  },
 };
 
 const generateJamList = (jamRange: [string, string][]): string[] => {
@@ -71,11 +79,11 @@ const generateJamList = (jamRange: [string, string][]): string[] => {
 const babySpaRegex = /Baby Spa dan Massage/i;
 const BidanBundaRegex = /Bidan Bunda/i;
 const PeriksaHamilNyamanRegex = /Periksa Hamil Nyaman/i;
+const PersalinanRegex = /Persalinan/i;
 
 const JamPicker = ({ control, name, label, message, errors, jenisLayanan, initialValue, disabled, tanggal_pertemuan }: JamPickerProps) => {
   const [jamList, setJamList] = useState<string[]>([]);
   const [changedJenisLayanan, setChangedJenisLayanan] = useState<string>('');
-  const date = new Date();
 
 
   useEffect(() => {
@@ -95,11 +103,15 @@ const JamPicker = ({ control, name, label, message, errors, jenisLayanan, initia
     else if (PeriksaHamilNyamanRegex.test(jenisLayanan)) {
       setChangedJenisLayanan('PemeriksaanHamilNyaman');
     }
+    else if (PersalinanRegex.test(jenisLayanan) && dayFromDate === 6) {
+      setChangedJenisLayanan('PersalinanSabtu');
+    }
+    else if (PersalinanRegex.test(jenisLayanan)) {
+      setChangedJenisLayanan('Persalinan');
+    }
     console.log(jenisLayanan);
 
 
-    const now = new Date();
-    const day = now.getDay();
     const jadwal = jadwalLayanan[changedJenisLayanan];
     if (jadwal && jadwal.days.includes(dayFromDate)) {
       const list = generateJamList(jadwal.jam);

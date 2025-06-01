@@ -84,7 +84,7 @@ const InputDatePickerComponent = (props: props): React.JSX.Element => {
 
       {props.errors && props.errors[props.name] && (
         <Text style={{ color: 'red' }}>{props.errors[props.name]?.message}</Text>
-      )};
+      )}
 
       {/*  {props.errors && props.errors[props.name] && (
         <Text style={{ color: 'red' }}>{props.errors[props.name]?.message}</Text>

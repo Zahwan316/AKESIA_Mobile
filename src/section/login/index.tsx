@@ -314,21 +314,21 @@ const LoginSection = (): JSX.Element => {
               />
             </View>
           </ScrollView>
-          {/* <View style={style.bottomContainer}>
-              <View style={{marginBottom: 8}}>
-                <TouchableOpacity>
+          <View style={style.bottomContainer}>
+            {/* <View style={{marginBottom: 8}}>
+              <TouchableOpacity>
                   <Image
                     source={require('../../assets/icon/google.png')}
                     style={{width: 44, height: 44}}
                   />
-                </TouchableOpacity>
-              </View>
-              <View style={{width: '90%'}}>
+              </TouchableOpacity>
+            </View>
+            <View style={{width: '90%'}}>
                 <Text style={{ textAlign: 'center', color:'#20202095', fontSize: 12 }}>
                   Dengan melanjutkan, Anda menyetujui Persyaratan Layanan dan Kebijakan Privasi kami.
                 </Text>
-              </View>
-          </View> */}
+            </View> */}
+          </View>
         </View>
       </SafeAreaView>
     </SafeAreaProvider>

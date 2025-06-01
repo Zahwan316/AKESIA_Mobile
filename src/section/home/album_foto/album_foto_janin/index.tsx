@@ -1,9 +1,9 @@
-import { JSX, useEffect } from 'react';
+import { JSX, useCallback, useEffect } from 'react';
 import FotoScreenLayout from '../layout';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import AlbumItemComponent from '../component/AlbumItem';
 import FloatingIcon from '../../../../component/floatingIcon';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import { getData } from '../../../../api/data/getData';
 import useAlbumFotoStore from '../../../../state/album_foto';
@@ -15,7 +15,7 @@ const AlbumFotoJaninSection = (): JSX.Element => {
     setJaninId(janinId);
     navigator.navigate(screen, {screenBeforeName: screenBeforeName});
   };
-  const {data: janinData} = useQuery({
+  const {data: janinData, refetch} = useQuery({
     queryKey: ['janinData'],
     queryFn: () => getData('album_foto_janins/getByUserId'),
   });
@@ -23,6 +23,10 @@ const AlbumFotoJaninSection = (): JSX.Element => {
   useEffect(() => {
     console.log(janinData);
   }, [janinData]);
+
+  useFocusEffect(
+    useCallback(() => {refetch();},[refetch])
+  );
 
   return(
     <FotoScreenLayout

@@ -287,6 +287,14 @@ const PemeriksaanLabSection = (): JSX.Element => {
   };
 
   useEffect(() => {
+    if(pemeriksaanLabData?.data != null){
+      if(pemeriksaanLabData?.data?.tanggal_pemeriksaan != null){
+        setIsAccepted(true);
+      }
+    }
+  }, [pemeriksaanLabData])
+
+  useEffect(() => {
     if(pemeriksaanLabData && pemeriksaanLabData?.data ){
       reset({
         tanggal_pemeriksaan: pemeriksaanLabData?.data?.tanggal_pemeriksaan,
@@ -325,6 +333,7 @@ const PemeriksaanLabSection = (): JSX.Element => {
           <BouncyCheckbox
             fillColor="#000"
             onPress={() => setIsAccepted(!isAccepted)}
+            isChecked={isAccepted}
           />
           <Text>
             Ingin Mengisi Pemeriksaan Lab?

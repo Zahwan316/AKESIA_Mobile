@@ -60,7 +60,7 @@ const imgMap: {[key: string]: ImageSourcePropType} = {
   'Persalinan': require('../../../../../assets/icon/persalinan.png'),
   'Bidan Bunda': require('../../../../../assets/icon/bunda.png'),
   'Periksa Hamil Nyaman': require('../../../../../assets/icon/bunda.png'),
-}
+};
 
 const BuatJanjiDetailSection = (): JSX.Element => {
   const route = useRoute();

@@ -1,6 +1,6 @@
-import { JSX, useEffect } from 'react';
+import { JSX, useCallback, useEffect } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 
 import FotoScreenLayout from './layout';
@@ -24,7 +24,7 @@ const AlbumFotoSection = (): JSX.Element => {
   const handleScreen = (screen: string, screenBeforeName?: string, usgId?: number, usgTitleName?: string) => {
     navigator.navigate(screen, {screenBeforeName: screenBeforeName, usgId: usgId, usgTitleName: usgTitleName});
   };
-  const {data: AlbumFotoData} = useQuery({
+  const {data: AlbumFotoData, refetch} = useQuery({
     queryKey: ['albumFoto'],
     queryFn: () => getData(`album_foto/getByUsgId/${usgId}`),
   });
@@ -32,6 +32,10 @@ const AlbumFotoSection = (): JSX.Element => {
   useEffect(() => {
     console.log(usgId);
   }, [usgId]);
+
+  useFocusEffect(
+    useCallback(() => {refetch();},[refetch])
+  );
 
   return(
     <FotoScreenLayout

@@ -1,4 +1,4 @@
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, ImageSourcePropType, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { JSX } from 'react/jsx-runtime';
 import JanjiScreenLayout from '../layout';
 import ChildDropdownComponent from '../buat_janji/detail/component/childDropdown';
@@ -87,10 +87,18 @@ type apiResponse = {
   'ibu': IbuType
 }
 
+//define ico
+const imgMap: {[key: string]: ImageSourcePropType} = {
+  'Baby Spa dan Massage': require('../../../../assets/icon/babyspa.png'),
+  'Persalinan': require('../../../../assets/icon/persalinan.png'),
+  'Bidan Bunda': require('../../../../assets/icon/bunda.png'),
+  'Periksa Hamil Nyaman': require('../../../../assets/icon/bunda.png'),
+};
+
 //regex
 const searchPijatRegex = /^Pijat/i;
 const jenisLayananRegex = /Baby Spa dan Massage/i;
-const persalinanRegex = /Persalinan/i;
+const PersalinanRegex = /Persalinan/i;
 const BidanBundaRegex = /Bidan Bunda/i;
 const PeriksaHamilNyamanRegex = /Periksa Hamil Nyaman/i;
 
@@ -122,7 +130,7 @@ const PemesananJanjiSection = (): JSX.Element => {
   const setLoading = useComponentStore((state) => state.setLoading);
   const tanggalPertemuan = useWatch({ control, name: 'tanggal_pendaftaran' });
   const parsedTanggal = tanggalPertemuan ? new Date(tanggalPertemuan) : undefined;
-  const dayFromDate = parsedTanggal?.getDay() ?? new Date().getDay();
+  const dayFromDate = parsedTanggal?.getDay() ;
 
   const onSubmit = async(data: any) => {
     const dataForm = {...data, pelayanan_id: pelayananId};
@@ -169,7 +177,8 @@ const PemesananJanjiSection = (): JSX.Element => {
 
   const handleModal = () => {
     if(successLogin){
-      navigate.navigate('JanjiKita');
+      //navigate.navigate('JanjiKita');
+      navigate.pop(3);
     }
     setModal(!modal);
   };
@@ -190,7 +199,8 @@ const PemesananJanjiSection = (): JSX.Element => {
       reset({
         keluhan: pendaftaranUserData?.data?.keluhan,
         nama_ibu: pendaftaranUserData?.data?.ibu?.user?.nama_lengkap,
-        jam_ditentukan: pendaftaranUserData?.data?.jam_ditentukan,
+        jam_ditentukan: pendaftaranUserData?.data?.jam_ditentukan ,
+        tanggal_pendaftaran: pendaftaranUserData?.data?.tanggal_pendaftaran,
       });
     }
     const age = calculateAge(pendaftaranUserData?.data?.bayi?.tanggal_lahir);
@@ -199,15 +209,14 @@ const PemesananJanjiSection = (): JSX.Element => {
   }, [pendaftaranUserData]);
 
   useEffect(() => {
-    console.table(tanggalPertemuan);
-    console.table(parsedTanggal);
-  },[tanggalPertemuan, parsedTanggal]);
+    console.log(pendaftaranId)
+  },[pendaftaranId]);
 
   useEffect(() => {
-    if(dayFromDate === 0 && (BidanBundaRegex.test(pelayananData?.data?.jenis_layanan?.nama) || PeriksaHamilNyamanRegex.test(pelayananData?.data?.jenis_layanan?.nama))){
+    if(dayFromDate === 0 && (BidanBundaRegex.test(pelayananData?.data?.jenis_layanan?.nama) || PeriksaHamilNyamanRegex.test(pelayananData?.data?.jenis_layanan?.nama ) || PersalinanRegex.test(pelayananData?.data?.jenis_layanan?.nama )) && pendaftaranId === null){
       Alert.alert('Info', 'Layanan ini ditutup pada hari minggu, mohon untuk mengganti dengan hari yang lain');
     }
-  }, [dayFromDate])
+  }, [dayFromDate, pelayananData, pendaftaranId]);
 
   return (
     <JanjiScreenLayout
@@ -234,7 +243,8 @@ const PemesananJanjiSection = (): JSX.Element => {
             errors={errors}
           />
           {
-            persalinanRegex.test(pelayananData?.data?.jenis_layanan?.nama) ?
+            /* //check if layanan is persalinan
+            persalinanRegex.test(pelayananData?.data != null ? pelayananData?.data?.jenis_layanan?.nama : pendaftaranUserData?.data?.pelayanan?.jenis_layanan?.nama ) &&
             <InputTimePickerComponent
               control={control}
               name="jam_ditentukan"
@@ -245,21 +255,50 @@ const PemesananJanjiSection = (): JSX.Element => {
               disabled={pendaftaranId != null}
               initialValue={pendaftaranId != null ? pendaftaranItem?.jam_ditentukan : null}
               errors={errors}
-            />
-            :
+            /> */
+            /* :
             <JamPicker
               control={control}
               jenisLayanan={pelayananData?.data?.jenis_layanan?.nama}
               label="Jam Pertemuan"
               name="jam_ditentukan"
               errors={errors}
-              message='Wajib Diisi'
-              initialValue={pendaftaranId != null ? pendaftaranItem?.jam_ditentukan : null}
+              message="Wajib Diisi"
+              initialValue={'14:30:00'}
+              disabled={pendaftaranId != null}
+              tanggal_pertemuan={parsedTanggal}
+            /> */
+          }
+          {
+            pendaftaranId === null &&
+            <JamPicker
+              control={control}
+              jenisLayanan={pelayananData?.data != null ? pelayananData?.data?.jenis_layanan?.nama : pendaftaranUserData?.data?.pelayanan?.jenis_layanan?.nama }
+              label="Jam Pertemuan"
+              name="jam_ditentukan"
+              errors={errors}
+              message="Wajib Diisi"
+              initialValue={'14:30:00'}
               disabled={pendaftaranId != null}
               tanggal_pertemuan={parsedTanggal}
             />
-
           }
+
+          {
+            pendaftaranId != null &&
+            <InputTimePickerComponent
+            control={control}
+            name="jam_ditentukan"
+            label="Jam Pertemuan"
+            onChange={() => {}}
+            labelColor="#000"
+            message="Jam harus diisi"
+            disabled={pendaftaranId != null}
+            initialValue={pendaftaranId != null ? pendaftaranItem?.jam_ditentukan : null}
+            errors={errors}
+          />
+          }
+
         </View>
         <View style={style.formContainer}>
           <View style={style.headerFormContainer}>
@@ -337,6 +376,7 @@ const PemesananJanjiSection = (): JSX.Element => {
             title={pelayananId ? pelayananData?.data?.nama : pendaftaranUserData?.data?.pelayanan?.nama}
             harga={pelayananId ? ChangePrice(pelayananData?.data?.harga, pelayananData?.data?.nama, ageChildren) : ChangePrice(pendaftaranUserData?.data?.pelayanan?.harga, pendaftaranUserData?.data?.pelayanan?.nama, ageChildren)}
             code={pelayananId ? pelayananData?.data?.keterangan : pendaftaranUserData?.data?.pelayanan?.keterangan}
+            img={imgMap[pelayananId ? pelayananData?.data?.jenis_layanan?.nama : pendaftaranUserData?.data?.pelayanan?.jenis_layanan?.nama]}
           />
         </View>
       </ScrollView>
