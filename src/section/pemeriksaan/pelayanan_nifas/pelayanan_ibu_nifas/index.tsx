@@ -17,7 +17,7 @@ import { formattedDateData } from '../../../../utils/date';
 const PelayananIbuNifasSection = (): JSX.Element => {
   const navigate = useNavigation<any>();
   const router = useRoute();
-  const { pemeriksaanData, pemeriksaanId} = router.params as {pemeriksaanData: apiResponse, pemeriksaanId: number};
+  const { pemeriksaanData, pemeriksaanId} = router.params as {pemeriksaanData: PemeriksaanApiResponse, pemeriksaanId: number};
   const {
     control,
     handleSubmit,
@@ -76,6 +76,7 @@ const PelayananIbuNifasSection = (): JSX.Element => {
       modalMessage={modalInfo.message}
       modalText={modalInfo.text}
       modalVisible={modal}
+      pemeriksaanData={pemeriksaanData}
       created_at={checkIsDataNull(pelayananNifasFormData?.data ) ? 'Belum ada' : formattedDateData(pelayananNifasFormData?.data.created_at)}
       updated_at={checkIsDataNull(pelayananNifasFormData?.data ) ? 'Belum ada' : formattedDateData(pelayananNifasFormData?.data.updated_at)}
     >
@@ -102,6 +103,7 @@ const PelayananIbuNifasSection = (): JSX.Element => {
               control={control}
               errors={errors}
               borderColor={BORDER_COLOR}
+              disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
               initialValue={checkIsDataNull(pelayananNifasFormData?.data ) ? '' : pelayananNifasFormData?.data.klasifikasi_nifas_1}
             />
             <InputComponent
@@ -120,15 +122,17 @@ const PelayananIbuNifasSection = (): JSX.Element => {
               control={control}
               errors={errors}
               borderColor={BORDER_COLOR}
+              disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
               initialValue={checkIsDataNull(pelayananNifasFormData?.data ) ? '' : pelayananNifasFormData?.data.tindakan_nifas_1}
             />
             <InputDatePickerComponent
               label="Tanggal"
               onChange={() => {}}
-              name='tanggal_nifas_1'
+              name="tanggal_nifas_1"
               control={control}
               errors={errors}
               labelColor={''}
+              disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
               initialValue={checkIsDataNull(pelayananNifasFormData?.data ) ? '' : pelayananNifasFormData?.data.tanggal_nifas_1}
             />
           </View>
@@ -155,6 +159,7 @@ const PelayananIbuNifasSection = (): JSX.Element => {
               control={control}
               errors={errors}
               borderColor={BORDER_COLOR}
+              disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
               initialValue={checkIsDataNull(pelayananNifasFormData?.data ) ? '' : pelayananNifasFormData?.data.klasifikasi_nifas_2}
             />
             <InputComponent
@@ -173,6 +178,7 @@ const PelayananIbuNifasSection = (): JSX.Element => {
               control={control}
               errors={errors}
               borderColor={BORDER_COLOR}
+              disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
               initialValue={checkIsDataNull(pelayananNifasFormData?.data ) ? '' : pelayananNifasFormData?.data.tindakan_nifas_2}
             />
             <InputDatePickerComponent
@@ -182,6 +188,7 @@ const PelayananIbuNifasSection = (): JSX.Element => {
               errors={errors}
               name='tanggal_nifas_2'
               labelColor={''}
+              disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
               initialValue={checkIsDataNull(pelayananNifasFormData?.data ) ? '' : pelayananNifasFormData?.data.tanggal_nifas_2}
             />
           </View>
@@ -208,6 +215,7 @@ const PelayananIbuNifasSection = (): JSX.Element => {
               control={control}
               errors={errors}
               borderColor={BORDER_COLOR}
+              disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
               initialValue={checkIsDataNull(pelayananNifasFormData?.data ) ? '' : pelayananNifasFormData?.data.klasifikasi_nifas_3}
             />
             <InputComponent
@@ -226,6 +234,7 @@ const PelayananIbuNifasSection = (): JSX.Element => {
               control={control}
               errors={errors}
               borderColor={BORDER_COLOR}
+              disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
               initialValue={checkIsDataNull(pelayananNifasFormData?.data ) ? '' : pelayananNifasFormData?.data.tindakan_nifas_3}
             />
             <InputDatePickerComponent
@@ -233,8 +242,9 @@ const PelayananIbuNifasSection = (): JSX.Element => {
               onChange={() => {}}
               control={control}
               errors={errors}
-              name='tanggal_nifas_3'
+              name="tanggal_nifas_3"
               labelColor={''}
+              disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
               initialValue={checkIsDataNull(pelayananNifasFormData?.data ) ? '' : pelayananNifasFormData?.data.tanggal_nifas_3}
             />
           </View>
@@ -261,6 +271,7 @@ const PelayananIbuNifasSection = (): JSX.Element => {
               control={control}
               errors={errors}
               borderColor={BORDER_COLOR}
+              disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
               initialValue={checkIsDataNull(pelayananNifasFormData?.data ) ? '' : pelayananNifasFormData?.data.klasifikasi_nifas_4}
             />
             <InputComponent
@@ -279,6 +290,7 @@ const PelayananIbuNifasSection = (): JSX.Element => {
               control={control}
               errors={errors}
               borderColor={BORDER_COLOR}
+              disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
               initialValue={checkIsDataNull(pelayananNifasFormData?.data ) ? '' : pelayananNifasFormData?.data.tindakan_nifas_4}
             />
             <InputDatePickerComponent
@@ -288,6 +300,7 @@ const PelayananIbuNifasSection = (): JSX.Element => {
               errors={errors}
               name='tanggal_nifas_4'
               labelColor={''}
+              disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
               initialValue={checkIsDataNull(pelayananNifasFormData?.data ) ? '' : pelayananNifasFormData?.data.tanggal_nifas_4}
             />
           </View>

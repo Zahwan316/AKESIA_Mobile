@@ -34,7 +34,7 @@ const FormJanin = ({control, errors}): React.ReactElement => {
 const FormUploadAlbum = ({control, errors}): React.ReactElement => {
   return(
     <>
-      <InputComponent
+      {/* <InputComponent
         control={control}
         errors={errors}
         name="judul"
@@ -58,7 +58,7 @@ const FormUploadAlbum = ({control, errors}): React.ReactElement => {
         border={1}
         borderColor={BORDER_COLOR}
         message="Wajib Diisi"
-      />
+      /> */}
       <UploadSelfie
         control={control}
         name="img"

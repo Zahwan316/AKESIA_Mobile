@@ -45,7 +45,7 @@ const HphtSection = (): JSX.Element => {
   const handleModal = () => {
     if(isSuccess){
       setAcceptModal(false);
-      navigator.navigate('HphtDetail');
+      navigator.navigate('BottomTabs');
     }
 
     setModal(!modal);

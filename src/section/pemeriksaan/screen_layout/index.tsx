@@ -37,6 +37,7 @@ type props = {
   header: string;
   created_at: string;
   updated_at: string;
+  pemeriksaanData: PemeriksaanApiResponse;
 };
 
 const FormScreenLayout = ({
@@ -51,7 +52,8 @@ const FormScreenLayout = ({
   modalMessage,
   modalText,
   created_at,
-  updated_at
+  updated_at,
+  pemeriksaanData,
 }: props): React.JSX.Element => {
   const {
     control,
@@ -113,6 +115,7 @@ const FormScreenLayout = ({
             onPress={() => handlePage('next')}
             title={page === 1 ? 'Selanjutnya' : 'Simpan'}
             customstyle={{width: '100%', height: 'auto'}}
+            disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai' && page != 1}
           />
         </View>
       </View>

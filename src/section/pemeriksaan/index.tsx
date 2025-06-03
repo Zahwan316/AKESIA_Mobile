@@ -305,7 +305,7 @@ const PemeriksaanSection = (): React.JSX.Element => {
           <ButtonComponent
             title="Simpan"
             color={BUTTON_COLOR_3}
-            //disabled={pendaftaranData?.status === 'Selesai' ? true : false}
+            disabled={pemeriksaanData?.pendaftaran.status === 'Selesai' ? true : false}
             onPress={() => handleSelesai()}
             //customstyle={{display: pelayananPeriksaHamilId === 0 ? 'none' : 'flex'}}
           />

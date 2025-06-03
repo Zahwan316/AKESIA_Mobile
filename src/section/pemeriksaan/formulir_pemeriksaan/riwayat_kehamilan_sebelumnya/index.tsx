@@ -19,7 +19,7 @@ import { CaraPesalinanDropdownData, PenolongPersalinanDropdownData } from '../..
 const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
   const navigate = useNavigation<any>();
   const router = useRoute();
-  const { pemeriksaanData, pemeriksaanId, pelayananPemeriksaanHamilId} = router.params as {pemeriksaanData: apiResponse, pemeriksaanId: number, pelayananPemeriksaanHamilId: number};
+  const { pemeriksaanData, pemeriksaanId, pelayananPemeriksaanHamilId} = router.params as {pemeriksaanData: PemeriksaanApiResponse, pemeriksaanId: number, pelayananPemeriksaanHamilId: number};
   const {
     control,
     handleSubmit,
@@ -83,6 +83,7 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
       modalHandleModal={handleModal}
       modalMessage={modalInfo.message}
       modalText={modalInfo.text}
+      pemeriksaanData={pemeriksaanData}
     >
       <ScrollView style={{marginBottom: 64}}>
         <InputComponent
@@ -100,6 +101,7 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? '' : riwayatKehamilanSebelumnyaFormData?.data?.anak_ke?.toString()}
         />
         <InputComponent
@@ -117,6 +119,7 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? '' : riwayatKehamilanSebelumnyaFormData.data.apiah}
         />
         <InputComponent
@@ -134,6 +137,7 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? '' : riwayatKehamilanSebelumnyaFormData.data.umur_anak.toString()}
         />
         <DropdownInputComponent
@@ -149,6 +153,7 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
           control={control}
           errors={errors}
           data={Jenis_Kelamin}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? '' : riwayatKehamilanSebelumnyaFormData.data.p_l}
         />      
         <InputComponent
@@ -166,6 +171,7 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? '' : riwayatKehamilanSebelumnyaFormData.data.bbl}
         />
         <DropdownInputComponent
@@ -182,6 +188,7 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
           errors={errors}
           data={CaraPesalinanDropdownData}
           getValue='name'
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? '' : riwayatKehamilanSebelumnyaFormData.data.cara_persalinan}
         />
         <DropdownInputComponent
@@ -198,6 +205,7 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
           errors={errors}
           data={PenolongPersalinanDropdownData}
           getValue='name'
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? '' : riwayatKehamilanSebelumnyaFormData.data.penolong}
         />
         <InputComponent
@@ -215,6 +223,7 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? '' : riwayatKehamilanSebelumnyaFormData.data.tempat_persalinan}
         />
         <InputComponent
@@ -232,6 +241,7 @@ const RiwayatKehamilanSebelumnyaSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(riwayatKehamilanSebelumnyaFormData?.data) ? '' : riwayatKehamilanSebelumnyaFormData.data.keterangan}
         />
       </ScrollView>

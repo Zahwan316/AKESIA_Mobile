@@ -22,11 +22,13 @@ const Page1 = ({
   data,
   control,
   errors,
+  pemeriksaanData,
 }: {
   formHandle: () => void;
   data: any[];
   control: any;
   errors: any;
+  pemeriksaanData: PemeriksaanApiResponse
 }): JSX.Element => {
   return (
     <>
@@ -38,6 +40,7 @@ const Page1 = ({
         name="tanggal_pemeriksaan"
         labelColor=""
         initialValue={data?.tanggal_pemeriksaan}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
       <InputTimePickerComponent
         label="Jam Pemeriksaan"
@@ -47,25 +50,8 @@ const Page1 = ({
         name="jam_pemeriksaan"
         labelColor=""
         initialValue={data?.jam_pemeriksaan}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
-      {/* <InputComponent
-        height={'auto'}
-        width={'100%'}
-        label="Jam Pemeriksaan"
-        message="Harap diisi"
-        name="jam_pemeriksaan"
-        onChange={formHandle}
-        placeholder="Contoh: 09:30"
-        type="number"
-        backgroundColor={'#fff'}
-        border={1}
-        //labelColor={'#fff'}
-        textColor={''}
-        control={control}
-        errors={errors}
-        borderColor={BORDER_COLOR}
-        initialValue={data?.jam_pemeriksaan}
-      /> */}
       <InputComponent
         height={'auto'}
         width={'100%'}
@@ -83,6 +69,7 @@ const Page1 = ({
         errors={errors}
         borderColor={BORDER_COLOR}
         initialValue={data?.nama}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
       <InputComponent
         height={'50%'}
@@ -101,6 +88,7 @@ const Page1 = ({
         errors={errors}
         borderColor={BORDER_COLOR}
         initialValue={data?.hasil}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
     </>
   );
@@ -111,11 +99,13 @@ const Page2 = ({
   data,
   control,
   errors,
+  pemeriksaanData,
 }: {
   formHandle: () => void;
   data: any[];
   control: any;
   errors: any;
+  pemeriksaanData: PemeriksaanApiResponse
 }): JSX.Element => {
   return (
     <>
@@ -136,6 +126,7 @@ const Page2 = ({
         errors={errors}
         initialValue={data?.soap}
         borderColor={BORDER_COLOR}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
       <InputComponent
         height={'auto'}
@@ -154,6 +145,7 @@ const Page2 = ({
         errors={errors}
         initialValue={data?.penatalaksanaan}
         borderColor={BORDER_COLOR}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
       <InputDatePickerComponent
         label="Tanggal Pelayanan"
@@ -161,8 +153,9 @@ const Page2 = ({
         control={control}
         errors={errors}
         initialValue={data?.tanggal_pelayanan}
-        name='tanggal_pelayanan'
-        labelColor='#000'
+        name="tanggal_pelayanan"
+        labelColor="#000"
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
       <InputTimePickerComponent
         label="Jam Pelayanan"
@@ -170,29 +163,10 @@ const Page2 = ({
         control={control}
         errors={errors}
         initialValue={data?.jam_pelayanan}
-        name='jam_pelayanan'
-        labelColor='#000'
-      />
-      {/* <InputComponent
-        height={'auto'}
-        width={'100%'}
-        label="Jam Pelayanan"
-        message="Harap diisi"
         name="jam_pelayanan"
-        onChange={formHandle}
-        placeholder="Contoh: 09:30"
-        type="number"
-        backgroundColor={'#fff'}
-        border={1}
-        //labelColor={'#fff'}
-        textColor={''}
-        control={control}
-        errors={errors}
-        initialValue={data?.jam_pelayanan}
-        borderColor={BORDER_COLOR}
-      /> */}
-      
-      
+        labelColor="#000"
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
+      />
     </>
   );
 };
@@ -319,6 +293,7 @@ const PemeriksaanLabSection = (): JSX.Element => {
       modalMessage={modalInfo.message}
       modalText={modalInfo.text}
       modalVisible={modal}
+      pemeriksaanData={pemeriksaanData}
       created_at={checkIsDataNull(pemeriksaanLabData?.data) ? 'Belum ada' : formattedDateData(pemeriksaanLabData?.data?.created_at)}
       updated_at={checkIsDataNull(pemeriksaanLabData?.data) ? 'Belum ada' : formattedDateData(pemeriksaanLabData?.data?.updated_at)}
     >
@@ -328,6 +303,7 @@ const PemeriksaanLabSection = (): JSX.Element => {
           data={checkIsDataNull(pemeriksaanLabData?.data) ? [] : pemeriksaanLabData?.data}
           errors={errors}
           formHandle={() => {}}
+          pemeriksaanData={pemeriksaanData}
         />
         <View style={Style.checkboxContainer}>
           <BouncyCheckbox
@@ -346,6 +322,7 @@ const PemeriksaanLabSection = (): JSX.Element => {
             control={control}
             errors={errors}
             data={checkIsDataNull(pemeriksaanLabData?.data) ? [] : pemeriksaanLabData?.data}
+            pemeriksaanData={pemeriksaanData}
           />
           : null
         }

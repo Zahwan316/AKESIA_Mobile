@@ -11,6 +11,8 @@ import { getData } from '../../../api/data/getData';
 import FloatingIcon from '../../../component/floatingIcon';
 import AlbumImageItemComponent from './component/AlbumImgItem';
 import useAlbumFotoStore from '../../../state/album_foto';
+import PopupImageComponent from './component/Popup';
+import useComponentStore from '../../../state/component';
 
 const AlbumFotoSection = (): JSX.Element => {
   const navigator = useNavigation<any>();
@@ -18,9 +20,10 @@ const AlbumFotoSection = (): JSX.Element => {
   const janinId = useAlbumFotoStore((state) => state.janinId);
   const usgId = useAlbumFotoStore((state) => state.usgId);
   const usgTitleName = useAlbumFotoStore((state) => state.usgTitleName);
-  const {
-    screenBeforeName,
-  } = router.params as {screenBeforeName: string};
+  const setFotoId = useAlbumFotoStore((state) => state.setFotoId);
+  const setPopup = useComponentStore((state) => state.setPopup);
+  const setPopupImage = useComponentStore((state) => state.setPopupImg);
+  const { screenBeforeName } = router.params as {screenBeforeName: string};
   const handleScreen = (screen: string, screenBeforeName?: string, usgId?: number, usgTitleName?: string) => {
     navigator.navigate(screen, {screenBeforeName: screenBeforeName, usgId: usgId, usgTitleName: usgTitleName});
   };
@@ -29,6 +32,13 @@ const AlbumFotoSection = (): JSX.Element => {
     queryFn: () => getData(`album_foto/getByUsgId/${usgId}`),
   });
 
+  //Open Popup and Set Image Id Every Click Image
+  const handleImage = (id: number, image: string) => {
+    setFotoId(id);
+    setPopup(true);
+    setPopupImage(image);
+  };
+
   useEffect(() => {
     console.log(usgId);
   }, [usgId]);
@@ -36,6 +46,8 @@ const AlbumFotoSection = (): JSX.Element => {
   useFocusEffect(
     useCallback(() => {refetch();},[refetch])
   );
+
+
 
   return(
     <FotoScreenLayout
@@ -70,7 +82,7 @@ const AlbumFotoSection = (): JSX.Element => {
                   <AlbumImageItemComponent
                     key={index}
                     title={item.judul}
-                    //onPress={() => handleScreen('AlbumFoto', 'AlbumFotoUsg', item.id)}
+                    onPress={() => handleImage(item.id, item.uploads?.path)}
                     img={item.uploads?.path}
                   />
                 );

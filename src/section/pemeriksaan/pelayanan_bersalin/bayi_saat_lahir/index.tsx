@@ -22,7 +22,7 @@ import { handlePostFormApi } from '../../../../api/handleSendFormApi';
 const BayiSaatLahirSection = (): JSX.Element => {
   const navigate = useNavigation<any>();
   const router = useRoute();
-  const { pemeriksaanData, pemeriksaanId} = router.params as {pemeriksaanData: apiResponse, pemeriksaanId: number};
+  const { pemeriksaanData, pemeriksaanId} = router.params as {pemeriksaanData: PemeriksaanApiResponse, pemeriksaanId: number};
   const {
     control,
     handleSubmit,
@@ -76,6 +76,7 @@ const BayiSaatLahirSection = (): JSX.Element => {
       modalMessage={modalInfo.message}
       modalText={modalInfo.text}
       modalVisible={modal}
+      pemeriksaanData={pemeriksaanData}
       created_at={checkIsDataNull(bayiSaatLahirFormData?.data) ? 'Belum Ada' : formattedDateData(bayiSaatLahirFormData?.data.created_at)}
       updated_at={checkIsDataNull(bayiSaatLahirFormData?.data) ? 'Belum Ada' : formattedDateData(bayiSaatLahirFormData?.data.updated_at)}
     >
@@ -96,6 +97,7 @@ const BayiSaatLahirSection = (): JSX.Element => {
           borderColor={BORDER_COLOR}
           control={control}
           errors={errors}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(bayiSaatLahirFormData?.data) ? null : bayiSaatLahirFormData?.data?.anak_ke}
         />
         <InputComponent
@@ -114,6 +116,7 @@ const BayiSaatLahirSection = (): JSX.Element => {
           borderColor={BORDER_COLOR}
           control={control}
           errors={errors}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(bayiSaatLahirFormData?.data) ? null : bayiSaatLahirFormData?.data?.berat_lahir}
         />
         <InputComponent
@@ -132,6 +135,7 @@ const BayiSaatLahirSection = (): JSX.Element => {
           borderColor={BORDER_COLOR}
           control={control}
           errors={errors}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(bayiSaatLahirFormData?.data) ? null : bayiSaatLahirFormData?.data?.panjang_badan}
         />
         <InputComponent
@@ -150,6 +154,7 @@ const BayiSaatLahirSection = (): JSX.Element => {
           borderColor={BORDER_COLOR}
           control={control}
           errors={errors}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(bayiSaatLahirFormData?.data) ? null : bayiSaatLahirFormData?.data?.lingkar_kepala}
         />
         <DropdownInputComponent
@@ -164,6 +169,7 @@ const BayiSaatLahirSection = (): JSX.Element => {
           errors={errors}
           name="jenis_kelamin"
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(bayiSaatLahirFormData?.data) ? null : bayiSaatLahirFormData?.data?.jenis_kelamin}
         />
         <DropdownInputComponent
@@ -178,6 +184,7 @@ const BayiSaatLahirSection = (): JSX.Element => {
           errors={errors}
           name="kondisi_bayi_saat_lahir"
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(bayiSaatLahirFormData?.data) ? null : bayiSaatLahirFormData?.data?.kondisi_bayi_saat_lahir}
         />
         <DropdownInputComponent
@@ -192,6 +199,7 @@ const BayiSaatLahirSection = (): JSX.Element => {
           errors={errors}
           name="asuhan_bayi_baru_lahir"
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(bayiSaatLahirFormData?.data) ? null : bayiSaatLahirFormData?.data?.asuhan_bayi_baru_lahir}
         />
       </View>

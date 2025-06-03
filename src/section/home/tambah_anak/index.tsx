@@ -219,9 +219,10 @@ const Page1 = ({
           control={control}
           name="tanggal_lahir"
           errors={errors}
-          message='Mohon diisi'
+          message="Mohon diisi"
           disabled={disabled}
           initialValue={data?.tanggal_lahir}
+          maximum
         />
       </View>
     </>
@@ -277,11 +278,11 @@ const Page2 = ({
         />
       </View>
       <View>
-        <Text style={style.headerFormText}>Nomor Catatan Medik RS</Text>
+        {/* <Text style={style.headerFormText}>Nomor Catatan Medik RS</Text> */}
         <InputComponent
           height={'auto'}
           width={'100%'}
-          label="Nomor Catatan Medik Rs"
+          label="Nomor Catatan Medik Rumah Sakit"
           name="no_catatan_medik_rs"
           onChange={onChange}
           placeholder=""

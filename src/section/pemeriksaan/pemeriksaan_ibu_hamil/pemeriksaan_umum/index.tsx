@@ -22,10 +22,11 @@ type pageProps = {
     bentuktubuh: any[],
     kesadaran: any[],
     pemeriksaanUmumData: any[],
-  }
+  },
+  pemeriksaanData: PemeriksaanApiResponse
 }
 
-const Page1 = ({ formHandle, data, control, errors }: pageProps): JSX.Element => {
+const Page1 = ({ formHandle, data, control, errors, pemeriksaanData }: pageProps): JSX.Element => {
   return (
     <>
       <DropdownInputComponent
@@ -42,6 +43,7 @@ const Page1 = ({ formHandle, data, control, errors }: pageProps): JSX.Element =>
         message= "Harap diisi"
         getValue='name'
         initialValue={data?.pemeriksaanUmumData?.bentuk_tubuh}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
       <DropdownInputComponent
         width={'100%'}
@@ -56,6 +58,7 @@ const Page1 = ({ formHandle, data, control, errors }: pageProps): JSX.Element =>
         name= "kesadaran_id"
         message= "Harap diisi"
         initialValue={data?.pemeriksaanUmumData?.kesadaran_id}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
       <InputComponent
         height={'auto'}
@@ -73,6 +76,7 @@ const Page1 = ({ formHandle, data, control, errors }: pageProps): JSX.Element =>
         errors={errors}
         borderColor={BORDER_COLOR}
         initialValue={data?.pemeriksaanUmumData?.mata}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
       <InputComponent
         height={'auto'}
@@ -90,6 +94,7 @@ const Page1 = ({ formHandle, data, control, errors }: pageProps): JSX.Element =>
         errors={errors}
         borderColor={BORDER_COLOR}
         initialValue={data?.pemeriksaanUmumData?.leher}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
       <InputComponent
         height={'auto'}
@@ -107,6 +112,7 @@ const Page1 = ({ formHandle, data, control, errors }: pageProps): JSX.Element =>
         errors={errors}
         borderColor={BORDER_COLOR}
         initialValue={data?.pemeriksaanUmumData?.payudara}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
       <InputComponent
         height={'auto'}
@@ -124,12 +130,13 @@ const Page1 = ({ formHandle, data, control, errors }: pageProps): JSX.Element =>
         errors={errors}
         borderColor={BORDER_COLOR}
         initialValue={data?.pemeriksaanUmumData?.paru}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
     </>
   );
 };
 
-const Page2 = ({ formHandle, data, control, errors }: pageProps) => {
+const Page2 = ({ formHandle, data, control, errors, pemeriksaanData }: pageProps) => {
   return (
     <>
       <InputComponent
@@ -148,6 +155,7 @@ const Page2 = ({ formHandle, data, control, errors }: pageProps) => {
         errors={errors}
         borderColor={BORDER_COLOR}
         initialValue={data?.pemeriksaanUmumData?.jantung}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
       <InputComponent
         height={'auto'}
@@ -165,6 +173,7 @@ const Page2 = ({ formHandle, data, control, errors }: pageProps) => {
         errors={errors}
         borderColor={BORDER_COLOR}
         initialValue={data?.pemeriksaanUmumData?.hati}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
       <InputComponent
         height={'auto'}
@@ -182,6 +191,7 @@ const Page2 = ({ formHandle, data, control, errors }: pageProps) => {
         errors={errors}
         borderColor={BORDER_COLOR}
         initialValue={data?.pemeriksaanUmumData?.suhu_badan}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
       <InputComponent
         height={'auto'}
@@ -199,6 +209,7 @@ const Page2 = ({ formHandle, data, control, errors }: pageProps) => {
         errors={errors}
         borderColor={BORDER_COLOR}
         initialValue={data?.pemeriksaanUmumData?.genetalia}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
       />
       <InputDatePickerComponent
         control={control}
@@ -207,6 +218,7 @@ const Page2 = ({ formHandle, data, control, errors }: pageProps) => {
         name='tanggal_kontrol_kembali'
         labelColor='#000'
         initialValue={data?.pemeriksaanUmumData?.tanggal_kontrol_kembali}
+        disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         onChange={() => {}}
       />
       <InputComponent
@@ -222,6 +234,7 @@ const Page2 = ({ formHandle, data, control, errors }: pageProps) => {
           borderColor={BORDER_COLOR}
           message="Wajib Diisi"
           initialValue={data?.pemeriksaanUmumData?.soap}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
       <Text
         style={{
@@ -255,6 +268,7 @@ const Page2 = ({ formHandle, data, control, errors }: pageProps) => {
           errors={errors}
           borderColor={BORDER_COLOR}
           initialValue={data?.pemeriksaanUmumData?.tinggi_badan}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
         <InputComponent
           height={'auto'}
@@ -272,10 +286,8 @@ const Page2 = ({ formHandle, data, control, errors }: pageProps) => {
           errors={errors}
           borderColor={BORDER_COLOR}
           initialValue={data?.pemeriksaanUmumData?.berat_badan}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
-      </View>
-      <View>
-        
       </View>
     </>
   );
@@ -388,6 +400,7 @@ const PemeriksaanUmumSection = (): JSX.Element => {
       modalIsSuccess={isSuccess}
       modalMessage={modalInfo.message}
       modalText={modalInfo.text}
+      pemeriksaanData={PemeriksaanData}
       created_at={checkIsDataFormPemeriksaanUmumNull() ? 'Belum ada' : formattedDateData(pemeriksaanUmumData?.data?.created_at)}
       updated_at={checkIsDataFormPemeriksaanUmumNull() ? 'Belum ada' : formattedDateData(pemeriksaanUmumData?.data?.updated_at)}
     >
@@ -402,6 +415,7 @@ const PemeriksaanUmumSection = (): JSX.Element => {
               }}
               control={control}
               errors={errors}
+              pemeriksaanData={PemeriksaanData}
             />
           // page1(() => {}, [], control, errors)
         :
@@ -412,6 +426,7 @@ const PemeriksaanUmumSection = (): JSX.Element => {
             data={{
               pemeriksaanUmumData: checkIsDataFormPemeriksaanUmumNull() ? [] : pemeriksaanUmumData?.data,
             }}
+            pemeriksaanData={PemeriksaanData}
           />
         }
 

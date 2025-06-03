@@ -22,7 +22,7 @@ import InputTimePickerComponent from '../../../../component/input/timepicker';
 const PelayananIbuBersalinSection = (): JSX.Element => {
   const navigate = useNavigation<any>();
   const router = useRoute();
-  const { pemeriksaanData, pemeriksaanId} = router.params as {pemeriksaanData: apiResponse, pemeriksaanId: number};
+  const { pemeriksaanData, pemeriksaanId} = router.params as {pemeriksaanData: PemeriksaanApiResponse, pemeriksaanId: number};
   const {
     control,
     handleSubmit,
@@ -79,6 +79,7 @@ const PelayananIbuBersalinSection = (): JSX.Element => {
       modalIsSuccess={isSuccess}
       modalMessage={modalInfo.message}
       modalText={modalInfo.text}
+      pemeriksaanData={pemeriksaanData}
       created_at={checkIsDataNull(pelayananIbuBersalinData?.data) ? 'Belum ada' : formattedDateData(pelayananIbuBersalinData?.data?.created_at)}
       updated_at={checkIsDataNull(pelayananIbuBersalinData?.data) ? 'Belum ada' : formattedDateData(pelayananIbuBersalinData?.data?.updated_at)}
     >
@@ -91,6 +92,7 @@ const PelayananIbuBersalinSection = (): JSX.Element => {
           control={control}
           errors={errors}
           message="Wajib diisi"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(pelayananIbuBersalinData?.data) ? null : pelayananIbuBersalinData?.data?.tanggal_persalinan}
         />
         <InputTimePickerComponent
@@ -101,6 +103,7 @@ const PelayananIbuBersalinSection = (): JSX.Element => {
           labelColor=""
           initialValue={checkIsDataNull(pelayananIbuBersalinData?.data) ? null : pelayananIbuBersalinData?.data?.jam_lahir}
           message="Wajib diisi"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           onChange={() => {}}
         />
         <InputComponent
@@ -119,6 +122,7 @@ const PelayananIbuBersalinSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(pelayananIbuBersalinData?.data) ? null : pelayananIbuBersalinData?.data?.umur_kehamilan}
         />
         <DropdownInputComponent
@@ -134,6 +138,7 @@ const PelayananIbuBersalinSection = (): JSX.Element => {
           name="penolong_persalinan"
           message="Wajib diisi"
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(pelayananIbuBersalinData?.data) ? null : pelayananIbuBersalinData?.data?.penolong_persalinan}
         />
         <DropdownInputComponent
@@ -149,6 +154,7 @@ const PelayananIbuBersalinSection = (): JSX.Element => {
           name="cara_persalinan"
           message="Wajib diisi"
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(pelayananIbuBersalinData?.data) ? null : pelayananIbuBersalinData?.data?.cara_persalinan}
         />
         <DropdownInputComponent
@@ -163,6 +169,7 @@ const PelayananIbuBersalinSection = (): JSX.Element => {
           errors={errors}
           name="keadaan_ibu"
           message="Wajib diisi"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(pelayananIbuBersalinData?.data) ? null : pelayananIbuBersalinData?.data?.keadaan_ibu}
         />
         <DropdownInputComponent
@@ -178,6 +185,7 @@ const PelayananIbuBersalinSection = (): JSX.Element => {
           name="kb_pasca_persalinan"
           message="Wajib diisi"
           getValue='name'
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(pelayananIbuBersalinData?.data) ? null : pelayananIbuBersalinData?.data?.kb_pasca_persalinan}
         />
         <InputComponent
@@ -196,6 +204,7 @@ const PelayananIbuBersalinSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(pelayananIbuBersalinData?.data) ? null : pelayananIbuBersalinData?.data?.keterangan_tambahan}
         />
       </ScrollView>

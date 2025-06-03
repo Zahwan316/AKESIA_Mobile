@@ -67,7 +67,7 @@ const menuList: menu[] = [
     role: 'user',
   },
   {
-    name: 'Riwayat Kehamilan',
+    name: 'Riwayat Buku KIA',
     icon: require('../../assets/icon/riwayat_kehamilan_icon.png'),
     screen: 'RiwayatKehamilanGroup',
     role: 'user',

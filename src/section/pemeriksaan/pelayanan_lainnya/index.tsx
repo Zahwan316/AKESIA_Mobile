@@ -73,6 +73,7 @@ const PelayananLainnyaSection = (): JSX.Element => {
       modalIsSuccess={isSuccess}
       modalMessage={modalInfo.message}
       modalText={modalInfo.text}
+      pemeriksaanData={pemeriksaanData}
       created_at={checkIsDataNull(layananIbuLainnyaFormData?.data) ? 'Belum ada' : formattedDateData(layananIbuLainnyaFormData?.data.created_at)}
       updated_at={checkIsDataNull(layananIbuLainnyaFormData?.data) ? 'Belum ada' : formattedDateData(layananIbuLainnyaFormData?.data.updated_at)}
     >
@@ -94,6 +95,7 @@ const PelayananLainnyaSection = (): JSX.Element => {
             control={control}
             errors={errors}
             borderColor={BORDER_COLOR}
+            disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
             initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? pemeriksaanData?.ibu?.user?.nama_lengkap : layananIbuLainnyaFormData?.data.nama_ibu}
           />
           <InputComponent
@@ -112,6 +114,7 @@ const PelayananLainnyaSection = (): JSX.Element => {
             control={control}
             errors={errors}
             borderColor={BORDER_COLOR}
+            disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
             initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? calculateAge(pemeriksaanData?.ibu?.tanggal_lahir).toString() : layananIbuLainnyaFormData?.data?.umur_ibu}
           />
           <InputComponent
@@ -130,6 +133,7 @@ const PelayananLainnyaSection = (): JSX.Element => {
             control={control}
             errors={errors}
             borderColor={BORDER_COLOR}
+            disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
             initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? pemeriksaanData?.pelayanan?.nama : layananIbuLainnyaFormData?.data.booking_layanan }
           />
           <InputComponent
@@ -148,6 +152,7 @@ const PelayananLainnyaSection = (): JSX.Element => {
             control={control}
             errors={errors}
             borderColor={BORDER_COLOR}
+            disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
             initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? null : layananIbuLainnyaFormData?.data.catatan_soap }
           />
           <InputComponent
@@ -166,6 +171,7 @@ const PelayananLainnyaSection = (): JSX.Element => {
             control={control}
             errors={errors}
             borderColor={BORDER_COLOR}
+            disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
             initialValue={checkIsDataNull(layananIbuLainnyaFormData?.data) ? null : layananIbuLainnyaFormData?.data.keterangan }
           />
         </ScrollView>

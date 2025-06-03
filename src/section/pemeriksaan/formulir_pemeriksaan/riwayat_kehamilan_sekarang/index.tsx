@@ -23,9 +23,10 @@ type pageProps = {
   initialValue: Array<Object>,
   control: any,
   errors: any,
+  pemeriksaanData: PemeriksaanApiResponse,
 }
 
-const Page1 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.Element => {
+const Page1 = ({OnChange, data, initialValue, control, errors, pemeriksaanData}: pageProps): JSX.Element => {
   return (
     <>
       <InputComponent
@@ -44,6 +45,7 @@ const Page1 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           errors={errors}
           borderColor={BORDER_COLOR}
           initialValue={initialValue.gravida}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
       <InputComponent
           height={'auto'}
@@ -61,6 +63,7 @@ const Page1 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           errors={errors}
           borderColor={BORDER_COLOR}
           initialValue={initialValue.partus}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
       <InputComponent
           height={'auto'}
@@ -78,6 +81,7 @@ const Page1 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           errors={errors}
           borderColor={BORDER_COLOR}
           initialValue={initialValue.rr_rt}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
       <InputDatePickerComponent 
           label="HPHT"
@@ -88,6 +92,7 @@ const Page1 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           message="Wajib Diisi"
           labelColor=""
           onChange={() => {}}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
       <InputDatePickerComponent 
           label="HPL"
@@ -98,12 +103,13 @@ const Page1 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           message="Wajib Diisi"
           labelColor=""
           onChange={() => {}}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
     </>
   );
 };
 
-const Page2 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.Element => {
+const Page2 = ({OnChange, data, initialValue, control, errors, pemeriksaanData}: pageProps): JSX.Element => {
   return (
     <>
       <DropdownInputComponent
@@ -118,6 +124,7 @@ const Page2 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           name='muntah'
           initialValue={initialValue.muntah}
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
       <DropdownInputComponent
           width={'100%'}
@@ -131,6 +138,7 @@ const Page2 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           name="pusing"
           initialValue={initialValue.pusing}
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
       <DropdownInputComponent
           width={'100%'}
@@ -144,6 +152,7 @@ const Page2 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           name='nyeri_perut'
           initialValue={initialValue.nyeri_perut}
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
       <DropdownInputComponent
           width={'100%'}
@@ -157,6 +166,7 @@ const Page2 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           name='nafsu_makan'
           initialValue={initialValue.nafsu_makan}
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
       <DropdownInputComponent
           width={'100%'}
@@ -167,9 +177,10 @@ const Page2 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           label={'Pendarahan'}
           control={control}
           errors={errors}
-          name='pendarahan'
+          name="pendarahan"
           initialValue={initialValue.pendarahan}
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
       <DropdownInputComponent
           width={'100%'}
@@ -183,6 +194,7 @@ const Page2 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           name='riwayat_penyakit'
           initialValue={initialValue.riwayat_penyakit}
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
       <DropdownInputComponent
           width={'100%'}
@@ -196,6 +208,7 @@ const Page2 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           name='riwayat_penyakit_keluarga'
           initialValue={initialValue.riwayat_penyakit_keluarga}
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
       <DropdownInputComponent
           width={'100%'}
@@ -209,6 +222,7 @@ const Page2 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           name='kebiasaan'
           initialValue={initialValue.kebiasaan}
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
       <DropdownInputComponent
           width={'100%'}
@@ -222,6 +236,7 @@ const Page2 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           name='keluhan'
           initialValue={initialValue.keluhan}
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
       <DropdownInputComponent
           width={'100%'}
@@ -235,6 +250,7 @@ const Page2 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           name='pasangan_sexual_istri'
           initialValue={initialValue.pasangan_sexual_istri}
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
       <DropdownInputComponent
           width={'100%'}
@@ -248,6 +264,7 @@ const Page2 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           name='pasangan_sexual_suami'
           initialValue={initialValue.pasangan_sexual_suami}
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
       <DropdownInputComponent
           width={'100%'}
@@ -261,6 +278,7 @@ const Page2 = ({OnChange, data, initialValue, control, errors}: pageProps): JSX.
           name='mendiskusikan_hiv'
           initialValue={initialValue.mendiskusikan_hiv}
           getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         />
     </>
   );
@@ -270,7 +288,7 @@ const RiwayatKehamilanSekarangSection = (): JSX.Element => {
   const [page, setpage] = useState<number>(1);
   const navigate = useNavigation<any>();
   const router = useRoute();
-  const { pemeriksaanData, pemeriksaanId, pelayananPemeriksaanHamilId} = router.params as {pemeriksaanData: apiResponse, pemeriksaanId: number, pelayananPemeriksaanHamilId: number};
+  const { pemeriksaanData, pemeriksaanId, pelayananPemeriksaanHamilId} = router.params as {pemeriksaanData: PemeriksaanApiResponse, pemeriksaanId: number, pelayananPemeriksaanHamilId: number};
   const {
     control,
     handleSubmit,
@@ -283,10 +301,12 @@ const RiwayatKehamilanSekarangSection = (): JSX.Element => {
     message: '',
     text: '',
   });
+
   const { data: riwayatKehamilanSekarangFormData } = useQuery({
     queryKey: ['RiwayatKehamilanSekarangFormData', pemeriksaanId],
     queryFn: () => getForm(`form/riwayat_kehamilan_sekarang/show_by_pendaftaran/${pemeriksaanId}`),
   });
+
   const {data: currIbuPeriksaData} = useQuery({
     queryKey: ['currIbuPeriksaData', pemeriksaanData?.ibu?.user_id],
     queryFn: () => getData(`ibu/getdataibu/${pemeriksaanData?.ibu?.user_id}`),
@@ -344,6 +364,7 @@ const RiwayatKehamilanSekarangSection = (): JSX.Element => {
       modalIsSuccess={isSuccess}
       modalMessage={modalInfo.message}
       modalText={modalInfo.text}
+      pemeriksaanData={pemeriksaanData}
       created_at={checkIsDataNull(riwayatKehamilanSekarangFormData?.data) ? 'Belum ada' : formattedDateData(riwayatKehamilanSekarangFormData?.data.created_at)}
       updated_at={checkIsDataNull(riwayatKehamilanSekarangFormData?.data) ? 'Belum ada' : formattedDateData(riwayatKehamilanSekarangFormData?.data.updated_at)}
     >
@@ -355,6 +376,7 @@ const RiwayatKehamilanSekarangSection = (): JSX.Element => {
             errors={errors}
             data={[]}
             OnChange={() => {}}
+            pemeriksaanData={pemeriksaanData}
             initialValue={checkIsDataNull(riwayatKehamilanSekarangFormData?.data) ? '' : riwayatKehamilanSekarangFormData?.data}
           />
           :
@@ -363,6 +385,7 @@ const RiwayatKehamilanSekarangSection = (): JSX.Element => {
             errors={errors}
             data={[]}
             OnChange={() => {}}
+            pemeriksaanData={pemeriksaanData}
             initialValue={checkIsDataNull(riwayatKehamilanSekarangFormData?.data) ? '' : riwayatKehamilanSekarangFormData?.data}
           />
         }

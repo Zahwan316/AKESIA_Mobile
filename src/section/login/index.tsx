@@ -144,9 +144,10 @@ const LoginSection = (): JSX.Element => {
   };
 
   const onSubmit = async(data: any) => {
-    console.log('Data Form:', data);
+    const mergedData = {...data, selectedUser: selectedUser === 'orangtua' ? 'user' : 'bidan'};
+    console.log('Data Form:', mergedData);
     if(currSelect === 'login'){
-      handleLogin(data);
+      handleLogin(mergedData);
     }
     else{
       handleRegister(data);
@@ -156,8 +157,9 @@ const LoginSection = (): JSX.Element => {
 
   const handleLogin = async(data: []) => {
     try{
+      //const mergedData = {...data, selectedUser: selectedUser};
       const response = await Axios.post('login', data);
-      console.log(response.data);
+      console.log('Merged Data = ', data);
       EncryptedStorage.setItem('token', response.data.token);
       setSuccessLogin(true);
       handleContentModal({

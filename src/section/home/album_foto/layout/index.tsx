@@ -5,6 +5,8 @@ import ModalComponent from '../../../../component/modal';
 import { View } from 'react-native';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
+import PopupImageComponent from '../component/Popup';
+import useComponentStore from '../../../../state/component';
 
 type props = {
   title: string,
@@ -17,6 +19,7 @@ type props = {
 }
 
 const FotoScreenLayout = (props: props):JSX.Element => {
+  const popup = useComponentStore((state) => state.popup)
   return(
     <SafeAreaProvider>
       <SafeAreaView>
@@ -39,6 +42,7 @@ const FotoScreenLayout = (props: props):JSX.Element => {
             {props.children}
           </View>
         </View>
+        <PopupImageComponent />
       </SafeAreaView>
     </SafeAreaProvider>
   );

@@ -98,10 +98,12 @@ const imgMap: {[key: string]: ImageSourcePropType} = {
 //regex
 const searchPijatRegex = /^Pijat/i;
 const jenisLayananRegex = /Baby Spa dan Massage/i;
+const jenisLayananBidanBundaRegex = /Bidan Bunda/i;
 const PersalinanRegex = /Persalinan/i;
 const BidanBundaRegex = /Bidan Bunda/i;
 const PeriksaHamilNyamanRegex = /Periksa Hamil Nyaman/i;
-
+const ImunisasiRegex = /^Imunisasi/i;
+const BayiRegex = /Bayi/i;
 
 const PemesananJanjiSection = (): JSX.Element => {
   const {control, handleSubmit, reset, formState: {errors}} = useForm();
@@ -130,7 +132,7 @@ const PemesananJanjiSection = (): JSX.Element => {
   const setLoading = useComponentStore((state) => state.setLoading);
   const tanggalPertemuan = useWatch({ control, name: 'tanggal_pendaftaran' });
   const parsedTanggal = tanggalPertemuan ? new Date(tanggalPertemuan) : undefined;
-  const dayFromDate = parsedTanggal?.getDay() ;
+  const dayFromDate = parsedTanggal?.getDay();
 
   const onSubmit = async(data: any) => {
     const dataForm = {...data, pelayanan_id: pelayananId};
@@ -243,33 +245,6 @@ const PemesananJanjiSection = (): JSX.Element => {
             errors={errors}
           />
           {
-            /* //check if layanan is persalinan
-            persalinanRegex.test(pelayananData?.data != null ? pelayananData?.data?.jenis_layanan?.nama : pendaftaranUserData?.data?.pelayanan?.jenis_layanan?.nama ) &&
-            <InputTimePickerComponent
-              control={control}
-              name="jam_ditentukan"
-              label="Jam Pertemuan"
-              onChange={() => {}}
-              labelColor="#000"
-              message="Jam harus diisi"
-              disabled={pendaftaranId != null}
-              initialValue={pendaftaranId != null ? pendaftaranItem?.jam_ditentukan : null}
-              errors={errors}
-            /> */
-            /* :
-            <JamPicker
-              control={control}
-              jenisLayanan={pelayananData?.data?.jenis_layanan?.nama}
-              label="Jam Pertemuan"
-              name="jam_ditentukan"
-              errors={errors}
-              message="Wajib Diisi"
-              initialValue={'14:30:00'}
-              disabled={pendaftaranId != null}
-              tanggal_pertemuan={parsedTanggal}
-            /> */
-          }
-          {
             pendaftaranId === null &&
             <JamPicker
               control={control}
@@ -312,7 +287,10 @@ const PemesananJanjiSection = (): JSX.Element => {
           <ScrollView style={{height: '100%', marginBottom: 0}}>
             <View style={style.itemFormContainer}>
               {
-                (!searchPijatRegex.test(pelayananData?.data?.nama) && jenisLayananRegex.test(pelayananData?.data?.jenis_layanan?.nama)) || (pendaftaranId != null && pendaftaranItem?.pelayanan?.jenis_layanan_id === 1) ?
+                (
+                  (!searchPijatRegex.test(pelayananData?.data?.nama) && (ImunisasiRegex.test(pelayananData?.data?.nama) || BayiRegex.test(pelayananData?.data?.nama))) &&
+                  (jenisLayananRegex.test(pelayananData?.data?.jenis_layanan?.nama) || jenisLayananBidanBundaRegex.test(pelayananData?.data?.jenis_layanan?.nama))) ||
+                  (pendaftaranId != null ) ?
                 <DropdownInputComponent
                   height={'auto'}
                   width={'100%'}

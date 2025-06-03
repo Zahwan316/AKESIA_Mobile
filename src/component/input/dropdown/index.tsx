@@ -35,10 +35,12 @@ const DropdownInputComponent = (props: props): JSX.Element => {
             onSelect={(selectedItem) => {
               onChange(props.getValue ? selectedItem[props.getValue] : selectedItem.id);
               props.onSelect(selectedItem.id); // atau selectedItem.value, tergantung datanya
-             // props.onSelect(props.name, selectedItem); // jika diperlukan
+              // props.onSelect(props.name, selectedItem); // jika diperlukan
             }}
             defaultValue={props.data?.find(item => {
               const fieldValue = props.getValue ? item[props.getValue] : item.id;
+              console.log('field value = ',fieldValue);
+              console.log('initial value = ',props.initialValue);
               //console.log('field Value = ',fieldValue);
               return fieldValue === props.initialValue;
             })}

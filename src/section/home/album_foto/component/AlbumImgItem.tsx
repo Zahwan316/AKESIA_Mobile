@@ -21,9 +21,9 @@ const AlbumImageItemComponent = ({title, onPress, img}: propsPage):JSX.Element =
           resizeMode="cover"
         />
       </View>
-      <View style={{position: 'absolute', bottom: 0, left: 0, padding: 12, backgroundColor: '#10101055', width: '100%', borderBottomLeftRadius: 12, borderBottomRightRadius: 12}}>
+      {/* <View style={{position: 'absolute', bottom: 0, left: 0, padding: 12, backgroundColor: '#10101055', width: '100%', borderBottomLeftRadius: 12, borderBottomRightRadius: 12}}>
         <Text style={{color: '#fff', fontSize: 14, fontWeight: 'bold'}}>{title}</Text>
-      </View>
+      </View> */}
     </TouchableOpacity>
   );
 };

@@ -15,6 +15,7 @@ import handleContentModal from '../../../component/modal/function';
 import { formattedDateData } from '../../../utils/date';
 import { checkIsDataNull } from '../../../utils/checkDataIsNull';
 import { handlePostFormApi } from '../../../api/handleSendFormApi';
+import InputDatePickerComponent from '../../../component/input/datepicker';
 
 export type modalInfo = {
   message: string;
@@ -40,6 +41,7 @@ const PelayananBayiSection = (): JSX.Element => {
     control,
     handleSubmit,
     reset,
+    setValue,
     formState: {errors},
   } = useForm();
   const [modal, setModal] = useState<boolean>(false);
@@ -61,14 +63,26 @@ const PelayananBayiSection = (): JSX.Element => {
   };
 
   useEffect(() => {
-    console.table(pemeriksaanId);
-  }, [pemeriksaanId]);
+    console.table(pemeriksaanData.pendaftaran);
+  }, [pemeriksaanData]);
+
+  useEffect(() => {
+    const defaultJK = pemeriksaanData?.pendaftaran?.bayi?.jenis_kelamin;
+    const defaultTanggalLahir = pemeriksaanData?.pendaftaran?.bayi?.tanggal_lahir;
+    if (defaultJK) {
+      setValue('jenis_kelamin_bayi', defaultJK);
+    }
+    if(defaultTanggalLahir){
+      setValue('tanggal_lahir', defaultTanggalLahir);
+    }
+  }, []);
+
 
   useEffect(() => {
     if (pelayananBayiFormData && pelayananBayiFormData.data) {
       reset({
         nama_bayi: pelayananBayiFormData.data.nama_bayi,
-        umur_bayi: pelayananBayiFormData.data.umur_bayi.toString(),
+        tanggal_lahir: pelayananBayiFormData.data.tanggal_lahir,
         jenis_kelamin_bayi: pelayananBayiFormData.data.jenis_kelamin_bayi,
         booking_layanan: pelayananBayiFormData.data.booking_layanan,
         keterangan_kondisi_bayi: pelayananBayiFormData.data.keterangan_kondisi_bayi,
@@ -88,6 +102,7 @@ const PelayananBayiSection = (): JSX.Element => {
       header="Pelayanan Bayi"
       created_at={checkIsDataNull(pelayananBayiFormData?.data) ? 'Belum ada' : formattedDateData(pelayananBayiFormData?.data.created_at)}
       updated_at={checkIsDataNull(pelayananBayiFormData?.data) ? 'Belum ada' : formattedDateData(pelayananBayiFormData?.data.updated_at)}
+      pemeriksaanData={pemeriksaanData}
     >
       <ScrollView style={{marginBottom: 36}}>
         <InputComponent
@@ -106,25 +121,18 @@ const PelayananBayiSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? pemeriksaanData?.pendaftaran?.bayi?.nama_lengkap : pelayananBayiFormData?.data.nama_bayi}
         />
-        <InputComponent
-          height={'auto'}
-          width={'100%'}
-          label="Umur Bayi"
-          message="Harap diisi"
-          name="umur_bayi"
-          onChange={() => {}}
-          placeholder=""
-          type="number"
-          backgroundColor={'#fff'}
-          border={1}
-          labelColor={''}
-          textColor={''}
+        <InputDatePickerComponent
+          name="tanggal_lahir"
           control={control}
           errors={errors}
-          borderColor={BORDER_COLOR}
-          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? calculateAge(pemeriksaanData?.pendaftaran?.bayi?.tanggal_lahir).toString() : pelayananBayiFormData?.data.umur_bayi.toString() }
+          label="Tanggal Lahir"
+          labelColor=""
+          message="Wajib Diisi"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
+          initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? pemeriksaanData?.pendaftaran?.bayi?.tanggal_lahir : pelayananBayiFormData?.data.tanggal_lahir }
         />
         <DropdownInputComponent
           width={'100%'}
@@ -138,6 +146,7 @@ const PelayananBayiSection = (): JSX.Element => {
           errors={errors}
           name="jenis_kelamin_bayi"
           message="Harap diisi"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           //getValue="name"
           initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? pemeriksaanData?.pendaftaran?.bayi?.jenis_kelamin : pelayananBayiFormData?.data.jenis_kelamin_bayi }
         />
@@ -157,6 +166,7 @@ const PelayananBayiSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? pemeriksaanData?.pelayanan?.nama : pelayananBayiFormData?.data.booking_layanan }
         />
         <InputComponent
@@ -175,6 +185,7 @@ const PelayananBayiSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? null : pelayananBayiFormData?.data.keterangan_kondisi_bayi }
         />
         <DropdownInputComponent
@@ -188,6 +199,7 @@ const PelayananBayiSection = (): JSX.Element => {
           control={control}
           errors={errors}
           name="tambahan_layanan_id"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? null : pelayananBayiFormData?.data.tambahan_layanan_id }
         />
       </ScrollView>

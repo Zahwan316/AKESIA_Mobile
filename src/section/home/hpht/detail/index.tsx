@@ -5,12 +5,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 import { BUTTON_COLOR, MAIN_COLOR } from '../../../../constants/color';
 import ButtonComponent from '../../../../component/button';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import useUserStore from '../../../../state/user';
 import { getCurrentIbu } from '../../../../api/data/currLoggedIbu';
 import { useQuery } from '@tanstack/react-query';
 import { HphtData } from '../../../../data/hpht';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { sumHpht } from '../../../../utils/sumHpht';
 
 export const hphtImageMap: { [key: string]: any } = {
@@ -33,7 +33,7 @@ const HphtDetailSection = () => {
   const handleScreen = (screen: string) => {
     navigator.navigate(screen);
   };
-  const {data: ibuData} = useQuery({
+  const {data: ibuData, refetch} = useQuery({
     queryKey: ['ibuData'],
     queryFn: () => getCurrentIbu(),
   });
@@ -48,6 +48,12 @@ const HphtDetailSection = () => {
       handleScreen('Hpht');
     }
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch])
+  );
 
   return(
     <SafeAreaProvider>

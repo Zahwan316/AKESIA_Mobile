@@ -1,8 +1,8 @@
-import { JSX, useEffect, useState } from 'react';
+import { JSX, useCallback, useEffect, useState } from 'react';
 import JanjiScreenLayout from '../layout';
 import { ScrollView, Text, View } from 'react-native';
 import ButtonComponent from '../../../../component/button';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import { getPendaftaranUser } from '../../../../api/data/pendaftaran';
 import QueueItemComponent from '../component/queue-item';
@@ -98,6 +98,12 @@ const ListJanjiSection = (): JSX.Element => {
     setFilteredPemeriksaanData(filterPemeriksaanData);
     console.log(filterPemeriksaanData)
   }, [tanggalFilter, pemeriksaanUserData, currBidanData?.id]);
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch])
+  )
 
   return(
     <JanjiScreenLayout

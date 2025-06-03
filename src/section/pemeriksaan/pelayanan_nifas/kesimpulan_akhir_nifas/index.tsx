@@ -16,7 +16,7 @@ import { formattedDateData } from '../../../../utils/date';
 const KesimpulanAkhirNifasSection = (): JSX.Element => {
   const navigate = useNavigation<any>();
   const router = useRoute();
-  const { pemeriksaanData, pemeriksaanId} = router.params as {pemeriksaanData: apiResponse, pemeriksaanId: number};
+  const { pemeriksaanData, pemeriksaanId} = router.params as {pemeriksaanData: PemeriksaanApiResponse, pemeriksaanId: number};
   const {
     control,
     handleSubmit,
@@ -67,6 +67,7 @@ const KesimpulanAkhirNifasSection = (): JSX.Element => {
       modalMessage={modalInfo.message}
       modalText={modalInfo.text}
       modalVisible={modal}
+      pemeriksaanData={pemeriksaanData}
       created_at={checkIsDataNull(kesimpulanAkhirNifasFormData?.data) ? 'Belum ada' : formattedDateData(kesimpulanAkhirNifasFormData?.data?.created_at)}
       updated_at={checkIsDataNull(kesimpulanAkhirNifasFormData?.data) ? 'Belum ada' : formattedDateData(kesimpulanAkhirNifasFormData?.data?.updated_at)}
 
@@ -82,8 +83,9 @@ const KesimpulanAkhirNifasSection = (): JSX.Element => {
           label={'Keadaan Ibu'}
           control={control}
           errors={errors}
-          name='keadaan_ibu'
-          getValue='name'
+          name="keadaan_ibu"
+          getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(kesimpulanAkhirNifasFormData?.data) ? null : kesimpulanAkhirNifasFormData?.data?.keadaan_ibu}
         />
         <DropdownInputComponent
@@ -96,8 +98,9 @@ const KesimpulanAkhirNifasSection = (): JSX.Element => {
           label={'Komplikasi Nifas'}
           control={control}
           errors={errors}
-          name='komplikasi_nifas'
-          getValue='name'
+          name="komplikasi_nifas"
+          getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(kesimpulanAkhirNifasFormData?.data) ? null : kesimpulanAkhirNifasFormData?.data?.komplikasi_nifas}
         />
         <DropdownInputComponent
@@ -110,8 +113,9 @@ const KesimpulanAkhirNifasSection = (): JSX.Element => {
           label={'Keadaan Bayi'}
           control={control}
           errors={errors}
-          name='keadaan_bayi'
-          getValue='name'
+          name="keadaan_bayi"
+          getValue="name"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(kesimpulanAkhirNifasFormData?.data) ? null : kesimpulanAkhirNifasFormData?.data?.keadaan_bayi}
         />
       </View>

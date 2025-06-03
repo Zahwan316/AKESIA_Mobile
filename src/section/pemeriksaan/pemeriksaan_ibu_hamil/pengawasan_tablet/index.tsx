@@ -4,7 +4,6 @@ import { View } from 'react-native';
 import InputDatePickerComponent from '../../../../component/input/datepicker';
 import InputComponent from '../../../../component/input/text';
 import { useForm } from 'react-hook-form';
-import { apiResponse } from '../../../../type/pendaftaran/pendaftaran';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { modalInfo } from '../../../../type/modalInfo';
@@ -19,7 +18,7 @@ import InputTimePickerComponent from '../../../../component/input/timepicker';
 
 const PengawasanObatSection = (): JSX.Element => {
   const router = useRoute();
-  const {pemeriksaanId, pendaftaranData} = router.params as {pemeriksaanId: number, pendaftaranData: apiResponse};
+  const {pemeriksaanId, pemeriksaanData} = router.params as {pemeriksaanId: number, pemeriksaanData: PemeriksaanApiResponse};
   const { control, handleSubmit, reset, formState: { errors } } = useForm();
   const [modal, setModal] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
@@ -105,6 +104,7 @@ const PengawasanObatSection = (): JSX.Element => {
       modalText={modalInfo.text}
       modalVisible={modal}
       handlePage={handleButtonSubmit}
+      PemeriksaanData={pemeriksaanData}
       created_at={checkIsDataNull(pengawasanTabletData?.data) ? 'Belum ada' : formattedDateData(pengawasanTabletData?.data?.created_at)}
       updated_at={checkIsDataNull(pengawasanTabletData?.data) ? 'Belum ada' : formattedDateData(pengawasanTabletData?.data?.updated_at)}
     >
@@ -125,6 +125,7 @@ const PengawasanObatSection = (): JSX.Element => {
           control={control}
           errors={errors}
           borderColor={BORDER_COLOR}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(pengawasanTabletData?.data) ? null : pengawasanTabletData?.data?.bulan_ke.toString()}
         />
         <InputDatePickerComponent
@@ -135,6 +136,7 @@ const PengawasanObatSection = (): JSX.Element => {
           name="tanggal"
           labelColor="#000"
           message="Wajib diisi"
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(pengawasanTabletData?.data) ? null : pengawasanTabletData?.data?.tanggal}
         />
         <InputTimePickerComponent
@@ -142,27 +144,11 @@ const PengawasanObatSection = (): JSX.Element => {
           errors={errors}
           name="jam"
           label="Jam"
-          labelColor=''
+          labelColor=""
           onChange={() => {}}
+          disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
           initialValue={checkIsDataNull(pengawasanTabletData?.data) ? null : pengawasanTabletData?.data?.jam.toString()}
         />
-        {/* <InputComponent
-          height={'auto'}
-          width={'100%'}
-          label="Jam"
-          message="Wajib diisi"
-          name="jam"
-          onChange={() => {}}
-          placeholder=""
-          type="number"
-          backgroundColor={'#fff'}
-          border={1}
-          //labelColor={'#fff'}
-          textColor={''}
-          
-          borderColor={BORDER_COLOR}
-          initialValue={checkIsDataNull(pengawasanTabletData?.data) ? null : pengawasanTabletData?.data?.jam.toString()}
-        /> */}
       </View>
     </FormScreenLayout>
   );
