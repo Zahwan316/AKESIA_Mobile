@@ -11,7 +11,7 @@ import { modalInfo } from '../../tambah_anak';
 import UploadSelfie from '../../../../component/input/upload/InputUpload';
 import useAlbumFotoStore from '../../../../state/album_foto';
 
-const FormJanin = ({control, errors}): React.ReactElement => {
+const FormJanin = ({control, errors, screenBeforeName, currJanin, currUsg}): React.ReactElement => {
   return(
     <>
       <InputComponent
@@ -25,7 +25,7 @@ const FormJanin = ({control, errors}): React.ReactElement => {
         border={1}
         borderColor={BORDER_COLOR}
         message="Wajib Diisi"
-
+        initialValue={screenBeforeName === 'AlbumFotoJanin' ? `Janin ke ${currJanin}` : `USG ke ${currUsg}`}
       />
     </>
   );
@@ -89,6 +89,8 @@ const AlbumFormSection = () => {
     message: '',
     text: '',
   });
+  const currJanin = useAlbumFotoStore((state) => state.currJanin);
+  const currUSG = useAlbumFotoStore((state) => state.currUSG);
 
   const handleSubmitForm = async(data: any) => {
     if(screenBeforeName === 'AlbumFotoJanin'){
@@ -167,10 +169,16 @@ const AlbumFormSection = () => {
     >
       <View>
         {
-          screenBeforeName === 'AlbumFotoJanin' && <FormJanin control={control} errors={errors} />
+          screenBeforeName === 'AlbumFotoJanin' &&
+          <FormJanin
+            control={control}
+            errors={errors}
+            screenBeforeName={screenBeforeName}
+            currJanin={currJanin}
+          />
         }
         {
-          screenBeforeName === 'AlbumFotoUsg' && <FormJanin control={control} errors={errors} />
+          screenBeforeName === 'AlbumFotoUsg' && <FormJanin control={control} errors={errors} currUsg={currUSG} />
         }
         {
           screenBeforeName === 'AlbumFoto' && <FormUploadAlbum control={control} errors={errors} />

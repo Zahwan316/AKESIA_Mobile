@@ -16,6 +16,8 @@ const AlbumFotoUsgSection = (): JSX.Element => {
   const janinId = useAlbumFotoStore((state) => state.janinId);
   const setUsgId = useAlbumFotoStore((state) => state.setUsgId);
   const setUsgTitleName = useAlbumFotoStore((state) => state.setUsgTitleName);
+  const setCurrUSG = useAlbumFotoStore((state) => state.setcurrUSG);
+  const currUSG = useAlbumFotoStore((state) => state.currUSG);
   const {screenBeforeName} = router.params as {screenBeforeName: string};
   const handleScreen = (screen: string, screenBeforeName: string, usgId: number, UsgTitleName: string) => {
     setUsgId(usgId);
@@ -28,11 +30,11 @@ const AlbumFotoUsgSection = (): JSX.Element => {
   });
 
   useEffect(() => {
-    console.log(janinId);
-    console.log(checkIsDataFormNull(usgData?.data))
-  }, [usgData]);
+    setCurrUSG(usgData?.data?.length + 1);
+    console.log('usg = ',currUSG);
+  }, [usgData, setCurrUSG]);
 
-   useFocusEffect(
+  useFocusEffect(
     useCallback(() => {refetch();},[refetch])
   );
 
@@ -44,7 +46,7 @@ const AlbumFotoUsgSection = (): JSX.Element => {
       <View style={Style.mainContainer}>
         <View style={Style.headerContainer}>
           <Text style={Style.headerText}>
-            Usg Ke berapa nih?
+            USG Ke berapa nih?
           </Text>
         </View>
         <ScrollView style={Style.itemContainer}>

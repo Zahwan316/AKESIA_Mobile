@@ -24,6 +24,7 @@ import { ChangePrice } from '../../../../utils/changePrice';
 import InputTimePickerComponent from '../../../../component/input/timepicker';
 import JamPicker from '../../../../component/input/jadwalPicker';
 import { useWatch } from 'react-hook-form';
+import LoadingIndicator from '../../../../component/loading';
 
 type modalInfo = {
   message: string;
@@ -97,7 +98,7 @@ const imgMap: {[key: string]: ImageSourcePropType} = {
 
 //regex
 const searchPijatRegex = /^Pijat/i;
-const jenisLayananRegex = /Baby Spa dan Massage/i;
+const BabySpaRegex = /Baby Spa dan Massage/i;
 const jenisLayananBidanBundaRegex = /Bidan Bunda/i;
 const PersalinanRegex = /Persalinan/i;
 const BidanBundaRegex = /Bidan Bunda/i;
@@ -196,6 +197,27 @@ const PemesananJanjiSection = (): JSX.Element => {
     }, 1500);
   };
 
+  //fungsi filter select anak berdasarkan pelayanan
+  const handleShowInputAnak = () => {
+    const nama = pelayananData?.data?.nama || '';
+    const jenisLayanan = pelayananData?.data?.jenis_layanan?.nama || '';
+
+    const isNotPijat = !searchPijatRegex.test(nama);
+    const isBabySpa = BabySpaRegex.test(jenisLayanan);
+    const isJenisLayananBidanBunda = jenisLayananBidanBundaRegex.test(jenisLayanan);
+    const isImunisasi = ImunisasiRegex.test(nama);
+    const isBayi = BayiRegex.test(nama);
+    const hasPendaftaran = pendaftaranId != null;
+
+    const isBabySpaValid = isNotPijat && isBabySpa;
+
+    const isBidanBundaValid = isJenisLayananBidanBunda && (isImunisasi || isBayi);
+    console.log('pendaftaran',hasPendaftaran);
+    // Final filter:
+    const isValid = (hasPendaftaran && (isBabySpa || isJenisLayananBidanBunda)) || (isBabySpaValid || isBidanBundaValid);
+    return isValid;
+  };
+
   useEffect(() => {
     if(pendaftaranUserData && pendaftaranUserData?.data){
       reset({
@@ -206,13 +228,12 @@ const PemesananJanjiSection = (): JSX.Element => {
       });
     }
     const age = calculateAge(pendaftaranUserData?.data?.bayi?.tanggal_lahir);
-    console.log('Umur = ', age);
     setChildrenAge(age);
   }, [pendaftaranUserData]);
 
   useEffect(() => {
-    console.log(pendaftaranId)
-  },[pendaftaranId]);
+    console.log('Pendaftaran user data', pendaftaranUserData)
+  },[pendaftaranUserData]);
 
   useEffect(() => {
     if(dayFromDate === 0 && (BidanBundaRegex.test(pelayananData?.data?.jenis_layanan?.nama) || PeriksaHamilNyamanRegex.test(pelayananData?.data?.jenis_layanan?.nama ) || PersalinanRegex.test(pelayananData?.data?.jenis_layanan?.nama )) && pendaftaranId === null){
@@ -231,6 +252,10 @@ const PemesananJanjiSection = (): JSX.Element => {
         modalVisible={modal}
         handleModal={handleModal}
       />
+      {
+        isLoading &&
+        <LoadingIndicator />
+      }
       <ScrollView>
         <View style={style.dateContainer}>
           <InputDatePickerComponent
@@ -278,7 +303,7 @@ const PemesananJanjiSection = (): JSX.Element => {
         <View style={style.formContainer}>
           <View style={style.headerFormContainer}>
             {
-              (!searchPijatRegex.test(pelayananData?.data?.nama) && jenisLayananRegex.test(pelayananData?.data?.jenis_layanan?.nama)) ?
+              handleShowInputAnak() ?
               <Text style={{fontWeight: 'bold', fontSize: 16}}>Detail Pasien</Text>
               :
               null
@@ -287,31 +312,28 @@ const PemesananJanjiSection = (): JSX.Element => {
           <ScrollView style={{height: '100%', marginBottom: 0}}>
             <View style={style.itemFormContainer}>
               {
-                (
-                  (!searchPijatRegex.test(pelayananData?.data?.nama) && (ImunisasiRegex.test(pelayananData?.data?.nama) || BayiRegex.test(pelayananData?.data?.nama))) &&
-                  (jenisLayananRegex.test(pelayananData?.data?.jenis_layanan?.nama) || jenisLayananBidanBundaRegex.test(pelayananData?.data?.jenis_layanan?.nama))) ||
-                  (pendaftaranId != null ) ?
-                <DropdownInputComponent
-                  height={'auto'}
-                  width={'100%'}
-                  label="Anak"
-                  name="bayi_id"
-                  control={control}
-                  errors={errors}
-                  message="Wajib Diisi"
-                  data={currUserAnakData?.data?.map((anak: any) => ({
-                    name: anak.nama_lengkap,
-                    id: anak.id,
-                  }))}
-                  onSelect={handleChangeAnak}
-                  backgroundColor={'#6B779A20'}
-                  disabled={pendaftaranId != null}
-                  initialValue={pendaftaranId != null ? pendaftaranItem?.bayi_id : null}
-                />
+                  handleShowInputAnak() ?
+                  <DropdownInputComponent
+                    height={'auto'}
+                    width={'100%'}
+                    label="Anak"
+                    name="bayi_id"
+                    control={control}
+                    errors={errors}
+                    message="Wajib Diisi"
+                    data={currUserAnakData?.data?.map((anak: any) => ({
+                      name: anak.nama_lengkap,
+                      id: anak.id,
+                    }))}
+                    onSelect={handleChangeAnak}
+                    backgroundColor={'#6B779A20'}
+                    disabled={pendaftaranId != null}
+                    initialValue={pendaftaranId != null ? pendaftaranItem?.bayi_id : null}
+                  />
                 : null
               }
               {
-                jenisPelayananId !== 1 && pendaftaranId != null ?
+                !BabySpaRegex.test(pelayananData?.data?.jenis_layanan?.nama) && pendaftaranId != null ?
                 <InputComponent
                   height={'auto'}
                   width={'100%'}
@@ -322,7 +344,7 @@ const PemesananJanjiSection = (): JSX.Element => {
                   onChange={() => {}}
                   backgroundColor={'#6B779A20'}
                   disabled={pendaftaranId != null}
-                  initialValue={pendaftaranId != null && pendaftaranItem?.ibu?.user?.nama_lengkap}
+                  initialValue={pendaftaranId != null ? pendaftaranUserData?.data?.ibu?.user?.nama_lengkap : ''}
                 />
                 : null
               }

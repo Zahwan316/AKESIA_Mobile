@@ -167,6 +167,7 @@ const HomeSection = (): JSX.Element => {
       <SafeAreaView>
         <ScrollView stickyHeaderIndices={[3]} style={{width: widthPercentageToDP(100)}}>
           <View style={Style.profileContainer}>
+            {/* Name Container */}
             <View style={Style.nameContainer}>
               <Text style={{fontSize: 18, color: "#fff"}}>Halo, {userData?.user?.nama_lengkap}</Text>
               <TouchableOpacity onPress={() => handlePressButton('Notifikasi')}>
@@ -177,8 +178,12 @@ const HomeSection = (): JSX.Element => {
                 />
               </TouchableOpacity>
             </View>
+            {/* Box Menu Container */}
             <View style={Style.boxGroupContainer}>
-              <TouchableOpacity style={Style.boxContainer} onPress={() => handleOpenHpht(userData?.user?.role)}>
+              {/* Bayiku Button */}
+              <TouchableOpacity
+                style={Style.boxContainer}
+                onPress={() => handleOpenHpht(userData?.user?.role)}>
                 <View style={{width: '30%', height: '100%', marginRight: 8, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                   <Image
                     source={require('../../assets/icon/baby.png')}
@@ -189,7 +194,7 @@ const HomeSection = (): JSX.Element => {
                   {
                     userData?.user?.role === 'user' ?
                     <>
-                      <Text style={{fontSize: 14, color: '#fff', fontWeight: 'bold', marginBottom: 4}}>Babyku</Text>
+                      <Text style={{fontSize: 14, color: '#fff', fontWeight: 'bold', marginBottom: 4}}>Bayiku</Text>
                       <Text style={{fontSize: 12, color: '#fff', fontWeight: 'bold'}}>{sumHpht(ibuData?.data?.hpht)} Minggu</Text>
                     </>
                     :
@@ -199,7 +204,10 @@ const HomeSection = (): JSX.Element => {
                   }
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => handlePressButton('TambahAnak')} style={[Style.boxContainer, {justifyContent: 'center', alignItems: 'center', gap: 4, backgroundColor: BUTTON_COLOR, display: userData?.user?.role === 'bidan' ? 'none' : 'flex'}]}>
+              {/* Tambah Anak Button */}
+              <TouchableOpacity
+                onPress={() => handlePressButton('TambahAnak')} 
+                style={[Style.boxContainer, {justifyContent: 'center', alignItems: 'center', gap: 4, backgroundColor: BUTTON_COLOR, display: userData?.user?.role === 'bidan' ? 'none' : 'flex'}]}>
                 <Icon name='plus-circle' size={26} color='#fff' />
                 <Text style={{fontSize: 14, color: '#fff', fontWeight: 'bold',}}>Tambah Anak</Text>
               </TouchableOpacity>

@@ -273,7 +273,7 @@ const Page2 = ({ formHandle, data, control, errors, pemeriksaanData }: pageProps
         <InputComponent
           height={'auto'}
           width={'45%'}
-          label="Berat badan"
+          label="Berat Badan"
           message="Harap diisi"
           name="berat_badan"
           onChange={formHandle}

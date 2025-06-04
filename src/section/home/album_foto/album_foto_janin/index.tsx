@@ -7,10 +7,13 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import { getData } from '../../../../api/data/getData';
 import useAlbumFotoStore from '../../../../state/album_foto';
+import EmptyDataComponent from '../../../../component/empty';
 
 const AlbumFotoJaninSection = (): JSX.Element => {
   const navigator = useNavigation<any>();
   const setJaninId = useAlbumFotoStore((state) => state.setJaninId);
+  const setCurrJanin = useAlbumFotoStore((state) => state.setcurrJanin);
+  const currJanin = useAlbumFotoStore((state) => state.currJanin);
   const handleScreen = (screen: string, screenBeforeName: string, janinId: number) => {
     setJaninId(janinId);
     navigator.navigate(screen, {screenBeforeName: screenBeforeName});
@@ -21,8 +24,9 @@ const AlbumFotoJaninSection = (): JSX.Element => {
   });
 
   useEffect(() => {
-    console.log(janinData);
-  }, [janinData]);
+    setCurrJanin(janinData?.data?.length + 1);
+    console.log(currJanin);
+  }, [janinData, setCurrJanin, currJanin]);
 
   useFocusEffect(
     useCallback(() => {refetch();},[refetch])
@@ -41,10 +45,8 @@ const AlbumFotoJaninSection = (): JSX.Element => {
         </View>
         <ScrollView style={Style.itemContainer}>
           {
-            janinData?.data === null ?
-            <Text>
-              Belum ada Data
-            </Text>
+            janinData?.data?.length === 0 ?
+            <EmptyDataComponent />
             :
             janinData?.data?.map((item: any, index: number) => {
               return(

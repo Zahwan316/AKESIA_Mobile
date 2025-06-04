@@ -7,7 +7,11 @@ type action = {
   riwayatKehamilanGroupId: number,
   riwayatKehamilanFotoId: number,
   riwayatKehamilanTitleName: string,
+  currJanin: number,
+  currUSG: number,
   fotoId: number,
+  setcurrJanin: (value: number) => void
+  setcurrUSG: (value: number) => void
   setFotoId: (value: number) => void,
   setJaninId: (value: number) => void,
   setUsgId: (value: number) => void,
@@ -25,6 +29,10 @@ const useAlbumFotoStore = create<action>((set) => ({
   riwayatKehamilanFotoId: 0,
   riwayatKehamilanTitleName: '',
   fotoId: 0,
+  currJanin: 0,
+  currUSG: 0,
+  setcurrJanin: (value) => set(({currJanin: value})),
+  setcurrUSG: (value) => set(({currUSG: value})),
   setFotoId: (value) => set(({fotoId: value})),
   setJaninId: (value) => set(({janinId: value})),
   setUsgId: (value) => set(({usgId: value})),
