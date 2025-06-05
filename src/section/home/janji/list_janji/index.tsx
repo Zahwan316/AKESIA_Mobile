@@ -4,27 +4,21 @@ import { ScrollView, Text, View } from 'react-native';
 import ButtonComponent from '../../../../component/button';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
-import { getPendaftaranUser } from '../../../../api/data/pendaftaran';
 import QueueItemComponent from '../component/queue-item';
-import statusPendaftaran from '../../../../type/statusPendaftaran';
-import { apiResponse } from '../../../../type/pendaftaran/pendaftaran';
 import InputDatePickerComponent from '../../../../component/input/datepicker';
 import { useForm } from 'react-hook-form';
-import { formattedDateData, formattedDateDataWithoutHour } from '../../../../utils/date';
+import { formattedDateDataWithoutHour } from '../../../../utils/date';
 import { MAIN_COLOR } from '../../../../constants/color';
-import { checkIsDataFormNull } from '../../../../utils/checkDataIsNull';
 import { getData } from '../../../../api/data/getData';
 import handleContentModal from '../../../../component/modal/function';
 import axios from '../../../../api/axios';
-import { Alert } from 'react-native';
 import { modalInfoType } from '../../../../type/modalInfo';
-import { modalInfo } from '../../../pemeriksaan/pelayanan_bayi/index';
 import ModalComponent from '../../../../component/modal';
 import useUserStore from '../../../../state/user';
-import EmptyDataComponent from '../../../../component/empty';
+import messaging from '@react-native-firebase/messaging';
+import notifee, { AndroidImportance } from '@notifee/react-native';
 
 const ListJanjiSection = (): JSX.Element => {
-  const [currMenu, setCurrMenu] = useState<string>('Menunggu Konfirmasi');
   const navigation = useNavigation<any>();
   const [tanggalFilter, setTanggalFilter] = useState<string | null>(null);
   const { data: pemeriksaanUserData, refetch} = useQuery({
@@ -44,6 +38,7 @@ const ListJanjiSection = (): JSX.Element => {
   });
   const currBidanData = useUserStore((state) => state.bidan);
   const [filteredPemeriksaanData, setFilteredPemeriksaanData] = useState<PemeriksaanApiResponse[]>([]);
+  const currUser = useUserStore((state) => state.user);
 
   /* Function Initiation */
   const handleScreen = (screen: string, formId?: string | number, pemeriksaanId?: string | number, pemeriksaanData?: PemeriksaanApiResponse, pendaftaranId: number) => {
@@ -103,7 +98,33 @@ const ListJanjiSection = (): JSX.Element => {
     useCallback(() => {
       refetch();
     }, [refetch])
-  )
+  );
+
+  useEffect(() => {
+    console.log('curr user = ', currUser);
+  }, [currUser]);
+
+  //tangkap data dari realtime secara realtime untuk mengupdate data pemeriksaan
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      const { title, body } = remoteMessage.notification || {};
+      await notifee.displayNotification({
+        title,
+        body,
+        android: {
+          channelId: 'default',
+          importance: AndroidImportance.HIGH,
+        },
+      });
+      // cek tipe data
+      if (remoteMessage?.data?.type === 'pemeriksaan_baru' && remoteMessage?.data?.user_id === currUser?.id.toString()) {
+        refetch();
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
 
   return(
     <JanjiScreenLayout

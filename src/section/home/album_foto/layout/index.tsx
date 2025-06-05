@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import { JSX } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { JSX, useEffect } from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ModalComponent from '../../../../component/modal';
 import { View } from 'react-native';
@@ -19,7 +19,10 @@ type props = {
 }
 
 const FotoScreenLayout = (props: props):JSX.Element => {
-  const popup = useComponentStore((state) => state.popup)
+  const popup = useComponentStore((state) => state.popup);
+  
+  
+
   return(
     <SafeAreaProvider>
       <SafeAreaView>

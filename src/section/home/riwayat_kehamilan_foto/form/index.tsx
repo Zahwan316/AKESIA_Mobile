@@ -12,7 +12,7 @@ import UploadSelfie from '../../../../component/input/upload/InputUpload';
 import useAlbumFotoStore from '../../../../state/album_foto';
 import FotoScreenLayout from '../../album_foto/layout';
 
-const FormRiwayatKehamilanGroup = ({control, errors}): React.ReactElement => {
+const FormRiwayatKehamilanGroup = ({control, errors, currKehamilan}): React.ReactElement => {
   return(
     <>
       <InputComponent
@@ -26,7 +26,7 @@ const FormRiwayatKehamilanGroup = ({control, errors}): React.ReactElement => {
         border={1}
         borderColor={BORDER_COLOR}
         message="Wajib Diisi"
-
+        initialValue={`Kehamilan ke ${currKehamilan}`}
       />
     </>
   );
@@ -77,6 +77,7 @@ const RiwayatKehamilanFormSection = () => {
     message: '',
     text: '',
   });
+  const currKehamilan = useAlbumFotoStore((state) => state.currKehamilan);
 
   const handleSubmitForm = async(data: any) => {
     if(screenBeforeName === 'RiwayatKehamilanGroup'){
@@ -126,6 +127,10 @@ const RiwayatKehamilanFormSection = () => {
     setModal(!modal);
   };
 
+  useEffect(() => {
+    console.log(currKehamilan);
+  }, [currKehamilan]);
+
   return(
     <FotoScreenLayout
       title='Tambah Data'
@@ -137,7 +142,12 @@ const RiwayatKehamilanFormSection = () => {
     >
       <View>
         {
-          screenBeforeName === 'RiwayatKehamilanGroup' && <FormRiwayatKehamilanGroup control={control} errors={errors} />
+          screenBeforeName === 'RiwayatKehamilanGroup' &&
+            <FormRiwayatKehamilanGroup
+              control={control}
+              errors={errors}
+              currKehamilan={currKehamilan}
+            />
         }
         {
           screenBeforeName === 'RiwayatKehamilanFoto' && <FormRiwayatKehamilanFoto control={control} errors={errors} />

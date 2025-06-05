@@ -9,8 +9,10 @@ type action = {
   riwayatKehamilanTitleName: string,
   currJanin: number,
   currUSG: number,
+  currKehamilan: number,
   fotoId: number,
   setcurrJanin: (value: number) => void
+  setcurrKehamilan: (value: number) => void
   setcurrUSG: (value: number) => void
   setFotoId: (value: number) => void,
   setJaninId: (value: number) => void,
@@ -31,6 +33,8 @@ const useAlbumFotoStore = create<action>((set) => ({
   fotoId: 0,
   currJanin: 0,
   currUSG: 0,
+  currKehamilan: 0,
+  setcurrKehamilan: (value) => set({currKehamilan: value}),
   setcurrJanin: (value) => set(({currJanin: value})),
   setcurrUSG: (value) => set(({currUSG: value})),
   setFotoId: (value) => set(({fotoId: value})),

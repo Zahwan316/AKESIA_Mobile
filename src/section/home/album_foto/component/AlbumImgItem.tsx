@@ -1,9 +1,9 @@
-import { JSX } from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { MAIN_COLOR } from "../../../../constants/color";
-import { Image } from "react-native";
-import { BASE_URL } from "../../../../constants/baseurl";
-import { View } from "react-native";
+import { JSX } from 'react';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { MAIN_COLOR } from '../../../../constants/color';
+import { Image } from 'react-native';
+import { BASE_URL } from '../../../../constants/baseurl';
+import { View } from 'react-native';
 
 type propsPage = {
   title: string;

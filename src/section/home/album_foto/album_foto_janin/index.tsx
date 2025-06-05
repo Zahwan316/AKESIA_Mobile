@@ -1,4 +1,4 @@
-import { JSX, useCallback, useEffect } from 'react';
+import { JSX, useCallback, useEffect, useState } from 'react';
 import FotoScreenLayout from '../layout';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import AlbumItemComponent from '../component/AlbumItem';
@@ -8,6 +8,8 @@ import { useQuery } from '@tanstack/react-query';
 import { getData } from '../../../../api/data/getData';
 import useAlbumFotoStore from '../../../../state/album_foto';
 import EmptyDataComponent from '../../../../component/empty';
+import { modalInfo } from '../../tambah_anak';
+import ModalComponent from '../../../../component/modal';
 
 const AlbumFotoJaninSection = (): JSX.Element => {
   const navigator = useNavigation<any>();
@@ -22,6 +24,24 @@ const AlbumFotoJaninSection = (): JSX.Element => {
     queryKey: ['janinData'],
     queryFn: () => getData('album_foto_janins/getByUserId'),
   });
+  const [modal, setModal] = useState<boolean>(false);
+  const [isSuccess, setSuccess] = useState<boolean>(false);
+  const [modalInfo, setModalInfo] = useState<modalInfo>({
+    message: '',
+    text: '',
+  });
+
+  const handleModal = () => {
+    if(isSuccess){
+      navigator.replace('AlbumFotoJanin');
+    }
+    setModal(!modal);
+  };
+
+  const handleEdit = (id: number) => {
+    setJaninId(id);
+    handleScreen('AlbumFotoForm', 'AlbumFotoJanin', id);
+  };
 
   useEffect(() => {
     setCurrJanin(janinData?.data?.length + 1);
@@ -37,6 +57,13 @@ const AlbumFotoJaninSection = (): JSX.Element => {
       title="Album Foto Kita"
       modalVisible={false}
     >
+      <ModalComponent
+        handleModal={handleModal}
+        modalVisible={modal}
+        isSuccess={isSuccess}
+        message={modalInfo.message}
+        text={modalInfo.text}
+      />
       <View style={Style.mainContainer}>
         <View style={Style.headerContainer}>
           <Text style={Style.headerText}>
@@ -54,6 +81,12 @@ const AlbumFotoJaninSection = (): JSX.Element => {
                   key={index}
                   title={item.nama}
                   onPress={() => handleScreen('AlbumFotoUsg', 'AlbumFotoJanin', item.id)}
+                  id={item.id}
+                  setSuccess={setSuccess}
+                  setModal={setModal}
+                  setModalInfo={setModalInfo}
+                  url="album_foto_janin/"
+                  handleEdit={() => handleEdit(item.id)}
                 />
               );
             })

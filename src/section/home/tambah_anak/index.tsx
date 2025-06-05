@@ -565,7 +565,7 @@ const style = StyleSheet.create({
   },
   headerContainer: {
     width: '100%',
-    height: '10%',
+    height: heightPercentageToDP(10),
     marginBottom: 12,
     display: 'flex',
     flexDirection: 'row',
@@ -573,14 +573,14 @@ const style = StyleSheet.create({
   },
   formContainer: {
     width: '100%',
-    height: '80%',
+    height: heightPercentageToDP(80),
     marginBottom: 34,
   },
   buttonContainer: {
-    height: '10%',
+    height: heightPercentageToDP(10),
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   headerFormText: {
     fontSize: 20,

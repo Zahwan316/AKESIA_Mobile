@@ -1,4 +1,4 @@
-import { JSX, useCallback, useEffect } from 'react';
+import { JSX, useCallback, useEffect, useState } from 'react';
 import FotoScreenLayout from '../layout';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import AlbumItemComponent from '../component/AlbumItem';
@@ -9,6 +9,8 @@ import { getData } from '../../../../api/data/getData';
 import { checkIsDataFormNull } from '../../../../utils/checkDataIsNull';
 import EmptyDataComponent from '../../../../component/empty';
 import useAlbumFotoStore from '../../../../state/album_foto';
+import { modalInfo } from '../../tambah_anak';
+import ModalComponent from '../../../../component/modal';
 
 const AlbumFotoUsgSection = (): JSX.Element => {
   const navigator = useNavigation<any>();
@@ -18,7 +20,12 @@ const AlbumFotoUsgSection = (): JSX.Element => {
   const setUsgTitleName = useAlbumFotoStore((state) => state.setUsgTitleName);
   const setCurrUSG = useAlbumFotoStore((state) => state.setcurrUSG);
   const currUSG = useAlbumFotoStore((state) => state.currUSG);
-  const {screenBeforeName} = router.params as {screenBeforeName: string};
+  const [modal, setModal] = useState<boolean>(false);
+  const [isSuccess, setSuccess] = useState<boolean>(false);
+  const [modalInfo, setModalInfo] = useState<modalInfo>({
+    message: '',
+    text: '',
+  });
   const handleScreen = (screen: string, screenBeforeName: string, usgId: number, UsgTitleName: string) => {
     setUsgId(usgId);
     setUsgTitleName(UsgTitleName);
@@ -29,11 +36,22 @@ const AlbumFotoUsgSection = (): JSX.Element => {
     queryFn: () => getData(`album_foto_usg/getByJaninId/${janinId}`),
   });
 
-  useEffect(() => {
+  const handleModal = () => {
+    if(isSuccess){
+      navigator.replace('AlbumFotoUsg');
+    }
+    setModal(!modal);
+  };
+
+  const handleEdit = (usgId: number) => {
+    handleScreen('AlbumFotoForm', 'AlbumFotoUsg', usgId);
+  };
+
+  /*   useEffect(() => {
     setCurrUSG(usgData?.data?.length + 1);
     console.log('usg = ',currUSG);
   }, [usgData, setCurrUSG]);
-
+  */
   useFocusEffect(
     useCallback(() => {refetch();},[refetch])
   );
@@ -43,6 +61,13 @@ const AlbumFotoUsgSection = (): JSX.Element => {
       title="Album Foto Kita"
       modalVisible={false}
     >
+      <ModalComponent
+        handleModal={handleModal}
+        modalVisible={modal}
+        message={modalInfo.message}
+        text={modalInfo.text}
+        isSuccess={isSuccess}
+      />
       <View style={Style.mainContainer}>
         <View style={Style.headerContainer}>
           <Text style={Style.headerText}>
@@ -60,6 +85,12 @@ const AlbumFotoUsgSection = (): JSX.Element => {
                   key={index}
                   title={item.nama}
                   onPress={() => handleScreen('AlbumFoto', 'AlbumFotoUsg', item.id, item.nama)}
+                  id={item.id}
+                  setModal={setModal}
+                  setSuccess={setSuccess}
+                  setModalInfo={setModalInfo}
+                  url="album_foto_usg/"
+                  handleEdit={() => handleEdit(item.id)}
                 />
               );
             })

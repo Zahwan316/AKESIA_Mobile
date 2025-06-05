@@ -25,6 +25,7 @@ import InputTimePickerComponent from '../../../../component/input/timepicker';
 import JamPicker from '../../../../component/input/jadwalPicker';
 import { useWatch } from 'react-hook-form';
 import LoadingIndicator from '../../../../component/loading';
+import { heightPercentageToDP } from 'react-native-responsive-screen';
 
 type modalInfo = {
   message: string;
@@ -232,7 +233,7 @@ const PemesananJanjiSection = (): JSX.Element => {
   }, [pendaftaranUserData]);
 
   useEffect(() => {
-    console.log('Pendaftaran user data', pendaftaranUserData)
+    console.log('Pendaftaran user dataa', pendaftaranUserData)
   },[pendaftaranUserData]);
 
   useEffect(() => {
@@ -301,6 +302,7 @@ const PemesananJanjiSection = (): JSX.Element => {
 
         </View>
         <View style={style.formContainer}>
+          {/* header form container */}
           <View style={style.headerFormContainer}>
             {
               handleShowInputAnak() ?
@@ -309,7 +311,8 @@ const PemesananJanjiSection = (): JSX.Element => {
               null
             }
           </View>
-          <ScrollView style={{height: '100%', marginBottom: 0}}>
+          {/* main form container */}
+          <View style={{height: '100%', marginBottom: 0}}>
             <View style={style.itemFormContainer}>
               {
                   handleShowInputAnak() ?
@@ -366,7 +369,7 @@ const PemesananJanjiSection = (): JSX.Element => {
                 borderColor={BORDER_COLOR}
                 initialValue={pendaftaranId != null ? pendaftaranItem?.keluhan : null}
               />
-          </ScrollView>
+          </View>
         </View>
         <View style={style.pesananContainer}>
           <View style={{marginBottom: 12}}>
@@ -411,8 +414,8 @@ const style = StyleSheet.create({
   },
   formContainer: {
     width: '100%',
-    height: '40%',
-    marginBottom: 12,
+    height: heightPercentageToDP(38),
+    marginBottom: 32,
     borderWidth: 0,
     position: 'relative',
   },
@@ -430,7 +433,7 @@ const style = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
-    height: '17%',
+    height: heightPercentageToDP(17),
     borderWidth: 0,
     display: 'flex',
     justifyContent: 'center',

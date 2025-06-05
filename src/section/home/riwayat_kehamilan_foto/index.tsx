@@ -7,6 +7,7 @@ import { getData } from '../../../api/data/getData';
 import FotoScreenLayout from '../album_foto/layout';
 import FloatingIcon from '../../../component/floatingIcon';
 import { useCallback, useEffect } from 'react';
+import EmptyDataComponent from '../../../component/empty';
 
 const RiwayatKehamilanFotoSection = () => {
   const navigator = useNavigation<any>();
@@ -28,11 +29,6 @@ const RiwayatKehamilanFotoSection = () => {
     });
   };
 
-  useEffect(() => {
-    console.log(RiwayatKehamilanFotoData?.data);
-    console.log(RiwayatKehamilanGroupId);
-  }, [RiwayatKehamilanFotoData]);
-
   useFocusEffect(
     useCallback(() => {refetch();},[refetch])
   );
@@ -52,18 +48,10 @@ const RiwayatKehamilanFotoSection = () => {
           <View style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'space-between'}}>
             {
               RiwayatKehamilanFotoData?.data?.length === 0 ?
-              <View style={{width:'100%', borderWidth:0, display:'flex', justifyContent:'center', alignItems:'center'}}>
-                <Image
-                  source={require('../../../assets/img/emptydata.png')}
-                  style={{width: 200, height: 200, marginBottom: 12}}
-                />
-                <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 8}}>
-                  Upload Rekam Jejak Yuk..
-                </Text>
-                <Text style={{fontSize: 18, fontWeight: 'normal'}}>
-                  Album masih kosong nih
-                </Text>
-              </View>
+              <EmptyDataComponent
+                customTextHeader='Oops!! Buku KIA masih kosong'
+                customTextDescription='Belum ada nih fotonya tambah yuk!'
+              />
               :
               RiwayatKehamilanFotoData?.data?.map((item: any, index: number) => {
                 return(

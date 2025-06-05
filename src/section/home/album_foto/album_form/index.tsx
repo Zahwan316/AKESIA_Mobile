@@ -1,17 +1,20 @@
 import { useForm } from 'react-hook-form';
 import FotoScreenLayout from '../layout';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import InputComponent from '../../../../component/input/text';
 import { BORDER_COLOR, MAIN_COLOR } from '../../../../constants/color';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { View } from 'react-native';
 import ButtonComponent from '../../../../component/button';
 import { handlePostApi } from '../../../../api/handlePostApi';
 import { modalInfo } from '../../tambah_anak';
 import UploadSelfie from '../../../../component/input/upload/InputUpload';
 import useAlbumFotoStore from '../../../../state/album_foto';
+import { useQuery } from '@tanstack/react-query';
+import { getData } from '../../../../api/data/getData';
+import { handleEditApi } from '../../../../api/handleEditApi';
 
-const FormJanin = ({control, errors, screenBeforeName, currJanin, currUsg}): React.ReactElement => {
+const FormJanin = ({control, errors, screenBeforeName, currJanin, currUsg, janinEditData, usgEditData}): React.ReactElement => {
   return(
     <>
       <InputComponent
@@ -25,7 +28,14 @@ const FormJanin = ({control, errors, screenBeforeName, currJanin, currUsg}): Rea
         border={1}
         borderColor={BORDER_COLOR}
         message="Wajib Diisi"
-        initialValue={screenBeforeName === 'AlbumFotoJanin' ? `Janin ke ${currJanin}` : `USG ke ${currUsg}`}
+        initialValue={
+          screenBeforeName === 'AlbumFotoJanin' && (janinEditData?.data === null || janinEditData?.data === undefined) ? `Janin ke ${currJanin}` : 
+          (screenBeforeName === 'AlbumFotoUsg' && (usgEditData?.data === null || usgEditData?.data === undefined) ? `USG ke ${currUsg}` : 
+          (screenBeforeName === 'AlbumFotoJanin' && janinEditData?.data != null ? janinEditData?.data?.nama : 
+            (screenBeforeName === 'AlbumFotoUsg' && (usgEditData?.data != null || usgEditData !== undefined) ? usgEditData?.data?.nama : '')
+          )
+        )
+        }
       />
     </>
   );
@@ -34,31 +44,6 @@ const FormJanin = ({control, errors, screenBeforeName, currJanin, currUsg}): Rea
 const FormUploadAlbum = ({control, errors}): React.ReactElement => {
   return(
     <>
-      {/* <InputComponent
-        control={control}
-        errors={errors}
-        name="judul"
-        width={"auto"}
-        label="Judul"
-        onChange={() => {}}
-        type="text"
-        border={1}
-        borderColor={BORDER_COLOR}
-        message="Wajib Diisi"
-
-      />
-      <InputComponent
-        control={control}
-        errors={errors}
-        name="caption"
-        width={'auto'}
-        label="Caption"
-        onChange={() => {}}
-        type="textarea"
-        border={1}
-        borderColor={BORDER_COLOR}
-        message="Wajib Diisi"
-      /> */}
       <UploadSelfie
         control={control}
         name="img"
@@ -71,26 +56,39 @@ const FormUploadAlbum = ({control, errors}): React.ReactElement => {
 };
 
 const AlbumFormSection = () => {
-   const {
+  const {
     control,
     handleSubmit,
     reset,
     formState: {errors},
   } = useForm();
   const janinId = useAlbumFotoStore((state) => state.janinId);
+  const setJaninId = useAlbumFotoStore((state) => state.setJaninId);
   const usgId = useAlbumFotoStore((state) => state.usgId);
+  const setUsgId = useAlbumFotoStore((state) => state.setUsgId);
   const usgTitleName = useAlbumFotoStore((state) => state.usgTitleName);
   const navigator = useNavigation<any>();
   const router = useRoute();
   const {screenBeforeName} = router.params as {screenBeforeName: string};
+  const currJanin = useAlbumFotoStore((state) => state.currJanin);
+  const currUSG = useAlbumFotoStore((state) => state.currUSG);
   const [modal, setModal] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [modalInfo, setModalInfo] = useState<modalInfo>({
     message: '',
     text: '',
   });
-  const currJanin = useAlbumFotoStore((state) => state.currJanin);
-  const currUSG = useAlbumFotoStore((state) => state.currUSG);
+  const {data: janinEditData, refetchJanin} = useQuery({
+    queryKey: ['janinEditData', janinId],
+    queryFn: () => getData(`album_foto_janin/${janinId}`),
+    enabled: !!janinId && screenBeforeName === 'AlbumFotoJanin',
+  });
+  console.log('usg id main = ', usgId)
+  const {data: usgEditData, refetchUsg} = useQuery({
+    queryKey: ['usgEditData', usgId],
+    queryFn: () => getData(`album_foto_usg/${usgId}`),
+    enabled: !!usgId && screenBeforeName === 'AlbumFotoUsg',
+  });
 
   const handleSubmitForm = async(data: any) => {
     if(screenBeforeName === 'AlbumFotoJanin'){
@@ -105,12 +103,24 @@ const AlbumFormSection = () => {
   };
 
   const handleSubmitJanin = async(data: any) => {
-    handlePostApi(data, 'album_foto_janin', setSuccess, setModal, setModalInfo);
+    if(janinId === 0 || janinId === undefined){
+      handlePostApi(data, 'album_foto_janin', setSuccess, setModal, setModalInfo);
+    }
+    else {
+      handleEditApi(data, 'album_foto_janin', janinId, setSuccess, setModal, setModalInfo);
+      setJaninId(0);
+    }
   };
 
   const handleSubmitUsg = async(data: any) => {
     const mergedData = {...data, janin_id: janinId};
-    handlePostApi(mergedData, 'album_foto_usg', setSuccess, setModal, setModalInfo);
+    if(usgId === 0 || usgId === undefined){
+      handlePostApi(mergedData, 'album_foto_usg', setSuccess, setModal, setModalInfo);
+    }
+    else{
+      handleEditApi(mergedData, 'album_foto_usg', usgId, setSuccess, setModal, setModalInfo);
+      setUsgId(0);
+    }
   };
 
   const handleSubmitAlbumFoto = async(data: any) => {
@@ -153,14 +163,37 @@ const AlbumFormSection = () => {
     setModal(!modal);
   };
 
+  /* useFocusEffect(
+    useCallback(() => {refetchJanin;},[])
+  );
+  */
   useEffect(() => {
-    console.log('usg id = ', usgId);
-    console.log('Janin Id', janinId);
-  }, [usgId,janinId]);
+    if(janinEditData && janinEditData?.data){
+      reset({
+        ...janinEditData?.data,
+      });
+    }
+  }, [janinEditData]);
+
+  useEffect(() => {
+    if(usgEditData && usgEditData?.data){
+      reset({
+        ...usgEditData?.data,
+      });
+    }
+  }, [usgEditData]);
+
+  useEffect(() => {
+    console.log('screen before = ', screenBeforeName);
+    console.log('usgid = ', usgId);
+    console.log('janin edit data = ', janinEditData);
+    console.log('usg edit data = ', usgEditData);
+  }, [screenBeforeName, usgId, janinEditData]);
+
 
   return(
     <FotoScreenLayout
-      title='Tambah Data'
+      title={`${(janinId === 0 || janinId === undefined) || (usgId === 0 || usgId === undefined) ? 'Tambah' : 'Edit'} Data`}
       modalVisible={modal}
       modalIsSuccess={isSuccess}
       modalMessage={modalInfo.message}
@@ -175,18 +208,26 @@ const AlbumFormSection = () => {
             errors={errors}
             screenBeforeName={screenBeforeName}
             currJanin={currJanin}
+            janinEditData={janinEditData}
           />
         }
         {
-          screenBeforeName === 'AlbumFotoUsg' && <FormJanin control={control} errors={errors} currUsg={currUSG} />
+          screenBeforeName === 'AlbumFotoUsg' && 
+          <FormJanin
+            control={control}
+            errors={errors}
+            currUsg={currUSG}
+            usgEditData={usgEditData}
+            screenBeforeName={screenBeforeName}
+          />
         }
         {
           screenBeforeName === 'AlbumFoto' && <FormUploadAlbum control={control} errors={errors} />
         }
       </View>
       <View>
-        <ButtonComponent 
-          title='Simpan'
+        <ButtonComponent
+          title="Simpan"
           color={MAIN_COLOR}
           onPress={handleSubmit(handleSubmitForm)}
         />

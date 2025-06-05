@@ -15,16 +15,13 @@ import {
 import dropdownItem from '../../data/pemeriksaan';
 import {
   BUTTON_COLOR,
-  BUTTON_COLOR_2,
   BUTTON_COLOR_3,
-  BUTTON_COLOR_4,
   MAIN_COLOR,
 } from '../../constants/color';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React, {act, useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import ButtonComponent from '../../component/button';
-import {apiResponse} from '../../type/pendaftaran/pendaftaran';
 import axios from '../../api/axios';
 import handleContentModal from '../../component/modal/function';
 import ModalComponent from '../../component/modal';
@@ -34,6 +31,11 @@ import {getForm} from '../../api/data/form';
 import ChildDropdownComponent from '../home/janji/buat_janji/detail/component/childDropdown';
 import usePelayananStore from '../../state/pelayanan';
 import useUserStore from '../../state/user';
+import dayjs from 'dayjs';
+import 'dayjs/locale/id';
+
+dayjs.locale('id');
+
 
 enum JenisLayananId {
   'BABY_SPA' = 1,
@@ -189,6 +191,22 @@ const PemeriksaanSection = (): React.JSX.Element => {
   return (
     <SafeAreaView style={{}}>
       <View style={[style.mainContainer, {backgroundColor: '#f4f4f4'}]}>
+        {/*  */}
+        {
+          dayjs().isBefore(dayjs(pemeriksaanData?.tanggal_kunjungan).subtract(1, 'day')) ?
+          <View style={style.popupContainer}>
+            <Text style={{fontSize: 18, color: '#fff', fontWeight: 'bold',textAlign: 'center', marginBottom: 12}}>Data bisa diperiksa pada hari {dayjs(pemeriksaanData?.tanggal_kunjungan).format('dddd')} tanggal {dayjs(pemeriksaanData?.tanggal_kunjungan).format('DD MMMM YYYY')} </Text>
+            <ButtonComponent
+              title="Kembali"
+              color={MAIN_COLOR}
+              customstyle={{width: '50%'}}
+              onPress={() => navigation.pop(1)}
+            />
+          </View>
+          :
+          null
+        }
+        {/*  */}
         <View style={style.headerContainer}>
           <View
             style={{
@@ -396,6 +414,18 @@ const style = StyleSheet.create({
     borderWidth: 1,
     shadowColor: '#101010',
     elevation: 3,
+  },
+  popupContainer: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    backgroundColor: '#00000095',
+    zIndex: 20,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

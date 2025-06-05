@@ -345,7 +345,7 @@ const style = StyleSheet.create({
   },
   imgContainer: {
     width: '100%',
-    height: '35%',
+    height: heightPercentageToDP(35),
     borderWidth: 0,
     display: 'flex',
     justifyContent: 'center',
@@ -366,7 +366,7 @@ const style = StyleSheet.create({
   },
   headingContainer: {
     width: '100%',
-    height: '10%',
+    height: heightPercentageToDP(10),
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -379,13 +379,14 @@ const style = StyleSheet.create({
   formContainer: {
     borderWidth: 0,
     width: '100%',
-    height: '25%',
+    height: heightPercentageToDP(25),
     paddingHorizontal: 12,
     display: 'flex',
+    flex: 1,
   },
   scrollContainer: {
     width: '100%',
-    height: '80%',
+    height: heightPercentageToDP(80),
     padding: 0,
     paddingBottom: 0,
     borderWidth: 0,
@@ -420,6 +421,7 @@ const style = StyleSheet.create({
     borderWidth: 0,
     marginBottom: 2,
     position: 'relative' */
+    //height: heightPercentageToDP(35),
     marginBottom: 24,
     borderWidth: 0,
   },
