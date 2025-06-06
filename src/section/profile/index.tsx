@@ -1,11 +1,11 @@
-import { JSX } from "react";
-import { Image, ImageProps, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { MAIN_COLOR } from "../../constants/color";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { useNavigation } from "@react-navigation/native";
-import EncryptedStorage from "react-native-encrypted-storage";
+import { JSX } from 'react';
+import { Alert, Image, ImageProps, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { MAIN_COLOR } from '../../constants/color';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { CommonActions, useNavigation } from '@react-navigation/native';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 type item = {
   id: number,
@@ -19,15 +19,34 @@ const ProfileSection = (): JSX.Element => {
 
   const handleLogout = () => {
     EncryptedStorage.removeItem('token');
-    navigation.navigate('Landing');
+    //navigation.navigate('Landing');
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'Landing' }],
+      })
+    );
   };
+
+  const handleButtonLogout = () => {
+    Alert.alert('Peringatan!', 'Apakah anda yakin ingin keluar dari akun ini?', [
+      {
+        text: 'Batal',
+        style: 'cancel',
+      },
+      {
+        text: 'Ya',
+        onPress: handleLogout,
+      },
+    ])
+  }
 
   const itemFeature: item[] = [
     {
       id: 1,
       name: 'Keluar',
       icon: require('../../assets/icon/logout.png'),
-      onPress: handleLogout,
+      onPress: handleButtonLogout,
     },
   ];
 

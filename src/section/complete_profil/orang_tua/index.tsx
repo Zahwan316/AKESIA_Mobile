@@ -10,7 +10,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import InputComponent from '../../../component/input/text';
 import ButtonComponent from '../../../component/button';
 import { BORDER_COLOR, BUTTON_COLOR} from '../../../constants/color';
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import handleFormStore from '../../../state/form';
 import DropdownInputComponent from '../../../component/input/dropdown';
 import InputDatePickerComponent from '../../../component/input/datepicker';
@@ -77,7 +77,13 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
 
   const handleButtonModal = () => {
     if(isSuccess){
-      navigation.navigate('BottomTabs');
+      //navigation.navigate('BottomTabs');
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'BottomTabs' }],
+        })
+      );
     }
     setModal(false);
   };
@@ -315,6 +321,7 @@ const style = StyleSheet.create({
     width: '100%',
     height: 'auto',
     borderWidth: 0,
+    marginBottom: 16,
   },
   buttonGroupContainer: {
     width: '100%',

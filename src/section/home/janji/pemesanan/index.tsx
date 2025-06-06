@@ -219,6 +219,18 @@ const PemesananJanjiSection = (): JSX.Element => {
     return isValid;
   };
 
+  const handleEmptyAnak = () => {
+    Alert.alert(
+      'Peringatan!',
+      'Anda belum menambahkan anak, silahkan menambahkan anak terlebih dahulu', [
+        {
+          text: 'Kembali',
+          onPress: () => navigate.pop(1),
+        },
+      ]
+    );
+  };
+
   useEffect(() => {
     if(pendaftaranUserData && pendaftaranUserData?.data){
       reset({
@@ -324,7 +336,7 @@ const PemesananJanjiSection = (): JSX.Element => {
                     control={control}
                     errors={errors}
                     message="Wajib Diisi"
-                    data={currUserAnakData?.data?.map((anak: any) => ({
+                    data={currUserAnakData?.data?.length === 0 ? handleEmptyAnak() : currUserAnakData?.data?.map((anak: any) => ({
                       name: anak.nama_lengkap,
                       id: anak.id,
                     }))}
@@ -383,20 +395,26 @@ const PemesananJanjiSection = (): JSX.Element => {
           />
         </View>
       </ScrollView>
-      <View style={style.buttonContainer}>
-        {
-          dayFromDate === 0 && (BidanBundaRegex.test(pelayananData?.data?.jenis_layanan?.nama) || PeriksaHamilNyamanRegex.test(pelayananData?.data?.jenis_layanan?.nama)) ?
-          null
-          :
-          <ButtonComponent
-            color={MAIN_COLOR}
-            onPress={handleAlert}
-            title="Tentukan Janji Temu"
-            customstyle={{width: '100%', display: pendaftaranId != null ? 'none' : 'flex'}}
-          />
+      {
+        pendaftaranId != null ?
+        null
+        :
+        <View style={style.buttonContainer}>
+          {
+            dayFromDate === 0 && (BidanBundaRegex.test(pelayananData?.data?.jenis_layanan?.nama) || PeriksaHamilNyamanRegex.test(pelayananData?.data?.jenis_layanan?.nama)) ?
+            null
+            :
+            <ButtonComponent
+              color={MAIN_COLOR}
+              onPress={handleAlert}
+              title="Tentukan Janji Temu"
+              customstyle={{width: '100%', display: pendaftaranId != null ? 'none' : 'flex'}}
+            />
 
-        }
-      </View>
+          }
+        </View>
+
+      }
     </JanjiScreenLayout>
   );
 };

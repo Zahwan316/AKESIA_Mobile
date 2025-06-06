@@ -1,15 +1,34 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {NavigationContainer, useFocusEffect, useNavigation} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import routes, { routesBottom } from '../data/route';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from '../screen/SplashScreen';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const tab = createBottomTabNavigator();
 const nativetab = createNativeStackNavigator();
 
 const BottomTabs = (): React.JSX.Element => {
+  const token = EncryptedStorage.getItem('token');
+  
+  const checkToken = () => {
+    if(!token){
+      useNavigation<any>().navigate('Landing');
+    }
+  };
+
+  useEffect(() => {
+    checkToken();
+  }, [checkToken]);
+
+  useFocusEffect(
+    useCallback(() => {
+      checkToken();
+    }, [checkToken])
+  );
+
   return(
     <tab.Navigator>
       {

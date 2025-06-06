@@ -91,7 +91,7 @@ const ListJanjiSection = (): JSX.Element => {
   useEffect(() => {
     let filterPemeriksaanData: PemeriksaanApiResponse[] = pemeriksaanUserData?.data.filter((item: PemeriksaanApiResponse) => item.bidan_id === currBidanData?.id);
     setFilteredPemeriksaanData(filterPemeriksaanData);
-    console.log(filterPemeriksaanData)
+    console.log(filterPemeriksaanData);
   }, [tanggalFilter, pemeriksaanUserData, currBidanData?.id]);
 
   useFocusEffect(

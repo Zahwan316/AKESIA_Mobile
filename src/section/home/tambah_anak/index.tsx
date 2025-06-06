@@ -25,7 +25,7 @@ import handleFormStore from '../../../state/form';
 import ModalComponent from '../../../component/modal';
 import axios from '../../../api/axios';
 import handleContentModal from '../../../component/modal/function';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {CommonActions, useNavigation, useRoute} from '@react-navigation/native';
 import DropdownInputComponent from '../../../component/input/dropdown';
 import Jenis_Kelamin from '../../../data/jenis_kelamin/index';
 import golongan_darah_data from '../../../data/golongan_darah';
@@ -170,7 +170,7 @@ const Page1 = ({
       <InputComponent
         height={'auto'}
         width={'100%'}
-        label="Nomor Induk Kependudukan"
+        label="Nomor Induk Kependudukan (Opsional)"
         name="nik"
         onChange={onChange}
         placeholder=""
@@ -243,7 +243,7 @@ const Page2 = ({
         <InputComponent
           height={'auto'}
           width={'100%'}
-          label="Nomor Registrasi Kohort Bayi"
+          label="Nomor Registrasi Kohort Bayi (Opsional)"
           name="no_registrasi_kohort_bayi"
           onChange={onChange}
           placeholder=""
@@ -261,7 +261,7 @@ const Page2 = ({
         <InputComponent
           height={'auto'}
           width={'100%'}
-          label="Nomor Registrasi Kohort Balita & Anak Pra-Sekolah"
+          label="Nomor Registrasi Kohort Balita & Anak Pra-Sekolah (Opsional)"
           name="no_registrasi_kohort_balita"
           onChange={onChange}
           placeholder=""
@@ -282,7 +282,7 @@ const Page2 = ({
         <InputComponent
           height={'auto'}
           width={'100%'}
-          label="Nomor Catatan Medik Rumah Sakit"
+          label="Nomor Catatan Medik Rumah Sakit (Opsional)"
           name="no_catatan_medik_rs"
           onChange={onChange}
           placeholder=""
@@ -303,7 +303,7 @@ const Page2 = ({
         <InputComponent
           height={'auto'}
           width={'100%'}
-          label="Nomor Registrasi Kohort Ibu"
+          label="Nomor Registrasi Kohort Ibu (Opsional)"
           name="no_registrasi_kohort_ibu"
           onChange={onChange}
           placeholder=""
@@ -434,7 +434,13 @@ const TambahAnakSection = (): JSX.Element => {
 
   const handleBackToHome = () => {
     if (isSuccess) {
-      navigation.navigate('BottomTabs');
+      //navigation.navigate('BottomTabs');
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'BottomTabs' }],
+        })
+      );
     }
     setModal(!modal);
   };

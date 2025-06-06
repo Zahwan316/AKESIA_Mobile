@@ -1,4 +1,4 @@
-import React, { JSX, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import JanjiScreenLayout from '../layout';
 import ButtonComponent from '../../../../component/button';
@@ -13,6 +13,8 @@ import axios from '../../../../api/axios';
 import ModalComponent from '../../../../component/modal';
 import { modalInfoType } from '../../../../type/modalInfo';
 import EmptyDataComponent from '../../../../component/empty';
+import messaging from '@react-native-firebase/messaging';
+import useUserStore from '../../../../state/user';
 
 type button = {
   title: string,
@@ -88,6 +90,7 @@ const JanjiKitaSection = (): JSX.Element => {
     message: '',
     text: '',
   });
+  const currUser = useUserStore((state) => state.user);
 
   const handleCurrMenu = (title: string) => {
     setCurrMenu(title);
@@ -128,6 +131,17 @@ const JanjiKitaSection = (): JSX.Element => {
     }
     setModal(!modal);
   };
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      // cek tipe data
+      if (remoteMessage?.data?.type === 'pendaftaran_baru' && remoteMessage?.data?.user_id === currUser?.id.toString()) {
+        refetch();
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   useFocusEffect(
     React.useCallback(() => {

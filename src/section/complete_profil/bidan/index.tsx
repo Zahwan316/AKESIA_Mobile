@@ -21,7 +21,7 @@ import {
 import InputComponent from '../../../component/input/text';
 import ButtonComponent from '../../../component/button';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import {useNavigation} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 import textInputProps from '../../../type/input/text';
 import {useForm} from 'react-hook-form';
 import DropdownInputComponent from '../../../component/input/dropdown';
@@ -300,7 +300,13 @@ const CompleteProfileBidanSection = (): JSX.Element => {
 
   const handleModal = () => {
     if(isSuccess){
-      navigation.navigate('BottomTabs');
+      //navigation.navigate('BottomTabs');
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'BottomTabs' }],
+        })
+      );
     }
 
     setModal(!modal);
