@@ -47,8 +47,6 @@ const AlbumFotoSection = (): JSX.Element => {
     useCallback(() => {refetch();},[refetch])
   );
 
-
-
   return(
     <FotoScreenLayout
       title="Album Foto Kita"

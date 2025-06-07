@@ -25,6 +25,7 @@ const PopupImageComponent = (props: props): JSX.Element => {
   const fotoId = useAlbumFotoStore((state) => state.fotoId);
   const setFotoId = useAlbumFotoStore((state) => state.setFotoId);
   const route = useRoute();
+  const {screenBeforeName} = route.params as {screenBeforeName: string} || {};
   const [modal, setModal] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [modalInfo, setModalInfo] = useState<modalInfo>({
@@ -57,6 +58,12 @@ const PopupImageComponent = (props: props): JSX.Element => {
     );
   };
 
+  const handleEdit = () => {
+    setPopupImage('');
+    setPopup(false);
+    navigator.navigate('AlbumFotoForm', {screenBeforeName: route.name});
+  };
+
   const handleDeleteDataToApi = async() => {
     handleDeleteApi(`${urlDelete?.url}${fotoId}`, setSuccess, setModal, setModalInfo);
   };
@@ -68,11 +75,7 @@ const PopupImageComponent = (props: props): JSX.Element => {
     }
     setModal(!modal);
   };
-
-  useEffect(() => {
-    console.log(AlbumFotoDeleteRoute.find((item) => item.nameScreen === route.name));
-  }, [route]);
-
+  
   return(
     <>
       {
@@ -96,8 +99,8 @@ const PopupImageComponent = (props: props): JSX.Element => {
               resizeMode="contain"
             />
             <View style={Style.buttonContainer}>
-              <TouchableOpacity style={[Style.button, {backgroundColor: '#0a61d9'}]}>
-                <Icon name='pencil' size={24} color={'#fff'}/>
+              <TouchableOpacity style={[Style.button, {backgroundColor: '#0a61d9'}]} onPress={handleEdit}>
+                <Icon name="pencil" size={24} color={'#fff'}/>
               </TouchableOpacity>
               <TouchableOpacity style={[Style.button, {backgroundColor: '#c92d0b'}]} onPress={handleDelete}>
                 <Icon name="trash" size={24} color={'#fff'} />
@@ -107,7 +110,6 @@ const PopupImageComponent = (props: props): JSX.Element => {
         </TouchableOpacity>
         : null
       }
-  
     </>
   );
 };

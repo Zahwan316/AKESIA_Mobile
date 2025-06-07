@@ -45,7 +45,6 @@ const AlbumFotoJaninSection = (): JSX.Element => {
 
   useEffect(() => {
     setCurrJanin(janinData?.data?.length + 1);
-    console.log(currJanin);
   }, [janinData, setCurrJanin, currJanin]);
 
   useFocusEffect(

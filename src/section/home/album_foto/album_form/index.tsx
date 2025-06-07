@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import InputComponent from '../../../../component/input/text';
 import { BORDER_COLOR, MAIN_COLOR } from '../../../../constants/color';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 import ButtonComponent from '../../../../component/button';
 import { handlePostApi } from '../../../../api/handlePostApi';
 import { modalInfo } from '../../tambah_anak';
@@ -13,8 +13,9 @@ import useAlbumFotoStore from '../../../../state/album_foto';
 import { useQuery } from '@tanstack/react-query';
 import { getData } from '../../../../api/data/getData';
 import { handleEditApi } from '../../../../api/handleEditApi';
+import { BASE_URL } from '../../../../constants/baseurl';
 
-const FormJanin = ({control, errors, screenBeforeName, currJanin, currUsg, janinEditData, usgEditData}): React.ReactElement => {
+const FormJanin = ({control, errors, screenBeforeName, currJanin, currUsg, janinEditData, usgEditData, getInitialNama}): React.ReactElement => {
   return(
     <>
       <InputComponent
@@ -29,19 +30,14 @@ const FormJanin = ({control, errors, screenBeforeName, currJanin, currUsg, janin
         borderColor={BORDER_COLOR}
         message="Wajib Diisi"
         initialValue={
-          screenBeforeName === 'AlbumFotoJanin' && (janinEditData?.data === null || janinEditData?.data === undefined) ? `Janin ke ${currJanin}` : 
-          (screenBeforeName === 'AlbumFotoUsg' && (usgEditData?.data === null || usgEditData?.data === undefined) ? `USG ke ${currUsg}` : 
-          (screenBeforeName === 'AlbumFotoJanin' && janinEditData?.data != null ? janinEditData?.data?.nama : 
-            (screenBeforeName === 'AlbumFotoUsg' && (usgEditData?.data != null || usgEditData !== undefined) ? usgEditData?.data?.nama : '')
-          )
-        )
+          getInitialNama()
         }
       />
     </>
   );
 };
 
-const FormUploadAlbum = ({control, errors}): React.ReactElement => {
+const FormUploadAlbum = ({control, errors, fotoEditData, fotoForm, fotoId}): React.ReactElement => {
   return(
     <>
       <UploadSelfie
@@ -51,6 +47,16 @@ const FormUploadAlbum = ({control, errors}): React.ReactElement => {
         message="Wajib Diisi"
         label="Pilih foto"
       />
+      {
+        (fotoForm === null || fotoForm === undefined) && fotoEditData?.data !== null && fotoId !== 0 ?
+          <Image
+            source={{uri: `${BASE_URL}${fotoEditData?.data?.uploads?.path}`}}
+            style={{width: '100%', height: '50%'}}
+            resizeMode="contain"
+            resizeMethod="resize"
+          />
+          : null
+      }
     </>
   );
 };
@@ -60,13 +66,16 @@ const AlbumFormSection = () => {
     control,
     handleSubmit,
     reset,
+    watch,
     formState: {errors},
   } = useForm();
   const janinId = useAlbumFotoStore((state) => state.janinId);
   const setJaninId = useAlbumFotoStore((state) => state.setJaninId);
   const usgId = useAlbumFotoStore((state) => state.usgId);
   const setUsgId = useAlbumFotoStore((state) => state.setUsgId);
-  const usgTitleName = useAlbumFotoStore((state) => state.usgTitleName);
+  const fotoId = useAlbumFotoStore((state) => state.fotoId);
+  const setFotoId = useAlbumFotoStore((state) => state.setFotoId);
+
   const navigator = useNavigation<any>();
   const router = useRoute();
   const {screenBeforeName} = router.params as {screenBeforeName: string};
@@ -83,12 +92,17 @@ const AlbumFormSection = () => {
     queryFn: () => getData(`album_foto_janin/${janinId}`),
     enabled: !!janinId && screenBeforeName === 'AlbumFotoJanin',
   });
-  console.log('usg id main = ', usgId)
   const {data: usgEditData, refetchUsg} = useQuery({
     queryKey: ['usgEditData', usgId],
     queryFn: () => getData(`album_foto_usg/${usgId}`),
     enabled: !!usgId && screenBeforeName === 'AlbumFotoUsg',
   });
+  const {data: fotoEditData, refetchFoto} = useQuery({
+    queryKey: ['usgEditData', fotoId],
+    queryFn: () => getData(`album_foto/${fotoId}`),
+    enabled: !!fotoId && screenBeforeName === 'AlbumFoto',
+  });
+  const fotoForm = watch('img');
 
   const handleSubmitForm = async(data: any) => {
     if(screenBeforeName === 'AlbumFotoJanin'){
@@ -119,13 +133,13 @@ const AlbumFormSection = () => {
     }
     else{
       handleEditApi(mergedData, 'album_foto_usg', usgId, setSuccess, setModal, setModalInfo);
-      setUsgId(0);
     }
   };
 
   const handleSubmitAlbumFoto = async(data: any) => {
     const mergedData = {...data, usg_id: usgId};
     const formData = new FormData();
+    console.log(mergedData)
 
     for (const key in mergedData) {
       if (key === 'img') {
@@ -141,7 +155,12 @@ const AlbumFormSection = () => {
         formData.append(key, mergedData[key]);
       }
     }
-    handlePostApi(formData, 'album_foto', setSuccess, setModal, setModalInfo);
+    if(fotoId === 0 || fotoId === undefined){
+      handlePostApi(formData, 'album_foto', setSuccess, setModal, setModalInfo);
+    }
+    else{
+      handleEditApi(formData, 'album_foto', fotoId, setSuccess, setModal, setModalInfo);
+    }
   };
 
   const handleModal = () => {
@@ -153,6 +172,7 @@ const AlbumFormSection = () => {
       else if(screenBeforeName === 'AlbumFotoUsg'){
         //navigator.navigate('AlbumFotoUsg', {screenBeforeName: 'AlbumFotoJanin'});
         navigator.pop(1);
+        setUsgId(0);
       }
       else if(screenBeforeName === 'AlbumFoto'){
         //navigator.navigate('AlbumFoto', {screenBeforeName: 'AlbumFotoUsg'});
@@ -163,37 +183,55 @@ const AlbumFormSection = () => {
     setModal(!modal);
   };
 
-  /* useFocusEffect(
-    useCallback(() => {refetchJanin;},[])
-  );
-  */
-  useEffect(() => {
-    if(janinEditData && janinEditData?.data){
-      reset({
-        ...janinEditData?.data,
-      });
+  const getInitialNama = () => {
+    if (screenBeforeName === 'AlbumFotoJanin') {
+      if (!janinEditData?.data) {
+        return `Janin ke ${currJanin}`;
+      } else {
+        return janinEditData.data.nama;
+      }
+    } else if (screenBeforeName === 'AlbumFotoUsg') {
+      if (!usgEditData?.data) {
+        return `USG ke ${currUSG}`;
+      } else {
+        return usgEditData.data.nama;
+      }
     }
-  }, [janinEditData]);
+    return '';
+  };
 
   useEffect(() => {
-    if(usgEditData && usgEditData?.data){
-      reset({
-        ...usgEditData?.data,
-      });
+    if (screenBeforeName === 'AlbumFotoJanin' && janinEditData?.data) {
+      reset({...janinEditData.data});
     }
-  }, [usgEditData]);
+    else if (screenBeforeName === 'AlbumFotoUsg' && usgEditData?.data) {
+      reset({...usgEditData.data});
+    }
+   /*  else if (screenBeforeName === 'AlbumFoto' && fotoEditData?.data) {
+      reset({...fotoEditData.data});
+    } */
+  }, [janinEditData, screenBeforeName, usgEditData, fotoEditData]);
 
   useEffect(() => {
-    console.log('screen before = ', screenBeforeName);
-    console.log('usgid = ', usgId);
-    console.log('janin edit data = ', janinEditData);
-    console.log('usg edit data = ', usgEditData);
-  }, [screenBeforeName, usgId, janinEditData]);
+    console.log('foto id = ', fotoId);
+    console.log('foto data = ', fotoEditData);
+    console.log('foto form = ', fotoForm);
+  }, [fotoId, fotoEditData, fotoForm]);
 
+  //handle delete fotoId
+  useEffect(() => {
+    const unsubscribe = navigator.addListener('beforeRemove', () => {
+      if(screenBeforeName === 'AlbumFoto'){
+        setFotoId(0);
+      }
+    });
+
+    return unsubscribe;
+  }, [navigator, screenBeforeName]);
 
   return(
     <FotoScreenLayout
-      title={`${(janinId === 0 || janinId === undefined) || (usgId === 0 || usgId === undefined) ? 'Tambah' : 'Edit'} Data`}
+      title={`${(janinId === 0 || janinId === undefined) || (usgId === 0 || usgId === undefined) || (fotoId === 0) ? 'Tambah' : 'Edit'} Data`}
       modalVisible={modal}
       modalIsSuccess={isSuccess}
       modalMessage={modalInfo.message}
@@ -209,6 +247,7 @@ const AlbumFormSection = () => {
             screenBeforeName={screenBeforeName}
             currJanin={currJanin}
             janinEditData={janinEditData}
+            getInitialNama={getInitialNama}
           />
         }
         {
@@ -219,10 +258,18 @@ const AlbumFormSection = () => {
             currUsg={currUSG}
             usgEditData={usgEditData}
             screenBeforeName={screenBeforeName}
+            getInitialNama={getInitialNama}
           />
         }
         {
-          screenBeforeName === 'AlbumFoto' && <FormUploadAlbum control={control} errors={errors} />
+          screenBeforeName === 'AlbumFoto' &&
+            <FormUploadAlbum
+              control={control}
+              errors={errors}
+              fotoEditData={fotoEditData}
+              fotoForm={fotoForm}
+              fotoId={fotoId}
+              />
         }
       </View>
       <View>

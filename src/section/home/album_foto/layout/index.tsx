@@ -45,7 +45,10 @@ const FotoScreenLayout = (props: props):JSX.Element => {
             {props.children}
           </View>
         </View>
-        <PopupImageComponent />
+        {
+          popup &&
+          <PopupImageComponent />
+        }
       </SafeAreaView>
     </SafeAreaProvider>
   );

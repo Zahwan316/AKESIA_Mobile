@@ -26,15 +26,16 @@ const AlbumFotoUsgSection = (): JSX.Element => {
     message: '',
     text: '',
   });
+  const {data: usgData, refetch} = useQuery({
+    queryKey: ['usgData'],
+    queryFn: () => getData(`album_foto_usg/getByJaninId/${janinId}`),
+  });
+
   const handleScreen = (screen: string, screenBeforeName: string, usgId: number, UsgTitleName: string) => {
     setUsgId(usgId);
     setUsgTitleName(UsgTitleName);
     navigator.navigate(screen, {screenBeforeName: screenBeforeName});
   };
-  const {data: usgData, refetch} = useQuery({
-    queryKey: ['usgData'],
-    queryFn: () => getData(`album_foto_usg/getByJaninId/${janinId}`),
-  });
 
   const handleModal = () => {
     if(isSuccess){
@@ -47,11 +48,10 @@ const AlbumFotoUsgSection = (): JSX.Element => {
     handleScreen('AlbumFotoForm', 'AlbumFotoUsg', usgId);
   };
 
-  /*   useEffect(() => {
+  useEffect(() => {
     setCurrUSG(usgData?.data?.length + 1);
-    console.log('usg = ',currUSG);
   }, [usgData, setCurrUSG]);
-  */
+
   useFocusEffect(
     useCallback(() => {refetch();},[refetch])
   );
