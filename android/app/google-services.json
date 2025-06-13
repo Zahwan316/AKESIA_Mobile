@@ -12,7 +12,28 @@
           "package_name": "com.kia_mobile"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "200703951018-37etu9bki0op7n4jvkuncfns2sbkcbp6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kia_mobile",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "200703951018-uk27ulo6vennnp4baschua4s3llvv8pv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kia_mobile",
+            "certificate_hash": "2cbd515afaa2d66169c9c5e243bd9fe99b98d91d"
+          }
+        },
+        {
+          "client_id": "200703951018-fjlah2ts30kritfv1rbc02n9hskau07r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCuoquxbsNJzwLUYXokY51Ow2MNhgiuG3M"
@@ -20,7 +41,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "200703951018-fjlah2ts30kritfv1rbc02n9hskau07r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

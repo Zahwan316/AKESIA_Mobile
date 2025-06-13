@@ -96,6 +96,7 @@ android {
         versionCode 1
         versionName "1.0"
         resValue "string", "API_URL", project.env.get("API_URL")
+        manifestPlaceholders = [appAuthRedirectScheme: "com.googleusercontent.apps.200703951018-fjlah2ts30kritfv1rbc02n9hskau07r"]
     }
     signingConfigs {
         debug {
@@ -118,7 +119,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled true /* enableProguardInReleaseBuilds */
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
