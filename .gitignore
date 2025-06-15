@@ -88,3 +88,7 @@ src/firebase
 android/app/my-release-key.jks
 /android/app/google-service.json
 android/app/google-service.json
+
+# Auth
+/src/auth
+/src/auth/authConfig.ts

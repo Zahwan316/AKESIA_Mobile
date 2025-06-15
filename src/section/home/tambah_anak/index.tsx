@@ -32,6 +32,7 @@ import golongan_darah_data from '../../../data/golongan_darah';
 import { useQuery } from '@tanstack/react-query';
 import { getAllAnak } from '../../../api/data/allAnak';
 import text from '../../../component/input/text';
+import { verticalScale } from 'react-native-size-matters';
 
 export type modalInfo = {
   message: string;
@@ -299,7 +300,7 @@ const Page2 = ({
         />
       </View>
       <View>
-        <Text style={style.headerFormText}>Puskesmas Domisili</Text>
+        {/* <Text style={style.headerFormText}>Puskesmas Domisili</Text> */}
         <InputComponent
           height={'auto'}
           width={'100%'}
@@ -334,9 +335,8 @@ const TambahAnakSection = (): JSX.Element => {
     message: '',
     text: '',
   });
-  const setForm = handleFormStore(state => state.setForm);
   const navigation = useNavigation<any>();
-  const { data: allAnakData} = useQuery({
+  const { data: allAnakData, isLoading} = useQuery({
       queryKey: ['allAnak'],
       queryFn: getAllAnak,
   });
@@ -465,8 +465,8 @@ const TambahAnakSection = (): JSX.Element => {
   }, [selectedAnakId]);
 
   useEffect(() => {
-    if(screenType === 'edit_anak' && allAnakData?.data?.length === 0 ){
-      Alert.alert('Mohon maaf anda belum bisa mengakes bagian ini', 'Silahkan ke bagian tambah anak terlebih dahulu untuk menggunakan fitur ini', [{text: 'OK', onPress: () => navigation.navigate('BottomTabs')}]);
+    if(screenType === 'edit_anak' && allAnakData?.data?.length === 0 && !isLoading){
+      Alert.alert('Mohon maaf anda belum bisa mengakses bagian ini', 'Silahkan ke bagian tambah anak terlebih dahulu untuk menggunakan fitur ini', [{text: 'OK', onPress: () => navigation.pop(1)}]);
     }
   }, [screenType, allAnakData]);
 
@@ -579,11 +579,11 @@ const style = StyleSheet.create({
   },
   formContainer: {
     width: '100%',
-    height: heightPercentageToDP(80),
+    height: verticalScale(520),
     marginBottom: 34,
   },
   buttonContainer: {
-    height: heightPercentageToDP(10),
+    height: verticalScale(140),
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

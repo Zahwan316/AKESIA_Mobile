@@ -177,6 +177,7 @@ const ListJanjiSection = (): JSX.Element => {
               status={item.pendaftaran?.status}
               role="bidan"
               pendaftaranId={item.pendaftaran_id}
+              date={item.tanggal_kunjungan}
               handlePeriksa={() => handleScreen('Pemeriksaan', item.pelayanan.form_id, item.id, item, item.pendaftaran_id)}
             />
           ))

@@ -173,7 +173,7 @@ type modalInfo = {
 const CompleteProfileBidanSection = (): JSX.Element => {
   const navigation = useNavigation<any>();
   const [selectedProvinsiId, setSelectedProvinsiId] = useState<
-    number | null | string
+    number | null
   >(null);
   const {
     control,
@@ -201,7 +201,7 @@ const CompleteProfileBidanSection = (): JSX.Element => {
   });
 
 
-  const filteredKotaOptions = kotaData?.data?.filter((item: any) => item.provinsi_id === selectedProvinsiId)
+  const filteredKotaOptions = kotaData?.data?.filter((item: any) => item.provinsi_id === parseInt(selectedProvinsiId))
   .map((item: any) => ({
     name: item.name,
     id: item.id,
@@ -295,8 +295,6 @@ const CompleteProfileBidanSection = (): JSX.Element => {
     }
   };
 
-  useEffect(() => {
-  }, [isLoading]);
 
   const handleModal = () => {
     if(isSuccess){
@@ -357,7 +355,7 @@ const CompleteProfileBidanSection = (): JSX.Element => {
                       border={item.border}
                       errors={item.errors}
                       control={item.control}
-                      data={item.options}                
+                      data={item.options}
                       initialValue={item.name === 'tempat_bekerja' ? 'Praktek Bidan Mandiri' : null}
                     />
                   );

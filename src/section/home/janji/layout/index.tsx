@@ -6,6 +6,7 @@ import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsi
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { CommonActions } from '@react-navigation/native';
+import { verticalScale } from 'react-native-size-matters';
 
 type props = {
   children: React.ReactNode,
@@ -51,7 +52,7 @@ const style = StyleSheet.create({
   },
   mainContent: {
     width: '100%',
-    height: '90%',
+    height: verticalScale(560),
     borderWidth: 0,
   },
 });

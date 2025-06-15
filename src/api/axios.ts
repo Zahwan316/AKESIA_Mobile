@@ -1,15 +1,14 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import Config from 'react-native-config';
 
 const instance = axios.create({
-  baseURL: /* Config.API_URL */ 'http://10.0.2.2:8000/api/' /* 'https://akesia.my.id/api/' */,
+  baseURL: /* __DEV__ ?  */ /* 'http://10.0.2.2:8000/api/' */ 'https://akesia.my.id/api/',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
     'Authorization': 'Bearer ' + EncryptedStorage.getItem('token'),
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64)',
   },
 });
 

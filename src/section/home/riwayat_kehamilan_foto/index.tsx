@@ -8,12 +8,16 @@ import FotoScreenLayout from '../album_foto/layout';
 import FloatingIcon from '../../../component/floatingIcon';
 import { useCallback, useEffect } from 'react';
 import EmptyDataComponent from '../../../component/empty';
+import useComponentStore from '../../../state/component';
 
 const RiwayatKehamilanFotoSection = () => {
   const navigator = useNavigation<any>();
   const router = useRoute();
   const RiwayatKehamilanGroupId = useAlbumFotoStore((state) => state.riwayatKehamilanGroupId);
   const RiwayatKehamilanTitleName = useAlbumFotoStore((state) => state.riwayatKehamilanTitleName);
+  const setPopUp = useComponentStore((state) => state.setPopup);
+  const setPopUpImg = useComponentStore((state) => state.setPopupImg);
+  const setFotoId = useAlbumFotoStore((state) => state.setFotoId);
   const {
     screenBeforeName,
   } = router.params as {screenBeforeName: string};
@@ -29,9 +33,19 @@ const RiwayatKehamilanFotoSection = () => {
     });
   };
 
+  const handlePopUpImage = (img: string, id: number) => {
+    setPopUp(true);
+    setPopUpImg(img);
+    setFotoId(id);
+  };
+
   useFocusEffect(
     useCallback(() => {refetch();},[refetch])
   );
+
+  useEffect(() => {
+    console.log('riwayat kehamilan foto data = ', RiwayatKehamilanFotoData)
+  }, [RiwayatKehamilanFotoData]);
 
   return(
     <FotoScreenLayout
@@ -49,8 +63,8 @@ const RiwayatKehamilanFotoSection = () => {
             {
               RiwayatKehamilanFotoData?.data?.length === 0 ?
               <EmptyDataComponent
-                customTextHeader='Oops!! Buku KIA masih kosong'
-                customTextDescription='Belum ada nih fotonya tambah yuk!'
+                customTextHeader="Oops!! Buku KIA masih kosong"
+                customTextDescription="Belum ada nih fotonya tambah yuk!"
               />
               :
               RiwayatKehamilanFotoData?.data?.map((item: any, index: number) => {
@@ -58,8 +72,9 @@ const RiwayatKehamilanFotoSection = () => {
                   <AlbumImageItemComponent
                     key={index}
                     title={item.nama}
-                    //onPress={() => handleScreen('AlbumFoto', 'AlbumFotoUsg', item.id)}
-                    img={item.upload?.path}
+                    onPress={() => handlePopUpImage(item.uploads?.path, item.id)}
+                    img={item.uploads?.path}
+                    withText
                   />
                 );
               })

@@ -4,10 +4,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableOpacity } from 'react-native';
 import {  Dimensions } from 'react-native';
 import { BUTTON_COLOR, MAIN_COLOR } from '../../../../../constants/color';
-import axios from '../../../../../api/axios';
-import { modalInfoType } from '../../../../../type/modalInfo';
-import handleContentModal from '../../../../../component/modal/function';
 import { openWhatsApp } from '../../../../../function/whatsapp';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
 
 const { width, height } = Dimensions.get('window');
 
@@ -19,6 +20,7 @@ type props = {
   status: string,
   role?: 'user' | 'bidan',
   pendaftaranId: number,
+  date: string,
   handleClick: () => void,
   handleDelete: () => void,
   handlePeriksa?: () => void
@@ -44,13 +46,13 @@ const QueueItemComponent = (props: props): JSX.Element => {
 
   return(
     <View style={style.mainContentContainer}>
-      
       <View style={style.infoContainer}>
         <View style={style.infoItemContainer}>
           <Text style={{fontWeight: 'bold', fontSize: 14, color: '#fff'}}>{props.status}</Text>
         </View>
         <View>
-          <Text style={{fontWeight: 'bold', fontSize: 15}}>{props.time}</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 14}}>{dayjs(props.date).format('DD MMMM YYYY')}</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 14}}>Jam {dayjs(props.time, 'HH:mm:ss').format('HH:mm')}</Text>
         </View>
       </View>
       <View style={style.descContainer}>
@@ -81,7 +83,6 @@ const QueueItemComponent = (props: props): JSX.Element => {
           </View>
         </View>
         <View style={style.actionContainer}>
-          
           <View style={style.buttonGroupContainer}>
             <TouchableOpacity onPress={openWhatsApp}>
               <Icon name='whatsapp' size={30} color='#00ff0090'/>
@@ -91,7 +92,7 @@ const QueueItemComponent = (props: props): JSX.Element => {
                 (props.role === 'user' && props.status !== "Menunggu Konfirmasi") || (props.role === 'bidan' && props.status === 'Selesai') ?
                 null
                 :
-                <Icon name='trash' size={30} color='#ff000090' onPress={handleAlert}/>
+                <Icon name="trash" size={30} color='#ff000090' onPress={handleAlert}/>
               }
             </TouchableOpacity>
           </View>
@@ -104,8 +105,8 @@ const QueueItemComponent = (props: props): JSX.Element => {
 export const style = StyleSheet.create({
   mainContentContainer: {
     width: '100%',
-    minHeight: height * 0.26,
-    maxHeight: height * 0.3,
+    minHeight: height * 0.29,
+    maxHeight: height * 0.32,
     display: 'flex',
     flexDirection: 'column',
     marginBottom: 16,
@@ -120,13 +121,14 @@ export const style = StyleSheet.create({
   },
   infoContainer: {
     width: '100%',
-    height: '20%',
-    borderWidth: 0,
+    height: '25%',
+    borderBottomWidth: 0,
     marginBottom: 8,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    borderBottomColor: '#909090',
   },
   infoItemContainer: {
     width: 'auto',

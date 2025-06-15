@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { MAIN_COLOR } from '../../constants/color';
 import { useNavigation } from '@react-navigation/native';
+import { verticalScale } from 'react-native-size-matters';
 
 type props = {
   handlePress: () => void
@@ -27,7 +28,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     right: 32,
-    bottom: 24,
+    bottom: verticalScale(30),
     elevation: 6, // Android shadow
     shadowColor: '#000',
   },

@@ -113,7 +113,7 @@ const PelayananIbuNifasSection = (): JSX.Element => {
               message="Harap diisi"
               name="tindakan_nifas_1"
               onChange={() => {}}
-              placeholder="C"
+              placeholder=""
               type="text"
               backgroundColor={'#fff'}
               border={1}
@@ -169,7 +169,7 @@ const PelayananIbuNifasSection = (): JSX.Element => {
               //message="Harap diisi"
               name="tindakan_nifas_2"
               onChange={() => {}}
-              placeholder="C"
+              placeholder=""
               type="text"
               backgroundColor={'#fff'}
               border={1}
@@ -225,7 +225,7 @@ const PelayananIbuNifasSection = (): JSX.Element => {
               //message="Harap diisi"
               name="tindakan_nifas_3"
               onChange={() => {}}
-              placeholder="C"
+              placeholder=""
               type="text"
               backgroundColor={'#fff'}
               border={1}
@@ -281,7 +281,7 @@ const PelayananIbuNifasSection = (): JSX.Element => {
               //message="Harap diisi"
               name="tindakan_nifas_4"
               onChange={() => {}}
-              placeholder="C"
+              placeholder=""
               type="text"
               backgroundColor={'#fff'}
               border={1}

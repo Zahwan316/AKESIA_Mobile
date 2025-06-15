@@ -8,10 +8,6 @@ import { useQuery } from '@tanstack/react-query';
 import { getForm } from '../../../api/data/form';
 import Jenis_Kelamin from '../../../data/jenis_kelamin';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { apiResponse } from '../../../type/pendaftaran/pendaftaran';
-import calculateAge from '../../../utils/calculateAge';
-import axios from '../../../api/axios';
-import handleContentModal from '../../../component/modal/function';
 import { formattedDateData } from '../../../utils/date';
 import { checkIsDataNull } from '../../../utils/checkDataIsNull';
 import { handlePostFormApi } from '../../../api/handleSendFormApi';
@@ -91,6 +87,10 @@ const PelayananBayiSection = (): JSX.Element => {
     }
   }, [pelayananBayiFormData]);
 
+  useEffect(() => {
+
+  }, []);
+
   return(
     <FormScreenLayout
       modalHandleModal={handleModal}
@@ -132,6 +132,7 @@ const PelayananBayiSection = (): JSX.Element => {
           labelColor=""
           message="Wajib Diisi"
           disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
+          onChange={() => {}}
           initialValue={checkIsDataNull(pelayananBayiFormData?.data) ? pemeriksaanData?.pendaftaran?.bayi?.tanggal_lahir : pelayananBayiFormData?.data.tanggal_lahir }
         />
         <DropdownInputComponent
@@ -172,7 +173,7 @@ const PelayananBayiSection = (): JSX.Element => {
         <InputComponent
           height={'auto'}
           width={'100%'}
-          label="Catatan Soap (Keterangan Kondisi Bayi)"
+          label="Catatan SOAP (Keterangan Kondisi Bayi)"
           message="Harap diisi"
           name="keterangan_kondisi_bayi"
           onChange={() => {}}

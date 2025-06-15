@@ -33,6 +33,7 @@ import usePelayananStore from '../../state/pelayanan';
 import useUserStore from '../../state/user';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
+import { verticalScale } from 'react-native-size-matters';
 
 dayjs.locale('id');
 
@@ -57,7 +58,6 @@ const PemeriksaanSection = (): React.JSX.Element => {
   const setPelayananPeriksaHamilId = usePelayananStore(
     state => state.setPelayananPeriksaHamilId,
   );
-  const currUserData = useUserStore((state) => state.user);
   const {formId, pemeriksaanId, pemeriksaanData, pendaftaranId} =
     route.params as {
       formId: number;
@@ -170,8 +170,9 @@ const PemeriksaanSection = (): React.JSX.Element => {
   };
 
   useEffect(() => {
-    console.table(pelayananPeriksaHamilId);
-  }, [pelayananPeriksaHamilId]);
+    console.table('pelayananPeriksaHamilId', pelayananPeriksaHamilId);
+    console.log('pemeriksaan data = ', pemeriksaanData);
+  }, [pelayananPeriksaHamilId, pemeriksaanData]);
 
   //tambahkan pengecekan jika pendaftaraData.pelayanan.harga = 0, maka pelayananPeriksaHamilId(0), jika harga != 0 maka set pelayananPeriksaHamilId dengan data yang sudah terupdate
 
@@ -361,7 +362,7 @@ const style = StyleSheet.create({
   },
   mainDropdownContainer: {
     width: '100%',
-    height: '60%',
+    height: verticalScale(400),
     padding: 12,
   },
   mainDropdown: {
@@ -402,6 +403,7 @@ const style = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
+    height: verticalScale(70),
     paddingHorizontal: 12,
   },
   titleItemContainer: {

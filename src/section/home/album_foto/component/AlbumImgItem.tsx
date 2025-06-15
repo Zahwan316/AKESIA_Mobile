@@ -8,10 +8,11 @@ import { View } from 'react-native';
 type propsPage = {
   title: string;
   onPress: () => void;
-  img: string
+  img: string,
+  withText?: boolean
 }
 
-const AlbumImageItemComponent = ({title, onPress, img}: propsPage):JSX.Element => {
+const AlbumImageItemComponent = ({title, onPress, img, withText}: propsPage):JSX.Element => {
   return(
     <TouchableOpacity style={Style.mainContainer} onPress={onPress}>
       <View style={{filter: 'brightness(80%)'}}>
@@ -21,9 +22,12 @@ const AlbumImageItemComponent = ({title, onPress, img}: propsPage):JSX.Element =
           resizeMode="cover"
         />
       </View>
-      {/* <View style={{position: 'absolute', bottom: 0, left: 0, padding: 12, backgroundColor: '#10101055', width: '100%', borderBottomLeftRadius: 12, borderBottomRightRadius: 12}}>
-        <Text style={{color: '#fff', fontSize: 14, fontWeight: 'bold'}}>{title}</Text>
-      </View> */}
+      {
+        withText &&
+        <View style={{position: 'absolute', bottom: 0, left: 0, padding: 12, backgroundColor: '#10101055', width: '100%', borderBottomLeftRadius: 12, borderBottomRightRadius: 12}}>
+          <Text style={{color: '#fff', fontSize: 14, fontWeight: 'bold'}}>{title}</Text>
+        </View>
+      }
     </TouchableOpacity>
   );
 };

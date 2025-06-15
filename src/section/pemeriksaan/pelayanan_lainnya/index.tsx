@@ -64,6 +64,10 @@ const PelayananLainnyaSection = (): JSX.Element => {
     }
   }, [layananIbuLainnyaFormData]);
 
+  useEffect(() => {
+    console.log(layananIbuLainnyaFormData);
+  }, [layananIbuLainnyaFormData]);
+
   return(
     <FormScreenLayout
       header="Pelayanan Lainnya"
@@ -139,7 +143,7 @@ const PelayananLainnyaSection = (): JSX.Element => {
           <InputComponent
             height={'auto'}
             width={'100%'}
-            label="Catatan Soap"
+            label="Catatan SOAP"
             message="Harap diisi"
             name="catatan_soap"
             onChange={() => {}}

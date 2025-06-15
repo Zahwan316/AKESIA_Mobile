@@ -96,11 +96,8 @@ const HomeSection = (): JSX.Element => {
     queryKey: ['banner'],
     queryFn: () => getData('banner'),
   });
-  const user = useUserStore((state) => state.user);
   const handleUser = useUserStore((state) => state.handleUser);
-  const ibu = useUserStore((state) => state.ibu);
   const handleIbu = useUserStore((state) => state.handleIbu);
-  const bidan = useUserStore((state) => state.bidan);
   const handleBidan = useUserStore((state) => state.handleBidan);
 
   const handlePressButton = (screen: string, params?: object) => {
@@ -217,7 +214,7 @@ const HomeSection = (): JSX.Element => {
             <View style={Style.menuHeaderContainer}>
               <Text style={{fontSize: 16, fontWeight: 'bold'}}>Fitur Rekomendasi</Text>
             </View>
-            <View style={Style.menuContainer}>
+            <View style={[Style.menuContainer, {justifyContent: userData?.user?.role === 'bidan' ? 'center' : 'flex-start'}]}>
               {
                 menuList.map((item, index) => (
                   item.role === userData?.user?.role &&

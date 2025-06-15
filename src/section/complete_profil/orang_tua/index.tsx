@@ -10,7 +10,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import InputComponent from '../../../component/input/text';
 import ButtonComponent from '../../../component/button';
 import { BORDER_COLOR, BUTTON_COLOR} from '../../../constants/color';
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation, useRoute } from '@react-navigation/native';
 import handleFormStore from '../../../state/form';
 import DropdownInputComponent from '../../../component/input/dropdown';
 import InputDatePickerComponent from '../../../component/input/datepicker';
@@ -29,11 +29,12 @@ type modalInfo = {
 
 const CompleteProfileOrangTuaSection = (): JSX.Element => {
   const navigation = useNavigation<any>();
-  const { control, handleSubmit, formState: { errors } } = useForm({mode: 'onChange', reValidateMode:'onSubmit'});
+  const { control, reset, handleSubmit, formState: { errors } } = useForm({mode: 'onChange', reValidateMode:'onSubmit'});
   const [modal, setModal] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [modalInfo, setModalInfo] = useState<modalInfo>({ message: '', text: '' });
   const setForm = handleFormStore((state) => state.setForm);
+  const { dataUser } = useRoute().params as { dataUser: any };
   const { data: pendidikanData} = useQuery({
     queryKey: ['pendidikan'],
     queryFn: getPendidikan,
@@ -42,10 +43,6 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
     queryKey: ['pekerjaan'],
     queryFn: getPekerjaan,
   });
-
-  const handleButton = () => {
-    navigation.navigate('BottomTabs');
-  };
 
   const handleSimpan = async(data: any) => {
     console.log('Data : ', data);
@@ -89,8 +86,16 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
   };
 
   useEffect(() => {
-    console.log(pendidikanData);
-  },[pendidikanData]);
+    if(dataUser){
+      reset({
+        nama_lengkap: dataUser.nama_lengkap,
+      });
+    }
+  }, [dataUser])
+
+  useEffect(() => {
+    console.log(dataUser);
+  },[dataUser]);
 
   return (
     <SafeAreaView>
@@ -111,19 +116,6 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
           </View>
           <View style={style.formGroupContainer}>
             <View>
-              {/* <InputComponent
-                height={"auto"}
-                label="Pilih Status si Mama atau si Dedek... "
-                message="Mohon diisi"
-                name="status"
-                onChange={setForm}
-                placeholder="Status"
-                type="text"
-                width={'100%'}
-                backgroundColor=""
-                border={1}
-                control={control}
-              /> */}
               <InputComponent
                 height={"auto"}
                 label="Nama ibu"
@@ -138,6 +130,7 @@ const CompleteProfileOrangTuaSection = (): JSX.Element => {
                 borderColor={BORDER_COLOR}
                 control={control}
                 errors={errors}
+                initialValue={dataUser?.nama_lengkap}
               />
               <InputComponent
                 height={"auto"}

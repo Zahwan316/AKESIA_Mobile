@@ -81,14 +81,12 @@ const BeratMamaSection = (): JSX.Element => {
 
   const handleModal = () => {
     if(isSuccess){
-      navigation.navigate('BottomTabs');
+      navigation.pop(1);
     }
-
     setModal(!modal);
   };
 
   useEffect(() => {
-    console.log(ibuData);
     if(ibuData && ibuData?.data){
       reset({
         berat_badan: ibuData?.data?.berat_badan?.toString(),

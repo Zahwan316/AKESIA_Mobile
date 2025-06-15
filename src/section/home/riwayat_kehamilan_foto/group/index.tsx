@@ -10,6 +10,7 @@ import useAlbumFotoStore from '../../../../state/album_foto';
 import { useCallback, useEffect, useState } from 'react';
 import { modalInfo } from '../../tambah_anak';
 import ModalComponent from '../../../../component/modal';
+import TipsComponent from '../../../../component/tips';
 
 const RiwayatKehamilanFotoGroupSection = () => {
   const navigator = useNavigation<any>();
@@ -55,7 +56,6 @@ const RiwayatKehamilanFotoGroupSection = () => {
   //set current kehamilan data to form
   useEffect(() => {
     setCurrKehamilan(riwayatKehamilanGroupData?.data?.length + 1);
-    console.log('curr kehamilan = ', currKehamilan);
   }, [riwayatKehamilanGroupData, setCurrKehamilan, currKehamilan]);
 
 
@@ -97,10 +97,14 @@ const RiwayatKehamilanFotoGroupSection = () => {
                   setSuccess={setSuccess}
                   setModalInfo={setModalInfo}
                   url="riwayat_kehamilan_group/"
+                  handleEdit={() => handleScreen('RiwayatKehamilanForm', 'RiwayatKehamilanGroup', item.id, item.nama)}
                 />
               );
             })
           }
+          <TipsComponent
+            customDescription='Mohon untuk menetapkan format seperti ini untuk judul "Kehamilan ke 1" dst. Untuk edit dan hapus, silahkan tahan tombol data yang ingin diedit/dihapus'
+          />
         </ScrollView>
         <FloatingIcon
           handlePress={() => handleScreen('RiwayatKehamilanForm', 'RiwayatKehamilanGroup')}

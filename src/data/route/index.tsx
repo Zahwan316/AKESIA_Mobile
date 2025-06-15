@@ -39,6 +39,7 @@ import RiwayatKehamilanFormScreen from '../../screen/riwayat_kehamilan_foto/Riwa
 import { openWhatsApp } from '../../function/whatsapp';
 import HphtScreen from '../../screen/Hpht';
 import HphtDetailScreen from '../../screen/HphtDetail';
+import PrivacyPolicyScreen from '../../screen/PrivacyPolicy';
 
 type routesType = {
   name: string,
@@ -357,6 +358,15 @@ const routes: routesType[] = [
   {
     name: 'HphtDetail',
     component: HphtDetailScreen,
+    options: {
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+      tabBarButton: () => null,
+    },
+  },
+  {
+    name: 'PrivacyPolicy',
+    component: PrivacyPolicyScreen,
     options: {
       headerShown: false,
       tabBarStyle: { display: 'none' },

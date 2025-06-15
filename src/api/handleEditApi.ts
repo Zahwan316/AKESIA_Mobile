@@ -8,10 +8,11 @@ export const handleEditApi = async(
   setSuccess: any,
   setModal: any,
   setModalInfo: any,
+  isFoto?: boolean
 ) => {
   console.log(data);
   try{
-    await axios.put(`${url}/${id}`, data).then(response => {
+    await axios.put(`${url}/${id}`, data, isFoto ? {headers: {'Content-Type': 'multipart/form-data'}} : undefined).then(response => {
       setSuccess(true);
       handleContentModal({
         setModal,

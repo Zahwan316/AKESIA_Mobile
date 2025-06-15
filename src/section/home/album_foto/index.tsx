@@ -17,7 +17,6 @@ import useComponentStore from '../../../state/component';
 const AlbumFotoSection = (): JSX.Element => {
   const navigator = useNavigation<any>();
   const router = useRoute();
-  const janinId = useAlbumFotoStore((state) => state.janinId);
   const usgId = useAlbumFotoStore((state) => state.usgId);
   const usgTitleName = useAlbumFotoStore((state) => state.usgTitleName);
   const setFotoId = useAlbumFotoStore((state) => state.setFotoId);
@@ -38,10 +37,6 @@ const AlbumFotoSection = (): JSX.Element => {
     setPopup(true);
     setPopupImage(image);
   };
-
-  useEffect(() => {
-    console.log(usgId);
-  }, [usgId]);
 
   useFocusEffect(
     useCallback(() => {refetch();},[refetch])
@@ -68,7 +63,7 @@ const AlbumFotoSection = (): JSX.Element => {
                   style={{width: 200, height: 200, marginBottom: 12}}
                 />
                 <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 8}}>
-                  Upload hasil usg Kita yuk..
+                  Upload hasil USG Kita yuk..
                 </Text>
                 <Text style={{fontSize: 18, fontWeight: 'normal'}}>
                   Album masih kosong nih

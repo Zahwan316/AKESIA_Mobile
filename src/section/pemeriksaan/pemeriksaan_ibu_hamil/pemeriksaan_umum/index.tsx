@@ -185,7 +185,6 @@ const Page2 = ({ formHandle, data, control, errors, pemeriksaanData }: pageProps
         placeholder=""
         type="number"
         backgroundColor={'#fff'}
-       // labelColor={'#fff'}
         border={1}
         control={control}
         errors={errors}
@@ -214,12 +213,13 @@ const Page2 = ({ formHandle, data, control, errors, pemeriksaanData }: pageProps
       <InputDatePickerComponent
         control={control}
         errors={errors}
-        label='Tanggal Kontrol Kembali'
-        name='tanggal_kontrol_kembali'
-        labelColor='#000'
+        label="Tanggal Kontrol Kembali"
+        name="tanggal_kontrol_kembali"
+        labelColor="#000"
         initialValue={data?.pemeriksaanUmumData?.tanggal_kontrol_kembali}
         disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}
         onChange={() => {}}
+        minimum
       />
       <InputComponent
           control={control}
@@ -388,7 +388,7 @@ const PemeriksaanUmumSection = (): JSX.Element => {
     }
   }, [pemeriksaanUmumData]);
 
-  useEffect(() => {console.log('Pemeriksaan data = ',PemeriksaanData);}, [PemeriksaanData]);
+  useEffect(() => {console.log('Pemeriksaan data = ', pemeriksaanUmumData);}, [pemeriksaanUmumData]);
 
   return (
     <FormScreenLayout

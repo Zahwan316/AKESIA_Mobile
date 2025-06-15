@@ -1,11 +1,10 @@
 import {JSX, useEffect, useState} from 'react';
 import {
+  Alert,
   Image,
-  Modal,
   ScrollView,
   StyleSheet,
   Text,
-  Touchable,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -15,12 +14,8 @@ import {
 } from 'react-native-responsive-screen';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {
-  BUTTON_COLOR,
-  BUTTON_COLOR_2,
   BUTTON_COLOR_3,
   MAIN_COLOR,
-  SECONDARY_COLOR,
-  TEXT_HEADER_COLOR,
 } from '../../constants/color';
 import InputComponent from '../../component/input/text';
 import RadioInputComponent from '../../component/input/radio';
@@ -28,13 +23,13 @@ import ButtonComponent from '../../component/button';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import handleFormStore from '../../state/form';
 import Axios from '../../api/axios';
-import { shallow } from 'zustand/shallow';
 import { useForm } from 'react-hook-form';
 import ModalComponent from '../../component/modal';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import handleContentModal from '../../component/modal/function';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import Config from 'react-native-config';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import axios from '../../api/axios';
+import { verticalScale } from 'react-native-size-matters';
 
 type registerProps = {
   onChange: (name: string, value: any) => void;
@@ -116,6 +111,7 @@ const LoginLayout = (props: registerProps) => {
         type="password"
         control={props.control}
         errors={props.errors}
+        textColor={'#000'}
       />
     </>
   );
@@ -136,7 +132,6 @@ const LoginSection = (): JSX.Element => {
   const route = useRoute();
   const {selectedUser} = route.params as {selectedUser: string};
   const setForm = handleFormStore((state) => state.setForm);
-  const resetForm = handleFormStore((state) => state.resetForm);
   const { control, handleSubmit, formState: { errors } } = useForm();
 
   const handleSelected = (select: string) => {
@@ -222,6 +217,40 @@ const LoginSection = (): JSX.Element => {
 
   const handleAcceptTerm = () => {
     setIsAcceptTerm(!isAcceptTerm);
+  };
+
+  const handleGoogleSignIn = async() => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo);
+      const idToken = userInfo?.data?.idToken;
+      const response = await axios.post('/auth/google', {idToken});
+      EncryptedStorage.setItem('token', response.data.token);
+      setSuccessLogin(true);
+      handleContentModal({
+        setModal,
+        setModalInfo,
+        message: response.data.message,
+        text: 'Lanjutkan',
+      });
+
+    } catch (error: any) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        Alert.alert('Login dibatalkan');
+      } else {
+        console.error(error);
+        console.log('Login Error:', error.response);
+        const errorMessage = error?.response?.data?.message;
+        setSuccessLogin(false);
+        handleContentModal({
+          setModal,
+          setModalInfo,
+          message: errorMessage,
+          text: 'Tutup',
+        });
+      }
+    }
   };
 
 
@@ -317,19 +346,25 @@ const LoginSection = (): JSX.Element => {
             </View>
           </ScrollView>
           <View style={style.bottomContainer}>
-            {/* <View style={{marginBottom: 8}}>
-              <TouchableOpacity>
-                  <Image
-                    source={require('../../assets/icon/google.png')}
-                    style={{width: 44, height: 44}}
-                  />
-              </TouchableOpacity>
-            </View>
-            <View style={{width: '90%'}}>
-                <Text style={{ textAlign: 'center', color:'#20202095', fontSize: 12 }}>
-                  Dengan melanjutkan, Anda menyetujui Persyaratan Layanan dan Kebijakan Privasi kami.
-                </Text>
-            </View> */}
+            {
+              selectedUser === 'orangtua' && (
+                <>
+                  <View style={{marginBottom: 8}}>
+                    <TouchableOpacity onPress={handleGoogleSignIn}>
+                        <Image
+                          source={require('../../assets/icon/google.png')}
+                          style={{width: 44, height: 44}}
+                        />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{width: '90%'}}>
+                      <Text style={{ textAlign: 'center', color:'#20202095', fontSize: 12 }}>
+                        Dengan melanjutkan, Anda menyetujui Persyaratan Layanan dan Kebijakan Privasi kami.
+                      </Text>
+                  </View>
+                </>
+              )
+            }
           </View>
         </View>
       </SafeAreaView>
@@ -345,12 +380,13 @@ const style = StyleSheet.create({
   },
   imgContainer: {
     width: '100%',
-    height: heightPercentageToDP(35),
+    height: heightPercentageToDP(23),
     borderWidth: 0,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 12,
+    marginTop: 8
   },
   imgWrapper: {
     borderWidth: 0,
@@ -379,14 +415,15 @@ const style = StyleSheet.create({
   formContainer: {
     borderWidth: 0,
     width: '100%',
-    height: heightPercentageToDP(25),
+    height: verticalScale(220),
     paddingHorizontal: 12,
     display: 'flex',
     flex: 1,
+    marginBottom: 32,
   },
   scrollContainer: {
     width: '100%',
-    height: heightPercentageToDP(80),
+    height: heightPercentageToDP(10),
     padding: 0,
     paddingBottom: 0,
     borderWidth: 0,
@@ -442,7 +479,7 @@ const style = StyleSheet.create({
   },
   bottomContainer: {
     width: '100%',
-    height: '15%',
+    height: '14%',
     backgroundColor: MAIN_COLOR,
     borderWidth: 0,
     display: 'flex',

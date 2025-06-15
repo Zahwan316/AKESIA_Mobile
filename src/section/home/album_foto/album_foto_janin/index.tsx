@@ -10,6 +10,7 @@ import useAlbumFotoStore from '../../../../state/album_foto';
 import EmptyDataComponent from '../../../../component/empty';
 import { modalInfo } from '../../tambah_anak';
 import ModalComponent from '../../../../component/modal';
+import TipsComponent from '../../../../component/tips';
 
 const AlbumFotoJaninSection = (): JSX.Element => {
   const navigator = useNavigation<any>();
@@ -90,6 +91,9 @@ const AlbumFotoJaninSection = (): JSX.Element => {
               );
             })
           }
+        <TipsComponent
+          customDescription='Mohon untuk menetapkan format seperti ini untuk judul "Janin ke 1" dst. Untuk edit dan hapus, silahkan tahan tombol data yang ingin diedit/dihapus'
+        />
         </ScrollView>
         <FloatingIcon
           handlePress={() => handleScreen('AlbumFotoForm', 'AlbumFotoJanin')}

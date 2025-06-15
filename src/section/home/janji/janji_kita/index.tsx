@@ -196,6 +196,7 @@ const JanjiKitaSection = (): JSX.Element => {
               status={item.status}
               role="user"
               pendaftaranId={item.id}
+              date={item.tanggal_pendaftaran}
             />
           ))
         }

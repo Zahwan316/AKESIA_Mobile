@@ -20,7 +20,7 @@ const SplashScreenSection = (): JSX.Element => {
         if(!isCompleteProfile){
           switch(getRole){
             case 'user':
-              navigation.navigate('ProfileOrangTua');
+              navigation.navigate('ProfileOrangTua', {dataUser: responseToken?.data?.user});
               break;
             case 'bidan':
               navigation.navigate('ProfileBidan');

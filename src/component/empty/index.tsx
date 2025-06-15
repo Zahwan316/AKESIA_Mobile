@@ -9,7 +9,7 @@ type Props = {
 
 const EmptyDataComponent = (props: Props) => {
   return(
-    <View style={{width:'100%', borderWidth:0, display:'flex', justifyContent:'center', alignItems:'center'}}>
+    <View style={{width:'100%', borderWidth:0, display:'flex', justifyContent:'center', alignItems:'center', marginBottom: 16}}>
       <Image
         source={require('../../assets/img/emptydata.png')}
         style={{width: 200, height: 200, marginBottom: 12}}

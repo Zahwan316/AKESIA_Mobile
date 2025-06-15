@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import InputComponent from '../../../../component/input/text';
 import { BORDER_COLOR, MAIN_COLOR } from '../../../../constants/color';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
-import { Image, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import ButtonComponent from '../../../../component/button';
 import { handlePostApi } from '../../../../api/handlePostApi';
 import { modalInfo } from '../../tambah_anak';
@@ -44,17 +44,20 @@ const FormUploadAlbum = ({control, errors, fotoEditData, fotoForm, fotoId}): Rea
         control={control}
         name="img"
         errors={errors}
-        message="Wajib Diisi"
+        message={(fotoId === 0  && fotoEditData?.data !== null) ? 'Wajib Diisi' : 'Pilih Gambar Baru Jika Ingin Mengganti Gambar'}
         label="Pilih foto"
       />
       {
         (fotoForm === null || fotoForm === undefined) && fotoEditData?.data !== null && fotoId !== 0 ?
+        <>
+          <Text style={{textAlign: 'center', marginBottom: 12, fontWeight: 'bold', fontSize: 16}}>Gambar Sebelumnya : </Text>
           <Image
             source={{uri: `${BASE_URL}${fotoEditData?.data?.uploads?.path}`}}
             style={{width: '100%', height: '50%'}}
             resizeMode="contain"
             resizeMethod="resize"
           />
+        </>
           : null
       }
     </>
@@ -137,7 +140,7 @@ const AlbumFormSection = () => {
   };
 
   const handleSubmitAlbumFoto = async(data: any) => {
-    const mergedData = {...data, usg_id: usgId};
+    const mergedData = {...data, usg_id: usgId, _method: fotoId === 0 ? 'POST' : 'PUT'};
     const formData = new FormData();
     console.log(mergedData)
 
@@ -145,8 +148,9 @@ const AlbumFormSection = () => {
       if (key === 'img') {
         const img = mergedData[key];
         if (img?.uri) {
+          const uri = img.uri.startsWith('file://') ? img.uri : `file://${img.uri}`;
           formData.append('img', {
-            uri: img.uri,
+            uri: uri,
             name: img.fileName || 'photo.jpg',
             type: img.type || 'image/jpeg',
           });
@@ -155,11 +159,12 @@ const AlbumFormSection = () => {
         formData.append(key, mergedData[key]);
       }
     }
+
     if(fotoId === 0 || fotoId === undefined){
       handlePostApi(formData, 'album_foto', setSuccess, setModal, setModalInfo);
     }
     else{
-      handleEditApi(formData, 'album_foto', fotoId, setSuccess, setModal, setModalInfo);
+      handlePostApi(formData, `album_foto/${fotoId}`, setSuccess, setModal, setModalInfo);
     }
   };
 
@@ -207,16 +212,18 @@ const AlbumFormSection = () => {
     else if (screenBeforeName === 'AlbumFotoUsg' && usgEditData?.data) {
       reset({...usgEditData.data});
     }
-   /*  else if (screenBeforeName === 'AlbumFoto' && fotoEditData?.data) {
-      reset({...fotoEditData.data});
+    /* else if (screenBeforeName === 'AlbumFoto' && fotoEditData?.data) {
+      reset({
+        ...fotoEditData.data,
+        img: {
+          uri: `${BASE_URL}${fotoEditData.data.uploads?.path}`,
+          fileName: fotoEditData.data.uploads?.original_name || 'photo.jpg',
+          type: 'image/jpeg',
+        },
+      });
     } */
   }, [janinEditData, screenBeforeName, usgEditData, fotoEditData]);
 
-  useEffect(() => {
-    console.log('foto id = ', fotoId);
-    console.log('foto data = ', fotoEditData);
-    console.log('foto form = ', fotoForm);
-  }, [fotoId, fotoEditData, fotoForm]);
 
   //handle delete fotoId
   useEffect(() => {

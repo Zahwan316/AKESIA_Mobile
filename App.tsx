@@ -12,6 +12,7 @@ import { Alert } from 'react-native';
 import { createChannel } from './src/function/notifee/create_channel';
 import notifee, { AndroidImportance } from '@notifee/react-native';
 import Config from 'react-native-config';
+import { GoogleConfigure } from './src/auth/authConfig';
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ function App(): React.JSX.Element {
   useEffect(() => {
     requestNotificationPermission();
     requestFCMToken();
+    GoogleConfigure();
   }, []);
 
   useEffect(() => {

@@ -6,6 +6,7 @@ import { MAIN_COLOR } from '../../constants/color';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 type item = {
   id: number,
@@ -18,6 +19,7 @@ const ProfileSection = (): JSX.Element => {
   const navigation = useNavigation<any>();
 
   const handleLogout = () => {
+    signOut();
     EncryptedStorage.removeItem('token');
     //navigation.navigate('Landing');
     navigation.dispatch(
@@ -27,6 +29,16 @@ const ProfileSection = (): JSX.Element => {
       })
     );
   };
+
+  const signOut = async () => {
+    try {
+      await GoogleSignin.signOut();
+      console.log('User signed out');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 
   const handleButtonLogout = () => {
     Alert.alert('Peringatan!', 'Apakah anda yakin ingin keluar dari akun ini?', [
@@ -38,12 +50,18 @@ const ProfileSection = (): JSX.Element => {
         text: 'Ya',
         onPress: handleLogout,
       },
-    ])
-  }
+    ]);
+  };
 
   const itemFeature: item[] = [
     {
       id: 1,
+      name: 'Kebijakan dan Privasi',
+      icon: require('../../assets/icon/privacy.png'),
+      onPress: () => navigation.navigate('PrivacyPolicy'),
+    },
+    {
+      id: 2,
       name: 'Keluar',
       icon: require('../../assets/icon/logout.png'),
       onPress: handleButtonLogout,

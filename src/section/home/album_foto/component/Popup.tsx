@@ -12,6 +12,7 @@ import { AlbumFotoDeleteRoute } from '../../../../data/album_foto_delete_route';
 import { modalInfo } from '../../tambah_anak';
 import ModalComponent from '../../../../component/modal';
 import text from '../../../../component/input/text';
+import React from 'react';
 
 type props = {
   item_id?: string,
@@ -61,7 +62,12 @@ const PopupImageComponent = (props: props): JSX.Element => {
   const handleEdit = () => {
     setPopupImage('');
     setPopup(false);
-    navigator.navigate('AlbumFotoForm', {screenBeforeName: route.name});
+    if(route.name === 'AlbumFoto'){
+      navigator.navigate('AlbumFotoForm', {screenBeforeName: route.name});
+    }
+    else if(route.name === 'RiwayatKehamilanFoto'){
+      navigator.navigate('RiwayatKehamilanForm', {screenBeforeName: route.name});
+    }
   };
 
   const handleDeleteDataToApi = async() => {
@@ -75,7 +81,17 @@ const PopupImageComponent = (props: props): JSX.Element => {
     }
     setModal(!modal);
   };
-  
+
+  useEffect(() => {
+    const unsubscribe = navigator.addListener('beforeRemove', () => {
+      setFotoId(0);
+      setPopupImage('');
+      setPopup(false);
+    });
+
+    return unsubscribe;
+  }, [navigator]);
+
   return(
     <>
       {

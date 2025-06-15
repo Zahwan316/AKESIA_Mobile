@@ -8,6 +8,7 @@ import ButtonComponent from '../../../component/button';
 import { MAIN_COLOR } from '../../../constants/color';
 import ModalComponent from '../../../component/modal';
 import { useNavigation } from '@react-navigation/native';
+import { verticalScale } from 'react-native-size-matters';
 
 type props = {
   title: string,
@@ -74,12 +75,12 @@ const Style = StyleSheet.create({
   },
   contentContainer: {
     width: '100%',
-    height: heightPercentageToDP(84),
+    height: verticalScale(550),
     paddingVertical: 16,
   },
   buttonContainer: {
     width: '100%',
-    height: '10%',
+    height: verticalScale(80),
   },
 });
 

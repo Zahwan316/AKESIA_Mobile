@@ -26,6 +26,7 @@ import JamPicker from '../../../../component/input/jadwalPicker';
 import { useWatch } from 'react-hook-form';
 import LoadingIndicator from '../../../../component/loading';
 import { heightPercentageToDP } from 'react-native-responsive-screen';
+import { verticalScale } from 'react-native-size-matters';
 
 type modalInfo = {
   message: string;
@@ -121,7 +122,7 @@ const PemesananJanjiSection = (): JSX.Element => {
       queryFn: () => getPendaftaranUser(`pendaftaran/${pendaftaranId}`),
       enabled: !!pendaftaranId,
     });
-  const { data: currUserAnakData } = useQuery({
+  const { data: currUserAnakData, isLoading: isLoadingAnak } = useQuery({
     queryKey: ['currUserAnak'],
     queryFn: getAllAnak,
   });
@@ -213,9 +214,9 @@ const PemesananJanjiSection = (): JSX.Element => {
     const isBabySpaValid = isNotPijat && isBabySpa;
 
     const isBidanBundaValid = isJenisLayananBidanBunda && (isImunisasi || isBayi);
-    console.log('pendaftaran',hasPendaftaran);
+    console.log('isBidanBunda Valid', isBidanBundaValid);
     // Final filter:
-    const isValid = (hasPendaftaran && (isBabySpa || isJenisLayananBidanBunda)) || (isBabySpaValid || isBidanBundaValid);
+    const isValid = (!hasPendaftaran || (isBabySpa || isJenisLayananBidanBunda)) && (isBabySpaValid || isBidanBundaValid);
     return isValid;
   };
 
@@ -245,8 +246,8 @@ const PemesananJanjiSection = (): JSX.Element => {
   }, [pendaftaranUserData]);
 
   useEffect(() => {
-    console.log('Pendaftaran user dataa', pendaftaranUserData)
-  },[pendaftaranUserData]);
+    console.log('tanggal pertemuan = ', tanggalPertemuan);
+  },[tanggalPertemuan]);
 
   useEffect(() => {
     if(dayFromDate === 0 && (BidanBundaRegex.test(pelayananData?.data?.jenis_layanan?.nama) || PeriksaHamilNyamanRegex.test(pelayananData?.data?.jenis_layanan?.nama ) || PersalinanRegex.test(pelayananData?.data?.jenis_layanan?.nama )) && pendaftaranId === null){
@@ -291,7 +292,6 @@ const PemesananJanjiSection = (): JSX.Element => {
               name="jam_ditentukan"
               errors={errors}
               message="Wajib Diisi"
-              initialValue={'14:30:00'}
               disabled={pendaftaranId != null}
               tanggal_pertemuan={parsedTanggal}
             />
@@ -336,7 +336,7 @@ const PemesananJanjiSection = (): JSX.Element => {
                     control={control}
                     errors={errors}
                     message="Wajib Diisi"
-                    data={currUserAnakData?.data?.length === 0 ? handleEmptyAnak() : currUserAnakData?.data?.map((anak: any) => ({
+                    data={currUserAnakData?.data?.length === 0  && !isLoadingAnak ? handleEmptyAnak() : currUserAnakData?.data?.map((anak: any) => ({
                       name: anak.nama_lengkap,
                       id: anak.id,
                     }))}
@@ -348,7 +348,7 @@ const PemesananJanjiSection = (): JSX.Element => {
                 : null
               }
               {
-                !BabySpaRegex.test(pelayananData?.data?.jenis_layanan?.nama) && pendaftaranId != null ?
+                (!BabySpaRegex.test(pelayananData?.data?.jenis_layanan?.nama) || searchPijatRegex.test(pelayananData?.data?.nama)) && pendaftaranId != null && pendaftaranUserData?.data?.ibu?.user?.nama_lengkap !== undefined ?
                 <InputComponent
                   height={'auto'}
                   width={'100%'}
@@ -432,7 +432,7 @@ const style = StyleSheet.create({
   },
   formContainer: {
     width: '100%',
-    height: heightPercentageToDP(38),
+    height: heightPercentageToDP(36),
     marginBottom: 32,
     borderWidth: 0,
     position: 'relative',
@@ -451,7 +451,7 @@ const style = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
-    height: heightPercentageToDP(17),
+    height: verticalScale(60),
     borderWidth: 0,
     display: 'flex',
     justifyContent: 'center',

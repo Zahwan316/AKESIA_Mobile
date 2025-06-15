@@ -23,6 +23,7 @@ import {Text} from 'react-native';
 import ButtonComponent from '../../../component/button';
 import {useForm} from 'react-hook-form';
 import ModalComponent from '../../../component/modal';
+import { verticalScale } from 'react-native-size-matters';
 
 type props = {
   page?: number;
@@ -173,7 +174,7 @@ const style = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
-    height: '15%',
+    height: verticalScale(180),
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

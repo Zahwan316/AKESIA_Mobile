@@ -45,7 +45,7 @@ const ChildDropdownComponent = (props: props) => {
       </View>
       <View style={style.priceContainer}>
         <Text style={{fontSize: 14, fontWeight: 'bold'}}>{
-          props.harga === 0 || props.jenis_layanan === JenisLayananId.PERSALINAN ? 'Chat Admin' : CurrencyFormat(props.harga)}
+          parseInt(props.harga) === 0 || props.jenis_layanan === JenisLayananId.PERSALINAN ? 'Chat Admin' : CurrencyFormat(props.harga)}
         </Text>
         <Text></Text>
       </View>

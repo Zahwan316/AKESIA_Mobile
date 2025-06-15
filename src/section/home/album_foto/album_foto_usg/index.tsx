@@ -11,6 +11,7 @@ import EmptyDataComponent from '../../../../component/empty';
 import useAlbumFotoStore from '../../../../state/album_foto';
 import { modalInfo } from '../../tambah_anak';
 import ModalComponent from '../../../../component/modal';
+import TipsComponent from '../../../../component/tips';
 
 const AlbumFotoUsgSection = (): JSX.Element => {
   const navigator = useNavigation<any>();

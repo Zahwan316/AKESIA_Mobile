@@ -39,8 +39,6 @@ const DropdownInputComponent = (props: props): JSX.Element => {
             }}
             defaultValue={props.data?.find(item => {
               const fieldValue = props.getValue ? item[props.getValue] : item.id;
-              console.log('field value = ',fieldValue);
-              console.log('initial value = ',props.initialValue);
               //console.log('field Value = ',fieldValue);
               return fieldValue === props.initialValue;
             })}

@@ -11,4 +11,8 @@ export const AlbumFotoDeleteRoute = [
     nameScreen: 'AlbumFotoJanin',
     url: 'album_foto_janin/',
   },
+  {
+    nameScreen: 'RiwayatKehamilanFoto',
+    url: 'riwayat_kehamilan_foto/',
+  },
 ];

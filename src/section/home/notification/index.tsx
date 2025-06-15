@@ -1,14 +1,12 @@
-import { JSX, useEffect } from "react";
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
-import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { MAIN_COLOR } from "../../../constants/color";
-import { Image } from "react-native";
-import NotificationItem from "./component/item";
-import { useQuery } from "@tanstack/react-query";
-import { getNotification } from "../../../api/data/notification";
-import { getUserLogin } from "../../../api/data/user";
-import useUserStore from "../../../state/user";
+import { JSX, useEffect } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { MAIN_COLOR } from '../../../constants/color';
+import NotificationItem from './component/item';
+import { useQuery } from '@tanstack/react-query';
+import { getNotification } from '../../../api/data/notification';
+import useUserStore from '../../../state/user';
 
 const NotificationSection = (): JSX.Element => {
   const user = useUserStore((state) => state.user);
@@ -19,10 +17,6 @@ const NotificationSection = (): JSX.Element => {
   });
 
   const dataNotif: [] = notificationData?.data;
-
-  useEffect(() => {
-    console.log(notificationData);
-  }, [notificationData]);
 
   return(
     <SafeAreaProvider>

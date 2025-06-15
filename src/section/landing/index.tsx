@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Config } from 'react-native-config'
 
 const LandingSection = (): React.JSX.Element => {
-  const[selected, setSelected] = useState('orangtua');
+  const [selected, setSelected] = useState('orangtua');
   const navigation = useNavigation();
 
   const handleSelected = (select: string) => {

@@ -129,7 +129,7 @@ const Page2 = ({OnChange, data, initialValue, control, errors, pemeriksaanData}:
       <DropdownInputComponent
           width={'100%'}
           backgroundColor={''}
-          data={BiasaDropdownData}
+          data={MuntahDropdownData}
           height={'auto'}
           onSelect={() => {}}
           label={'Pusing'}
@@ -219,7 +219,7 @@ const Page2 = ({OnChange, data, initialValue, control, errors, pemeriksaanData}:
           label={'Kebiasaan'}
           control={control}
           errors={errors}
-          name='kebiasaan'
+          name="kebiasaan"
           initialValue={initialValue.kebiasaan}
           getValue="name"
           disabled={pemeriksaanData?.pendaftaran?.status === 'Selesai'}

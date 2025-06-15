@@ -78,10 +78,10 @@ const BuatJanjiDetailSection = (): JSX.Element => {
   //filter data per kategori
   const filteredPelayananData = pelayananData?.data.filter((item: PelayananResponse) => {
     if(searchItemRegex.test(item.jenis_layanan?.nama)){
-      return item.harga === 0 && item.jenis_layanan_id === jenisPelayananId;
+      return parseInt(item.harga) === 0 && parseInt(item.jenis_layanan_id) === jenisPelayananId;
     }
     else{
-      return item.jenis_layanan_id === jenisPelayananId;
+      return parseInt(item.jenis_layanan_id) === jenisPelayananId;
     }
   }) || [];
 
@@ -91,6 +91,10 @@ const BuatJanjiDetailSection = (): JSX.Element => {
       jenisPelayananId: jenisPelayananId,
     });
   };
+
+  useEffect(() => {
+    
+  }, [pelayananData, filteredPelayananData, jenisPelayananId])
 
   return(
     <JanjiScreenLayout

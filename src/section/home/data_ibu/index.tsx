@@ -9,10 +9,8 @@ import { ScrollView } from 'react-native';
 import InputComponent from '../../../component/input/text';
 import { BORDER_COLOR } from '../../../constants/color';
 import { checkIsDataNull } from '../../../utils/checkDataIsNull';
-import dayjs from 'dayjs';
 import InputDatePickerComponent from '../../../component/input/datepicker';
 import DropdownInputComponent from '../../../component/input/dropdown';
-import Jenis_Kelamin from '../../../data/jenis_kelamin';
 import golongan_darah_data from '../../../data/golongan_darah';
 import { getPendidikan } from '../../../api/data/ref/pendidikan';
 import { getPekerjaan } from '../../../api/data/ref/pekerjaan';
@@ -47,7 +45,7 @@ const DataIbuSection = () => {
 
   const handleModal = () => {
     if(isSuccess){
-      navigation.navigate('BottomTabs');
+      navigation.pop(1);
     }
     setModal(!modal);
   };

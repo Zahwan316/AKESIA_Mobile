@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import { modalInfo } from '../tambah_anak';
 import InputDatePickerComponent from '../../../component/input/datepicker';
 import { handleEditApi } from '../../../api/handleEditApi';
-import ButtonComponent from '../../../component/button';
 import HphtModal from './component/HphtModal';
 import { useQuery } from '@tanstack/react-query';
 import { getCurrentIbu } from '../../../api/data/currLoggedIbu';
@@ -45,15 +44,11 @@ const HphtSection = (): JSX.Element => {
   const handleModal = () => {
     if(isSuccess){
       setAcceptModal(false);
-      navigator.navigate('BottomTabs');
+      navigator.pop(2);
     }
 
     setModal(!modal);
   };
-
-  useEffect(() => {
-    console.log('hpht ', hpht)
-  }, [hpht]);
 
   useEffect(() => {
     if(ibuData && ibuData?.data){

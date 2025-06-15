@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Controller } from 'react-hook-form';
 import { Picker } from '@react-native-picker/picker';
+import { BORDER_COLOR } from '../../../constants/color';
 
 type JamPickerProps = {
   control: any;
@@ -87,39 +88,40 @@ const JamPicker = ({ control, name, label, message, errors, jenisLayanan, initia
 
 
   useEffect(() => {
-    const dayFromDate = tanggal_pertemuan?.getDay() ?? new Date().getDay();
+    const dayFromDate = tanggal_pertemuan?.getDay();
+
+    let layananKey = '';
     if(babySpaRegex.test(jenisLayanan)){
-      setChangedJenisLayanan('BabySpa');
+      layananKey = 'BabySpa';
     }
     else if (BidanBundaRegex.test(jenisLayanan) && dayFromDate === 6) {
-      setChangedJenisLayanan('BidanBundaSabtu');
+      layananKey = 'BidanBundaSabtu';
     }
     else if (BidanBundaRegex.test(jenisLayanan)) {
-      setChangedJenisLayanan('BidanBunda');
+      layananKey = 'BidanBunda';
     }
     else if (PeriksaHamilNyamanRegex.test(jenisLayanan) && dayFromDate === 6) {
-      setChangedJenisLayanan('PemeriksaanHamilNyamanSabtu');
+      layananKey = 'PemeriksaanHamilNyamanSabtu';
     }
     else if (PeriksaHamilNyamanRegex.test(jenisLayanan)) {
-      setChangedJenisLayanan('PemeriksaanHamilNyaman');
+      layananKey = 'PemeriksaanHamilNyaman';
     }
     else if (PersalinanRegex.test(jenisLayanan) && dayFromDate === 6) {
-      setChangedJenisLayanan('PersalinanSabtu');
+      layananKey = 'PersalinanSabtu';
     }
     else if (PersalinanRegex.test(jenisLayanan)) {
-      setChangedJenisLayanan('Persalinan');
+      layananKey = 'Persalinan';
     }
-    console.log(jenisLayanan);
 
 
-    const jadwal = jadwalLayanan[changedJenisLayanan];
+    const jadwal = jadwalLayanan[layananKey];
     if (jadwal && jadwal.days.includes(dayFromDate)) {
       const list = generateJamList(jadwal.jam);
       setJamList(list);
     } else {
       setJamList([]);
     }
-  }, [jenisLayanan, changedJenisLayanan, tanggal_pertemuan]);
+  }, [jenisLayanan, tanggal_pertemuan]);
 
   return (
     <View style={styles.container}>
@@ -133,6 +135,10 @@ const JamPicker = ({ control, name, label, message, errors, jenisLayanan, initia
             <Picker
               selectedValue={value || initialValue}
               onValueChange={onChange}
+              style={Platform.select({
+                android: { color: '#000' },
+                ios: {},
+              })}
               enabled={!disabled && jamList.length > 0}>
               <Picker.Item label="Pilih jam" value="" />
               {jamList.map((jam) => (
@@ -160,13 +166,10 @@ const styles = StyleSheet.create({
   },
   pickerWrapper: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: BORDER_COLOR,
     borderRadius: 8,
-    overflow: 'hidden',
     backgroundColor: '#fff',
-    maxHeight: 48,
-    display: 'flex',
-    justifyContent: 'center',
+    color: '#000',
   },
   error: {
     color: 'red',
