@@ -151,9 +151,9 @@ const JanjiKitaSection = (): JSX.Element => {
 
   const flatListRef = useRef(null);
 
-  /* useEffect(() => {
+  useEffect(() => {
     console.log(pendaftaranUserData);
-  },[]);  */
+  },[]);
 
   return (
     <JanjiScreenLayout
@@ -179,6 +179,7 @@ const JanjiKitaSection = (): JSX.Element => {
                   title={item.title}
                   onPress={() => handleCurrMenu(item.title)}
                   color={currMenu === item.title ? '#000' : '#D9D9D9'}
+                  customstyle={{ borderRadius: 8 }}
                 />
               </View>
             );
@@ -194,7 +195,9 @@ const JanjiKitaSection = (): JSX.Element => {
           ))
         } */}
       </View>
-      <ScrollView style={{position: 'relative', height: '50%'}}>
+      <ScrollView
+        style={{position: 'relative', height: '50%'}} 
+        showsVerticalScrollIndicator={false}>
         {
           pendaftaranUserData?.data.length === 0 ?
           <EmptyDataComponent
@@ -215,6 +218,7 @@ const JanjiKitaSection = (): JSX.Element => {
               role="user"
               pendaftaranId={item.id}
               date={item.tanggal_pendaftaran}
+              jenisLayanan={item.pelayanan?.jenis_layanan?.nama}
             />
           ))
         }

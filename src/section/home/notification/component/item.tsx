@@ -2,6 +2,7 @@ import { JSX } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { MAIN_COLOR } from "../../../../constants/color";
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import dayjs from 'dayjs';
 
 type props = {
   createdAt: string,
@@ -16,7 +17,10 @@ const NotificationItem = ({title, message, createdAt}: props): JSX.Element => {
         <Icon name='bell' size={36} color='#000' />
       </View>
       <View style={{flex:1, gap: 4}}>
-        <Text style={{fontSize: 16, fontWeight: 'bold'}}>{title}</Text>
+        <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+          <Text style={{fontSize: 16, fontWeight: 'bold'}}>{title}</Text>
+          <Text style={{color: '#7a7a7a', fontSize: 12}}>{dayjs(createdAt).format('HH:mm, DD MMMM YYYY')}</Text>
+        </View>
         <Text style={{fontSize: 14}} numberOfLines={3}>{message}</Text>
       </View>
     </View>

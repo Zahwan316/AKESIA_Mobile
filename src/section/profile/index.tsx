@@ -2,11 +2,12 @@ import { JSX } from 'react';
 import { Alert, Image, ImageProps, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { MAIN_COLOR } from '../../constants/color';
+import { BUTTON_COLOR, BUTTON_COLOR_2, MAIN_COLOR, SECONDARY_COLOR, THIRD_COLOR } from '../../constants/color';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { verticalScale } from 'react-native-size-matters';
 
 type item = {
   id: number,
@@ -73,24 +74,34 @@ const ProfileSection = (): JSX.Element => {
       <SafeAreaView>
         <View style={style.mainContainer}>
           <View style={style.headerContainer}>
-            <Text style={{fontSize: 32, fontWeight: 'bold', color: '#fff'}}>Profil</Text>
+            <Text style={{fontSize: 28, fontWeight: 'bold', color: '#fff', marginBottom: 12}}>Profile</Text>
+            <View style={style.imgProfileContainer}>
+              <Image
+                source={require('../../assets/img/LogoBidanBunda.png')}
+                style={{width: '80%', height: '80%'}}
+                resizeMode='contain'
+              />
+            </View>
+
           </View>
           <View style={style.menuContainer}>
             {
               itemFeature.map((item, index) =>
                 <TouchableOpacity style={style.mainItemContainer} onPress={item.onPress} key={index}>
-                  <View style={style.imgContainer}>
-                    <Image
-                      source={item.icon}
-                      style={{width: '100%', height: '100%'}}
-                      resizeMode='contain'
-                    />
-                  </View>
-                  <View style={style.textContainer}>
-                    <Text style={{fontSize: 18,}}>{item.name}</Text>
+                  <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '70%'}}>
+                    <View style={style.imgContainer}>
+                      <Image
+                        source={item.icon}
+                        style={{width: '100%', height: '100%'}}
+                        resizeMode='contain'
+                      />
+                    </View>
+                    <View style={style.textContainer}>
+                      <Text style={{fontSize: 18, color: '#000'}}>{item.name}</Text>
+                    </View>
                   </View>
                   <View style={style.iconContainer}>
-                    <Icon name="angle-right" size={28} color="#000" />
+                    <Icon name="angle-right" size={22} color="#707070" />
                   </View>
                 </TouchableOpacity>
               )
@@ -106,12 +117,20 @@ const style = StyleSheet.create({
   mainContainer: {
     width: widthPercentageToDP(100),
     height: heightPercentageToDP(100),
-    backgroundColor: MAIN_COLOR,
-    padding: 12,
+    backgroundColor: SECONDARY_COLOR,
+    // padding: 12,
+  },
+  imgProfileContainer: {
+    width: '100%',
+    height: '70%',
+    borderWidth: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   headerContainer: {
     width: '100%',
-    height: '20%',
+    height: '30%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -123,23 +142,28 @@ const style = StyleSheet.create({
     //justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
+    backgroundColor: '#f4f4f4',
+    padding: 22,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
   },
   mainItemContainer: {
     width: '100%',
-    height: '8%',
-    borderWidth: 0,
+    height: verticalScale(40),
+    borderBottomWidth: 0,
     display: 'flex',
     alignItems: 'center',
     padding: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#fff',
     borderRadius: 12,
     marginBottom: 16,
+    borderBottomColor: '#90909060',
   },
   imgContainer: {
-    width: '25%',
+    width: '10%',
     height: '100%',
+    marginRight: 10
   },
   iconContainer: {
     width: '10%',
@@ -149,7 +173,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
   },
   textContainer: {
-    width: '50%',
+    //width: '50%',
     height: '100%',
     display: 'flex',
     justifyContent: 'center',

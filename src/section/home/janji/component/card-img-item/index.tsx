@@ -19,7 +19,7 @@ const ImageCardItemComponent = (props: props): JSX.Element => {
         />
       </View>
       <View style={style.headerContainer}>
-        <Text style={{color: '#fff', fontWeight: 'bold'}}>{props.title}</Text>
+        <Text style={{color: '#fff', fontWeight: 'bold', position: 'relative', top: 55, fontSize: 18}}>{props.title}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -31,7 +31,7 @@ const style = StyleSheet.create({
     height: 200,
     backgroundColor: MAIN_COLOR,
     borderRadius: 12,
-    marginBottom: 18,
+    marginBottom: 12,
   },
   imgContainer:{
     width: '100%',
@@ -39,12 +39,13 @@ const style = StyleSheet.create({
   },
   headerContainer: {
     width: '100%',
-    height: '25%',
+    height: '100%',
     display: 'flex',
-    padding: 8,
-    backgroundColor: '#10101075',
-    borderBottomLeftRadius: 12,
-    borderBottomRightRadius: 12,
+    padding: 18,
+    backgroundColor: '#10101046',
+    /* borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12, */
+    borderRadius: 12,
     justifyContent: 'center',
     position: 'absolute',
     bottom: 0,

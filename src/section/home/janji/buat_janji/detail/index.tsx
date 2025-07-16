@@ -1,17 +1,13 @@
 import { JSX, useEffect } from 'react';
-import JanjiKitaScreen from '../../../../../screen/JanjiKita';
 import JanjiScreenLayout from '../../layout';
 import { Image, ImageSourcePropType, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { MAIN_COLOR } from '../../../../../constants/color';
-import HeaderDropdownComponent from './component/headerDropdown';
 import ChildDropdownComponent from './component/childDropdown';
-import useDimension from '../../../../../hooks/useDimensions';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { formattedDate } from '../../../../../utils/date';
 import { getPelayanan } from '../../../../../api/data/pelayanan';
 import { useQuery } from '@tanstack/react-query';
 import { ChangePrice } from '../../../../../utils/changePrice';
-import LoadingIndicator from '../../../../../component/loading';
 import { getData } from '../../../../../api/data/getData';
 
 export type PelayananResponse = {
@@ -57,7 +53,7 @@ const searchItemRegex = /Periksa Hamil Nyaman/i;
 
 const imgMap: {[key: string]: ImageSourcePropType} = {
   'Baby Spa dan Massage': require('../../../../../assets/icon/babyspa.png'),
-  'Persalinan': require('../../../../../assets/icon/persalinan.png'),
+  'Persalinan': require('../../../../../assets/icon/persalinan_icon.png'),
   'Bidan Bunda': require('../../../../../assets/icon/bunda.png'),
   'Periksa Hamil Nyaman': require('../../../../../assets/icon/bunda.png'),
 };

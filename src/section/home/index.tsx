@@ -212,7 +212,7 @@ const HomeSection = (): JSX.Element => {
           </View>
           <View style={Style.menuMainContainer}>
             <View style={Style.menuHeaderContainer}>
-              <Text style={{fontSize: 16, fontWeight: 'bold'}}>Fitur Rekomendasi</Text>
+              <Text style={{fontSize: 16, fontWeight: 'normal', marginLeft: 10}}>Fitur Rekomendasi</Text>
             </View>
             <View style={[Style.menuContainer, {justifyContent: userData?.user?.role === 'bidan' ? 'center' : 'flex-start'}]}>
               {
@@ -267,8 +267,8 @@ const Style = StyleSheet.create({
     width: widthPercentageToDP(100),
     height: heightPercentageToDP(25),
     backgroundColor: THIRD_COLOR,
-    borderBottomLeftRadius: 8,
-    borderBottomRightRadius: 8,
+    borderBottomLeftRadius: 18,
+    borderBottomRightRadius: 18,
     padding: 16,
     paddingVertical: 24,
     display: 'flex',

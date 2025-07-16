@@ -21,10 +21,18 @@ type props = {
   role?: 'user' | 'bidan',
   pendaftaranId: number,
   date: string,
+  jenisLayanan: string,
   handleClick: () => void,
   handleDelete: () => void,
   handlePeriksa?: () => void
 }
+
+const imgMap: {[key: string]: ImageSourcePropType} = {
+  'Baby Spa dan Massage': require('../../../../../assets/icon/babyspa.png'),
+  'Persalinan': require('../../../../../assets/icon/persalinan_icon.png'),
+  'Bidan Bunda': require('../../../../../assets/icon/bunda.png'),
+  'Periksa Hamil Nyaman': require('../../../../../assets/icon/bunda.png'),
+};
 
 const QueueItemComponent = (props: props): JSX.Element => {
   const handleAlert = () => {
@@ -47,41 +55,49 @@ const QueueItemComponent = (props: props): JSX.Element => {
   const handleStatusBackground = (status) => {
     switch(status){
       case 'Menunggu Konfirmasi':
-        return '#FFC107';
+        return '#FACC15';
       case 'Disetujui':
-        return '#4CAF50';
+        return '#86EFAC';
       case 'Dibatalkan':
-        return '#F44336';
+        return '#F87171';
       case 'Selesai':
-        return '#2196F3';
+        return '#60A5FA';
       default:
-        return '#FFC107';
+        return '#FACC15';
     }
   };
 
   return(
     <View style={style.mainContentContainer}>
-      <View style={style.infoContainer}>
-        <View style={[style.infoItemContainer, {backgroundColor: handleStatusBackground(props.status)}]}>
-          <Text style={{fontWeight: 'bold', fontSize: 14, color: '#fff'}}>{props.status}</Text>
+      <View style={style.topContainer}>
+        <View style={style.imgContainer}>
+            <Image
+              source={imgMap[props.jenisLayanan]}
+              style={{width: '100%', height: '80%'}}
+              resizeMode="contain"
+            /> 
         </View>
-        <View>
-          <Text style={{fontWeight: 'bold', fontSize: 14}}>{dayjs(props.date).format('DD MMMM YYYY')}</Text>
-          <Text style={{fontWeight: 'bold', fontSize: 14}}>Jam {dayjs(props.time, 'HH:mm:ss').format('HH:mm')}</Text>
+        <View style={style.actionContainer}>
+            <View style={style.buttonGroupContainer}>            
+              <TouchableOpacity>
+                {
+                  (props.role === 'user' && props.status !== "Menunggu Konfirmasi") || (props.role === 'bidan' && props.status === 'Selesai') ?
+                  null
+                  :
+                  <Icon name="trash" size={30} color='#ff000090' onPress={handleAlert}/>
+                }
+              </TouchableOpacity>
+              <TouchableOpacity onPress={openWhatsApp}>
+                <Icon name='whatsapp' size={30} color='#00ff0090'/>
+              </TouchableOpacity>
+            </View>
         </View>
       </View>
       <View style={style.descContainer}>
-        <View style={style.imgContainer}>
-          <Image
-            source={props.img}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="contain"
-          />
-        </View>
         <View style={style.textContainer}>
           <View style={{marginBottom: 8}}>
             <Text style={{fontSize: 16, fontWeight: 'bold'}}>{props.title}</Text>
-            <Text style={{fontSize: 14}}>{props.description}</Text>
+            <Text style={{fontSize: 14, color: '#7a7a7a'}}>{props.description}</Text>
           </View>
           <View style={{display: 'flex', flexDirection: 'row', gap: 8}}>
             <TouchableOpacity style={style.buttonMainContent} onPress={props.handleClick}>
@@ -97,20 +113,14 @@ const QueueItemComponent = (props: props): JSX.Element => {
             }
           </View>
         </View>
-        <View style={style.actionContainer}>
-          <View style={style.buttonGroupContainer}>
-            <TouchableOpacity onPress={openWhatsApp}>
-              <Icon name='whatsapp' size={30} color='#00ff0090'/>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              {
-                (props.role === 'user' && props.status !== "Menunggu Konfirmasi") || (props.role === 'bidan' && props.status === 'Selesai') ?
-                null
-                :
-                <Icon name="trash" size={30} color='#ff000090' onPress={handleAlert}/>
-              }
-            </TouchableOpacity>
-          </View>
+      </View>
+      <View style={style.infoContainer}> 
+        <View>
+          <Text style={{fontWeight: 'normal', fontSize: 14, color: '#7a7a7a'}}>{dayjs(props.date).format('DD MMMM YYYY')}</Text>
+          <Text style={{fontWeight: 'normal', fontSize: 14, color: '#7a7a7a'}}>Jam {dayjs(props.time, 'HH:mm:ss').format('HH:mm')}</Text>
+        </View>
+        <View style={[style.infoItemContainer, {backgroundColor: handleStatusBackground(props.status)}]}>
+          <Text style={{fontWeight: 'bold', fontSize: 14, color: '#f8f8f8'}}>{props.status}</Text>
         </View>
       </View>
     </View>
@@ -120,19 +130,19 @@ const QueueItemComponent = (props: props): JSX.Element => {
 export const style = StyleSheet.create({
   mainContentContainer: {
     width: '100%',
-    minHeight: height * 0.29,
-    maxHeight: height * 0.32,
+    minHeight: height * 0.34,
+    maxHeight: height * 0.37,
     display: 'flex',
     flexDirection: 'column',
     marginBottom: 16,
-    backgroundColor: '#f4f4f4',
+    backgroundColor: '#ffffff',
     borderWidth: 1,
-    borderColor: '#10101005',
+    borderColor: '#80808015',
     borderRadius: 12,
-    padding: 12,
+    padding: 16,
     gap: 8,
     flex: 1,
-    elevation: 4,
+    //elevation: 2,
   },
   infoContainer: {
     width: '100%',
@@ -145,6 +155,13 @@ export const style = StyleSheet.create({
     alignItems: 'center',
     borderBottomColor: '#909090',
   },
+  topContainer: {
+    width: '100%',
+    height: '35%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   infoItemContainer: {
     width: 'auto',
     backgroundColor: MAIN_COLOR,
@@ -153,16 +170,24 @@ export const style = StyleSheet.create({
   },
   descContainer: {
     width: '100%',
-    height: '75%',
+    height: '35%',
     display: 'flex',
     flexDirection: 'row',
-    flex: 1,
+    //flex: 1,
     gap: 12,
+    borderWidth: 0,
+  },
+  textContainer: {
+    width: '100%',
+    height: '100%',
+    borderWidth: 0,
+    display: 'flex',
+    flexDirection: 'column',
   },
   buttonMainContent: {
     width: width * 0.20,
     height: 'auto',
-    backgroundColor: '#000',
+    backgroundColor: '#101010',
     padding: 8,
     borderRadius: 8,
     display: 'flex',
@@ -170,17 +195,10 @@ export const style = StyleSheet.create({
     alignItems: 'center',
   },
   imgContainer: {
-    width: width * 0.20,
+    width: width * 0.16,
     height: '100%',
     borderWidth: 0,
-  },
-  textContainer: {
-    width: width * 0.40,
-    height: '100%',
-    borderWidth: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    marginRight: 8,
   },
   actionContainer: {
     width: width * 0.20,

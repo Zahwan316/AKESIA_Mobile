@@ -18,6 +18,13 @@ import useUserStore from '../../../../state/user';
 import messaging from '@react-native-firebase/messaging';
 import notifee, { AndroidImportance } from '@notifee/react-native';
 
+/*
+  IMPORTANT
+
+  THIS FILE IS FOR BIDAN PEMERIKSAAN ALSO KNOW LIST PEMERIKSAAN
+
+*/
+
 const ListJanjiSection = (): JSX.Element => {
   const navigation = useNavigation<any>();
   const [tanggalFilter, setTanggalFilter] = useState<string | null>(null);
@@ -178,6 +185,7 @@ const ListJanjiSection = (): JSX.Element => {
               role="bidan"
               pendaftaranId={item.pendaftaran_id}
               date={item.tanggal_kunjungan}
+              jenisLayanan={item.pelayanan?.jenis_layanan?.nama}
               handlePeriksa={() => handleScreen('Pemeriksaan', item.pelayanan.form_id, item.id, item, item.pendaftaran_id)}
             />
           ))
