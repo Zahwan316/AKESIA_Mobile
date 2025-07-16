@@ -14,12 +14,12 @@ const ImageCardItemComponent = (props: props): JSX.Element => {
       <View style={style.imgContainer}>
         <Image
           source={props.img}
-          style={{width: '100%', height: '100%', borderTopLeftRadius: 12, borderTopRightRadius: 12}}
+          style={{width: '100%', height: '100%', borderRadius: 12}}
           resizeMode="cover"
         />
       </View>
       <View style={style.headerContainer}>
-        <Text>{props.title}</Text>
+        <Text style={{color: '#fff', fontWeight: 'bold'}}>{props.title}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -28,24 +28,26 @@ const ImageCardItemComponent = (props: props): JSX.Element => {
 const style = StyleSheet.create({
   mainContainer: {
     width: '100%',
-    height: 160,
+    height: 200,
     backgroundColor: MAIN_COLOR,
     borderRadius: 12,
     marginBottom: 18,
   },
   imgContainer:{
     width: '100%',
-    height: '70%',
+    height: '100%',
   },
   headerContainer: {
     width: '100%',
-    height: '30%',
+    height: '25%',
     display: 'flex',
     padding: 8,
-    backgroundColor: '#d9d9d9',
+    backgroundColor: '#10101075',
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
     justifyContent: 'center',
+    position: 'absolute',
+    bottom: 0,
   },
 });
 

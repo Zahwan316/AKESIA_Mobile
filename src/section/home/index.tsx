@@ -68,7 +68,7 @@ const menuList: menu[] = [
   },
   {
     name: 'Riwayat Buku KIA',
-    icon: require('../../assets/icon/riwayat_kehamilan_icon.png'),
+    icon: require('../../assets/icon/riwayat_buku_kia.png'),
     screen: 'RiwayatKehamilanGroup',
     role: 'user',
   },

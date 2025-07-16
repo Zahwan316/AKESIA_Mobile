@@ -1,5 +1,5 @@
-import React, { JSX, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import React, { JSX, useEffect, useRef, useState } from 'react';
+import { FlatList, View } from 'react-native';
 import JanjiScreenLayout from '../layout';
 import ButtonComponent from '../../../../component/button';
 import QueueItemComponent from '../component/queue-item';
@@ -149,6 +149,8 @@ const JanjiKitaSection = (): JSX.Element => {
     }, [refetch])
   );
 
+  const flatListRef = useRef(null);
+
   /* useEffect(() => {
     console.log(pendaftaranUserData);
   },[]);  */
@@ -165,7 +167,23 @@ const JanjiKitaSection = (): JSX.Element => {
         modalVisible={modal}
       />
       <View style={{flexDirection: 'row',flexWrap: 'wrap',gap: 12, justifyContent: 'flex-start', marginBottom: 32}}>
-        {
+        <FlatList
+          ref={flatListRef}
+          data={ButtonMenu}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({item}) => {
+            return (
+              <View style={{marginHorizontal: 8}}>
+                <ButtonComponent
+                  title={item.title}
+                  onPress={() => handleCurrMenu(item.title)}
+                  color={currMenu === item.title ? '#000' : '#D9D9D9'}
+                />
+              </View>
+            );
+          }}  />
+        {/* {
           ButtonMenu.map((item, index) => (
             <ButtonComponent
               title={item.title}
@@ -174,7 +192,7 @@ const JanjiKitaSection = (): JSX.Element => {
               key={index}
             />
           ))
-        }
+        } */}
       </View>
       <ScrollView style={{position: 'relative', height: '50%'}}>
         {

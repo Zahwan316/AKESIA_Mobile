@@ -1,4 +1,4 @@
-package com.kia_mobile
+package com.akesia.app
 
 import android.app.Application
 import com.facebook.react.PackageList

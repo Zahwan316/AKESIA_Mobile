@@ -44,10 +44,25 @@ const QueueItemComponent = (props: props): JSX.Element => {
     );
   };
 
+  const handleStatusBackground = (status) => {
+    switch(status){
+      case 'Menunggu Konfirmasi':
+        return '#FFC107';
+      case 'Disetujui':
+        return '#4CAF50';
+      case 'Dibatalkan':
+        return '#F44336';
+      case 'Selesai':
+        return '#2196F3';
+      default:
+        return '#FFC107';
+    }
+  };
+
   return(
     <View style={style.mainContentContainer}>
       <View style={style.infoContainer}>
-        <View style={style.infoItemContainer}>
+        <View style={[style.infoItemContainer, {backgroundColor: handleStatusBackground(props.status)}]}>
           <Text style={{fontWeight: 'bold', fontSize: 14, color: '#fff'}}>{props.status}</Text>
         </View>
         <View>

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, FlatList, Image, Dimensions } from 'react-native';
-import { BASE_URL } from '../../constants/baseurl';
+import { FlatList } from 'react-native';
 import SliderItem from './slideritem';
 
 type props = {

@@ -7,6 +7,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:200703951018:android:e86c8073233260e56210d3",
+        "android_client_info": {
+          "package_name": "com.akesia.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "200703951018-fjlah2ts30kritfv1rbc02n9hskau07r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuoquxbsNJzwLUYXokY51Ow2MNhgiuG3M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "200703951018-fjlah2ts30kritfv1rbc02n9hskau07r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:200703951018:android:8660db6ed3e30b186210d3",
         "android_client_info": {
           "package_name": "com.kia_mobile"

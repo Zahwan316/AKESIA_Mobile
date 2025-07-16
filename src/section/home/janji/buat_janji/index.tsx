@@ -43,7 +43,7 @@ const BuatJanjiSection = () => {
     <JanjiScreenLayout
       title="Buat Janji"
     >
-      <ScrollView>
+      <ScrollView style={{paddingTop: 8}}>
         {
           jenisPelayananData?.data.map((item: apiResponse, index: number) => (
             <ImageCardItemComponent

@@ -138,6 +138,7 @@ const formBidan: Omit<formBidanAdittion, 'control'>[] = [
     type: 'text',
     backgroundColor: '',
     border: 1,
+    maximum: 16,
   },
   {
     width: '100%',
@@ -150,6 +151,7 @@ const formBidan: Omit<formBidanAdittion, 'control'>[] = [
     type: 'text',
     backgroundColor: '',
     border: 1,
+    
   },
   {
     width: '100%',
@@ -359,7 +361,29 @@ const CompleteProfileBidanSection = (): JSX.Element => {
                       initialValue={item.name === 'tempat_bekerja' ? 'Praktek Bidan Mandiri' : null}
                     />
                   );
-                } else if (item.type === 'dropdown') {
+                }
+                else if (item.type === 'number') {
+                  return (
+                    <InputComponent
+                      width={item.width}
+                      height={item.height}
+                      label={item.label}
+                      message={item.message}
+                      name={item.name}
+                      onSelect={item.onChange}
+                      placeholder={item.placeholder}
+                      type={item.type}
+                      backgroundColor={'#fff'}
+                      borderColor={BORDER_COLOR}
+                      key={index}
+                      border={item.border}
+                      errors={item.errors}
+                      control={item.control}
+                      data={item.options}
+                    />
+                  );
+                }
+                else if (item.type === 'dropdown') {
                   return (
                     <DropdownInputComponent
                       width={item.width}
@@ -378,12 +402,13 @@ const CompleteProfileBidanSection = (): JSX.Element => {
                       getValue={item.getValue}
                     />
                   );
-                } else if (item.type === 'upload'){
+                }
+                else if (item.type === 'upload'){
                   return(
                     <UploadSelfie
                       key={index}
                       control={item.control}
-                      name='img'
+                      name="img"
                       label={item.label}
                       errors={item.errors}
                       message={item.message}

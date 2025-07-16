@@ -52,7 +52,7 @@ const style = StyleSheet.create({
   },
   mainContent: {
     width: '100%',
-    height: verticalScale(560),
+    height: verticalScale(590),
     borderWidth: 0,
   },
 });

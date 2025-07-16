@@ -2,7 +2,7 @@ import axios from 'axios';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
 const instance = axios.create({
-  baseURL: /* __DEV__ ?  */ /* 'http://10.0.2.2:8000/api/' */ 'https://akesia.my.id/api/',
+  baseURL: /* __DEV__ ?  */ 'http://10.0.2.2:8000/api/' /* 'https://akesia.my.id/api/' */,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
