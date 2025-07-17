@@ -61,7 +61,7 @@ const style = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    borderColor: '#10101020',
+    borderColor: '#80808015',
     backgroundColor: '#fff',
     alignItems: 'center',
     marginBottom: 14,
@@ -69,7 +69,7 @@ const style = StyleSheet.create({
     padding: 8,
     gap: 12,
     shadowColor: '#101010',
-    elevation: 4,
+    //elevation: 4,
     //flex: 1,
   },
   imgContainer: {

@@ -72,7 +72,7 @@ const AlbumFotoUsgSection = (): JSX.Element => {
       <View style={Style.mainContainer}>
         <View style={Style.headerContainer}>
           <Text style={Style.headerText}>
-            USG Ke berapa nih?
+            Pertumbuhan bayi ke berapa nih?
           </Text>
         </View>
         <ScrollView style={Style.itemContainer}>

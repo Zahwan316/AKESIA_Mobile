@@ -7,7 +7,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { CommonActions } from '@react-navigation/native';
 import { verticalScale } from 'react-native-size-matters';
-import { MAIN_COLOR } from '../../../../constants/color';
+import { MAIN_COLOR, WHITE_BACKGROUND_COLOR } from '../../../../constants/color';
 
 type props = {
   children: React.ReactNode,
@@ -22,9 +22,8 @@ const JanjiScreenLayout = (props: props): JSX.Element => {
       <SafeAreaView>
         <View style={style.mainContainer}>
           <View style={style.headerContainer}>
-            <Icon name="angle-left" color={'#fff'} size={42} onPress={() => {navigation.dispatch(CommonActions.goBack());}}/>
+            <Icon name="chevron-left" style={{marginRight: 14}} color={'#fff'} size={32} onPress={() => {navigation.dispatch(CommonActions.goBack());}}/>
             <Text style={{fontWeight: 'bold', fontSize: 24, color: '#fff'}}>{props.title}</Text>
-            <View />
           </View>
           <View style={style.mainContent}>
             {props.children}
@@ -47,19 +46,18 @@ const style = StyleSheet.create({
     borderWidth: 0,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 0,
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
   },
   mainContent: {
     width: '100%',
-    height: verticalScale(610),
+    height: verticalScale(620),
     borderWidth: 0,
     padding: 18,
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
-    backgroundColor: '#f7f5f6'
+    backgroundColor: WHITE_BACKGROUND_COLOR
   },
 });
 

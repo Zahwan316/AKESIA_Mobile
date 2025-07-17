@@ -168,6 +168,7 @@ const Style = StyleSheet.create({
   text: {
     fontSize: 16,
     marginBottom: 12,
+    textAlign: 'justify',
   },
 });
 

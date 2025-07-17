@@ -36,7 +36,7 @@ const BuatJanjiSection = () => {
   };
 
   useEffect(() => {
-    console.log(BASE_URL);
+    console.log(jenisPelayananData);
   },[]);
 
   return(

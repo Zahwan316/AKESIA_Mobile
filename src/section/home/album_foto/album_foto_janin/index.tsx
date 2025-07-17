@@ -67,7 +67,7 @@ const AlbumFotoJaninSection = (): JSX.Element => {
       <View style={Style.mainContainer}>
         <View style={Style.headerContainer}>
           <Text style={Style.headerText}>
-            Mau Upload USG Janin Ke Berapa Bu?
+            Mau Upload Foto Pertumbuhan Bayi Ke Berapa Bu?
           </Text>
         </View>
         <ScrollView style={Style.itemContainer}>

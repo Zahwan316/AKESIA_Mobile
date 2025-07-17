@@ -2,7 +2,7 @@ import { JSX } from 'react';
 import { Alert, Image, ImageProps, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { BUTTON_COLOR, BUTTON_COLOR_2, MAIN_COLOR, SECONDARY_COLOR, THIRD_COLOR } from '../../constants/color';
+import { BUTTON_COLOR, BUTTON_COLOR_2, MAIN_COLOR, SECONDARY_COLOR, THIRD_COLOR, WHITE_BACKGROUND_COLOR } from '../../constants/color';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -117,7 +117,7 @@ const style = StyleSheet.create({
   mainContainer: {
     width: widthPercentageToDP(100),
     height: heightPercentageToDP(100),
-    backgroundColor: SECONDARY_COLOR,
+    backgroundColor: MAIN_COLOR,
     // padding: 12,
   },
   imgProfileContainer: {
@@ -142,10 +142,10 @@ const style = StyleSheet.create({
     //justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    backgroundColor: '#f4f4f4',
+    backgroundColor: WHITE_BACKGROUND_COLOR,
     padding: 22,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
   },
   mainItemContainer: {
     width: '100%',

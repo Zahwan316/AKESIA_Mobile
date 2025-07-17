@@ -5,7 +5,7 @@ import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsi
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ButtonComponent from '../../../component/button';
-import { MAIN_COLOR } from '../../../constants/color';
+import { MAIN_COLOR, WHITE_BACKGROUND_COLOR } from '../../../constants/color';
 import ModalComponent from '../../../component/modal';
 import { useNavigation } from '@react-navigation/native';
 import { verticalScale } from 'react-native-size-matters';
@@ -37,10 +37,9 @@ const HomeFeatureLayoutSection = (props: props) => {
         <View style={Style.mainContainer}>
           <View style={Style.headerContainer}>
             <TouchableOpacity onPress={() => navigate.goBack()}>
-              <Icon name='chevron-left' size={26}/>
+              <Icon name='chevron-left' style={{color: '#fff', marginRight: 14}} size={26}/>
             </TouchableOpacity>
-            <Text style={{fontSize: 24, fontWeight: 'bold'}}>{props.title}</Text>
-            <View></View>
+            <Text style={{fontSize: 24, fontWeight: 'bold', color: '#fFf'}}>{props.title}</Text>
           </View>
           <View style={Style.contentContainer}>
             {props.children}
@@ -62,25 +61,33 @@ const Style = StyleSheet.create({
   mainContainer: {
     width: widthPercentageToDP(100),
     height: heightPercentageToDP(100),
-    padding: 12,
+    //padding: 12,
+    backgroundColor: MAIN_COLOR,
   },
   headerContainer: {
     width: '100%',
-    height: '6%',
+    height: '10%',
     display: 'flex',
-    justifyContent: 'space-between',
+    //justifyContent: 'space-between',
     alignItems: 'center',
     borderWidth: 0,
-    flexDirection: 'row',
+    flexDirection: 'row', 
+    padding: 16,
   },
   contentContainer: {
     width: '100%',
-    height: verticalScale(550),
+    height: verticalScale(510),
     paddingVertical: 16,
+    backgroundColor: WHITE_BACKGROUND_COLOR,
+    padding: 16,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
   },
   buttonContainer: {
     width: '100%',
-    height: verticalScale(80),
+    height: verticalScale(100),
+    padding: 16,
+    backgroundColor: WHITE_BACKGROUND_COLOR,
   },
 });
 

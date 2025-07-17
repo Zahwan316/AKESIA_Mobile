@@ -2,7 +2,7 @@ import { JSX, useEffect, use } from 'react';
 import { Image, ImageSourcePropType, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView, View } from 'react-native';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
-import { BUTTON_COLOR, BUTTON_COLOR_2, SECONDARY_COLOR, THIRD_COLOR } from '../../constants/color';
+import { BUTTON_COLOR, BUTTON_COLOR_2, FOURTH_COLOR, MAIN_COLOR, SECONDARY_COLOR, TEXT_COLOR, THIRD_COLOR, WHITE_BACKGROUND_COLOR } from '../../constants/color';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useQuery } from '@tanstack/react-query';
@@ -162,11 +162,11 @@ const HomeSection = (): JSX.Element => {
   return(
     <SafeAreaProvider>
       <SafeAreaView>
-        <ScrollView stickyHeaderIndices={[3]} style={{width: widthPercentageToDP(100)}}>
+        <ScrollView stickyHeaderIndices={[3]} style={{width: widthPercentageToDP(100), backgroundColor: MAIN_COLOR}}>
           <View style={Style.profileContainer}>
             {/* Name Container */}
             <View style={Style.nameContainer}>
-              <Text style={{fontSize: 18, color: "#fff"}}>Halo, {userData?.user?.nama_lengkap}</Text>
+              <Text style={{fontSize: 20, color: "#fff", fontWeight: 'bold'}}>Halo, {userData?.user?.nama_lengkap}</Text>
               <TouchableOpacity onPress={() => handlePressButton('Notifikasi')}>
                 <Image
                   source={require('../../assets/icon/bell.png')}
@@ -212,7 +212,7 @@ const HomeSection = (): JSX.Element => {
           </View>
           <View style={Style.menuMainContainer}>
             <View style={Style.menuHeaderContainer}>
-              <Text style={{fontSize: 16, fontWeight: 'normal', marginLeft: 10}}>Fitur Rekomendasi</Text>
+              <Text style={{fontSize: 18, fontWeight: 'bold', marginLeft: 0, color: TEXT_COLOR}}>Fitur Rekomendasi</Text>
             </View>
             <View style={[Style.menuContainer, {justifyContent: userData?.user?.role === 'bidan' ? 'center' : 'flex-start'}]}>
               {
@@ -237,7 +237,7 @@ const HomeSection = (): JSX.Element => {
           </View>
           <View style={Style.bannerContainer}>
             <View style={Style.bannerItemContainer}>
-              <Text style={{fontSize: 16, marginBottom: 12}}>Informasi Terkini</Text>
+              <Text style={{fontSize: 18, marginBottom: 12, fontWeight: 'bold', color: TEXT_COLOR}}>Informasi Terkini</Text>
               {
                 bannerData?.data?.length != 0 ?
                 <ImageSlider
@@ -266,9 +266,9 @@ const Style = StyleSheet.create({
   profileContainer: {
     width: widthPercentageToDP(100),
     height: heightPercentageToDP(25),
-    backgroundColor: THIRD_COLOR,
-    borderBottomLeftRadius: 18,
-    borderBottomRightRadius: 18,
+    backgroundColor: MAIN_COLOR,
+    /* borderBottomLeftRadius: 18,
+    borderBottomRightRadius: 18, */
     padding: 16,
     paddingVertical: 24,
     display: 'flex',
@@ -279,11 +279,14 @@ const Style = StyleSheet.create({
     height: heightPercentageToDP(45),
     padding: 16,
     borderWidth: 0,
+    borderTopLeftRadius: 26,
+    borderTopRightRadius: 26,
+    backgroundColor: WHITE_BACKGROUND_COLOR
   },
   menuHeaderContainer: {
     width: '100%',
     height: '10%',
-    marginBottom: 16,
+    marginBottom: 8,
   },
   menuContainer: {
     width: '100%',
@@ -308,6 +311,9 @@ const Style = StyleSheet.create({
     borderWidth: 0,
     padding: 15,
     marginBottom: 18,
+    backgroundColor: WHITE_BACKGROUND_COLOR,
+    borderBottomLeftRadius: 18,
+    borderBottomRightRadius: 18, 
   },
   nameContainer: {
     width: '100%',
@@ -329,7 +335,7 @@ const Style = StyleSheet.create({
   boxContainer: {
     width: '45%',
     height: '70%',
-    backgroundColor: SECONDARY_COLOR,
+    backgroundColor: FOURTH_COLOR,
     borderRadius: 8,
     display: 'flex',
     flexDirection: 'row',

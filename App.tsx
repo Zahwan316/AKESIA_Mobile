@@ -8,7 +8,7 @@ import firebase from '@react-native-firebase/app';
 import requestNotificationPermission from './src/function/request_notification';
 import { getFcmToken, requestFCMToken } from './src/function/fcm_token';
 import messaging from '@react-native-firebase/messaging';
-import { Alert } from 'react-native';
+import { Alert, View } from 'react-native';
 import { createChannel } from './src/function/notifee/create_channel';
 import notifee, { AndroidImportance } from '@notifee/react-native';
 import Config from 'react-native-config';
