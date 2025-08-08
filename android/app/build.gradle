@@ -93,8 +93,8 @@ android {
         applicationId "com.akesia.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.1"
         resValue "string", "API_URL", project.env.get("API_URL")
         manifestPlaceholders = [appAuthRedirectScheme: "com.googleusercontent.apps.200703951018-fjlah2ts30kritfv1rbc02n9hskau07r"]
     }
